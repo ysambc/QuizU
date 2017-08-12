@@ -9,7 +9,7 @@ Craft flexible quizzes including "branched" or "chained" logic. This way you may
 Branches or paths, coupled with different question types, provide QuizU with lots of added flexibility, allowing you to create all kinds of quizzes, tests and questionaires.
 
 
- Special Features 
+## Special Features 
 
 *	**Shortcodes, widgets and global quizzes**
 
@@ -158,8 +158,8 @@ None so far. Please use the forum.
 
 ## Translations 
 
-*	**English**
-*	**Spanish**
+*	English
+*	Spanish
 
 
 ## Credits 
