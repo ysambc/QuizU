@@ -1,5 +1,5 @@
 # QuizU Branched
-Branched / Chained logic quizzes
+Branched / Chained logic quizzes. Create quizzes with multiple "branches" or "paths" taking your users to different results.
 
 
 ## Description 
