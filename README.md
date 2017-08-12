@@ -131,15 +131,7 @@ Each of the questions’ answers may award a positive or negative score. Essay-t
 
 ## Frequently Asked Questions 
 
-None so far. Please use the forum.
-
-
-## Screenshots 
-
-1. Shortcode / Widget
-2. Admin panel
-2. Admin panel "collapsed"
-3. Settings page
+None so far.
 
 
 ## Changelog 
@@ -147,14 +139,6 @@ None so far. Please use the forum.
  1.0 
 
 *	First stable version
-
-
-## Upgrade Notice 
-
- 1.0 
-
-*	First stable version
-
 
 ## Translations 
 
