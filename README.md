@@ -1,14 +1,5 @@
- QuizU Branched 
-
-**Contributors:** jbent124
-
-**Tags:** quiz, quizzes, branched, chained, path
-
-**Requires at least:** 3.3
-
-**Tested up to:** 4.8.1
-
-**Stable tag:** 1.0.0
+# QuizU Branched
+Branched / Chained logic quizzes
 
 
 ## Description 
@@ -82,7 +73,7 @@ Branches or paths, coupled with different question types, provide QuizU with lot
 	Experience your quiz the way your users would, before publishing it. If autosave has been disabled, you will need to save your quiz before previewing it.
 
 
- Installation 
+## Installation 
 
 1.	Upload the .zip file via the "add new plugin" interface
 2.	Activate the plugin
@@ -90,7 +81,7 @@ Branches or paths, coupled with different question types, provide QuizU with lot
 4.	Link a quiz to a post or page, or make it global for all posts / pages
 
 
- Getting Started 
+## Getting Started 
 
 After installing, QuizU will add a new menu in your WP admin sidebar. QuizU’s menu contains a link to a list with all your quizzes, a direct link for creating new quizzes, and a link to QuizU’s settings page.
 
@@ -99,7 +90,7 @@ Shortcodes are displayed in the quiz list page. In the quiz edit / creation page
 Once you have created your quiz you can go to the edit screen of the post or page where you want it displayed and select it, or you can paste its shortcode into the post’s content.
 
 
- Results Criteria 
+## Results Criteria 
 
 You may choose to have the final scores listed for your users once they complete a quiz, and you may also decide if results are determined by “branch”, by “total score”, or by the “highest scoring option”. For the last two, you will need to determine each result’s score range or triggering option.
 
@@ -117,7 +108,7 @@ You may choose to have the final scores listed for your users once they complete
 	The score of each “option index” (ie. A, B, C, D, etc) is summed separately, and the winning "index" is calculated.
 
 
- Types of Questions 
+## Types of Questions 
 
 Each of the questions’ answers may award a positive or negative score. Essay-type questions will only count if answered correctly. Single choice is the default type, while multiple choice or essay-type questions are enabled with a click.
 
@@ -138,12 +129,12 @@ Each of the questions’ answers may award a positive or negative score. Essay-t
 	Open answers with an infinite number of possible correct (or penalty) answers. The score of the typed answer will only be summed if it matches an item in the set of answers. This type of question has two types of link. The "main" one, for the question itself, and another one for each answer. If no matching answer is provided or the matched answer is not linked, the main link will be used.
 
 
- Frequently Asked Questions 
+## Frequently Asked Questions 
 
 None so far. Please use the forum.
 
 
- Screenshots 
+## Screenshots 
 
 1. Shortcode / Widget
 2. Admin panel
@@ -151,27 +142,27 @@ None so far. Please use the forum.
 3. Settings page
 
 
- Changelog 
+## Changelog 
 
  1.0 
 
 *	First stable version
 
 
- Upgrade Notice 
+## Upgrade Notice 
 
  1.0 
 
 *	First stable version
 
 
- Translations 
+## Translations 
 
 *	**English**
 *	**Spanish**
 
 
- Credits 
+## Credits 
 
 Thanks to:
 
