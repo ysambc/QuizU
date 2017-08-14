@@ -1,10 +1,17 @@
 
 <?php defined('ABSPATH') or die("Cannot access pages directly."); ?>
 
-<li class="question parent <?php echo $question['essay_flag'] == 'true' ? 'essay_type' : ''; echo ' '; echo $question['multiple_choice_flag'] == 'true' ? 'multiple_choice' : '' ?>" data-path="<?php echo esc_attr($path['id']) ?>" data-question="<?php echo esc_attr($question_id) ?>" data-sort="<?php echo esc_attr(wp_create_nonce('sort_questions')); ?>">
+<?php 
 	
-	<input class="question title" type="text" name="mpq_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question['id']) ?>][title]" value="<?php echo esc_attr($question['title']) ?>" placeholder="">
-	<input class="question id" type="hidden" name="mpq_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question_id) ?>][id]" value="<?php echo esc_attr($question_id) ?>" placeholder="">
+	$essay_flag = $question['flags']['essay_flag'];
+	$multiple_choice_flag = $question['flags']['multiple_choice_flag'];
+
+?>
+
+<li class="question parent <?php echo $essay_flag == 'true' ? 'essay_type' : ''; echo ' '; echo $multiple_choice_flag == 'true' ? 'multiple_choice' : '' ?>" data-path="<?php echo esc_attr($path['id']) ?>" data-question="<?php echo esc_attr($question_id) ?>" data-sort="<?php echo esc_attr(wp_create_nonce('sort_questions')); ?>">
+	
+	<input class="question title" type="text" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question['id']) ?>][title]" value="<?php echo esc_attr($question['title']) ?>" placeholder="">
+	<input class="question id" type="hidden" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question_id) ?>][id]" value="<?php echo esc_attr($question_id) ?>" placeholder="">
 
 	<div class="buttons">
 		<button class="controller delete delete_question" data-nonce="<?php echo esc_attr(wp_create_nonce( 'delete_question' )); ?>" data-command="delete_question">
@@ -26,7 +33,7 @@
 	<div class="essay_switch">
 		<p class="label"><?php esc_html_e('Essay type?', 'quizuint') ?></p>
 		<label class="switch">
-		 	<input class="essay_question_flag controller flag" data-command="update_question" data-flag="<?php echo $question['essay_flag'] == 'true' ? 'false' : 'true' ; ?>" data-nonce="<?php echo wp_create_nonce('update_question') ?>" name="mpq_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question_id) ?>][essay_flag]" type="checkbox" <?php echo $question['essay_flag'] == 'true' ? 'checked' : '' ; ?>>
+		 	<input class="essay_question_flag controller flag" data-command="update_question" data-flag="<?php echo $question['flags']['essay_flag'] == 'true' ? 'false' : 'true' ; ?>" data-nonce="<?php echo wp_create_nonce('update_question') ?>" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question_id) ?>][flags][essay_flag]" type="checkbox" <?php echo $question['flags']['essay_flag'] == 'true' ? 'checked' : '' ; ?>>
 		 	<div class="slider round"></div>
 		</label>
 	</div>
@@ -47,10 +54,10 @@
 		 ?>
 	</ul>
 
-	<div class="multiple_choice_switch <?php echo $question['essay_flag'] == 'true' ? 'hidden' : '' ?>">
+	<div class="multiple_choice_switch <?php echo $essay_flag == 'true' ? 'hidden' : '' ?>">
 		<p class="label"><?php esc_html_e('Multiple choice?', 'quizuint') ?></p>
 		<label class="switch">
-		 	<input class="multiple_choice_flag controller flag" data-command="update_question" data-flag="<?php echo !empty($question['multiple_choice_flag']) && $question['multiple_choice_flag'] == 'true' ? 'false' : 'true' ; ?>" data-nonce="<?php echo wp_create_nonce('update_question') ?>" name="mpq_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question_id) ?>][multiple_choice_flag]" type="checkbox" <?php echo !empty($question['multiple_choice_flag']) && $question['multiple_choice_flag'] == 'true' ? 'checked' : '' ; ?>>
+		 	<input class="multiple_choice_flag controller flag" data-command="update_question" data-flag="<?php echo !empty($multiple_choice_flag) && $multiple_choice_flag == 'true' ? 'false' : 'true' ; ?>" data-nonce="<?php echo wp_create_nonce('update_question') ?>" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][questions][<?php echo esc_attr($question_id) ?>][flags][multiple_choice_flag]" type="checkbox" <?php echo !empty($multiple_choice_flag) && $multiple_choice_flag == 'true' ? 'checked' : '' ; ?>>
 		 	<div class="slider round"></div>
 		</label>
 	</div>

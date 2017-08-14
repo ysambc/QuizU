@@ -2,8 +2,8 @@
 
 	<div class="wraper">
 
-		<input class="title path" type="text" value="<?php echo esc_attr_e($path['name'], 'quizuint') ?>" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][name]">
-		<input class="path_id" type="hidden" value="<?php echo esc_attr($path['id']) ?>" name="mpq_all_questions[<?php echo esc_attr($path_id) ?>][id]">
+		<input class="title path" type="text" value="<?php echo esc_attr_e($path['name'], 'quizuint') ?>" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][name]">
+		<input class="path_id" type="hidden" value="<?php echo esc_attr($path['id']) ?>" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][id]">
 
 		<div class="buttons">
 			<?php if ($path['id'] !== 'default'): ?>
@@ -18,7 +18,7 @@
 				<?php esc_html_e('New Question', 'quizuint') ?>
 			</button>
 
-			<input type="text" class="color_picker" name="mpq_all_questions[<?php echo esc_attr($path_id) ?>][color]" value="<?php echo !empty($path['color']) ? esc_attr($path['color']) : esc_attr(get_option('mpq_settings_default_color')); ?>" />
+			<input type="text" class="color_picker" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][color]" value="<?php echo !empty($path['color']) ? esc_attr($path['color']) : esc_attr(get_option('quizu_settings_default_color')); ?>" />
 
 			<button data-nonce="<?php echo esc_attr(wp_create_nonce( 'update_path' )); ?>" class="controller update update_path" data-command="update_path">
 				<i class="fa fa-save"></i>
@@ -27,7 +27,6 @@
 		</div>
 
 		<i class="fa fa-compress collapse"></i>
-
 
 	</div>
 

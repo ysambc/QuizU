@@ -18,115 +18,115 @@ msgstr ""
 "X-Poedit-SearchPath-1: models\n"
 "X-Poedit-SearchPath-2: views\n"
 "X-Poedit-SearchPath-3: assets/basic_email.php\n"
-"X-Poedit-SearchPath-4: multipq_init.php\n"
-"X-Poedit-SearchPath-5: multipq_setup.php\n"
-"X-Poedit-SearchPath-6: multipq_utils.php\n"
+"X-Poedit-SearchPath-4: quizu_init.php\n"
+"X-Poedit-SearchPath-5: quizu_setup.php\n"
+"X-Poedit-SearchPath-6: quizu_utils.php\n"
 "X-Poedit-SearchPath-7: uninstall.php\n"
 
-#: models/multipq_admin_ajax_model.php:33
+#: models/quizu_admin_ajax_model.php:33
 msgid "Branch "
 msgstr "Rama "
 
-#: models/multipq_admin_ajax_model.php:41
+#: models/quizu_admin_ajax_model.php:41
 msgid "default branch"
 msgstr "rama principal"
 
-#: models/multipq_admin_ajax_model.php:75
+#: models/quizu_admin_ajax_model.php:75
 msgid "Result"
 msgstr "Resultado"
 
-#: models/multipq_admin_ajax_model.php:132
+#: models/quizu_admin_ajax_model.php:132
 msgid "Question"
 msgstr "Pregunta"
 
-#: models/multipq_admin_ajax_model.php:136
-#: models/multipq_admin_ajax_model.php:325 multipq_setup.php:157
-#: multipq_setup.php:513 views/result.php:92
+#: models/quizu_admin_ajax_model.php:136
+#: models/quizu_admin_ajax_model.php:325 quizu_setup.php:157
+#: quizu_setup.php:513 views/result.php:92
 msgid "Option"
 msgstr "Opción"
 
-#: models/multipq_admin_ajax_model.php:149
+#: models/quizu_admin_ajax_model.php:149
 msgid "Open Answer"
 msgstr "Respuesta Abierta"
 
-#: models/multipq_admin_ajax_model.php:159
-#: models/multipq_admin_ajax_model.php:368
+#: models/quizu_admin_ajax_model.php:159
+#: models/quizu_admin_ajax_model.php:368
 msgid "Answer"
 msgstr "Respuesta"
 
-#: multipq_setup.php:27
+#: quizu_setup.php:27
 msgid "Branched Quizes"
 msgstr "Quizes Ramificados"
 
-#: multipq_setup.php:61
+#: quizu_setup.php:61
 msgid "QuizU Widget"
 msgstr "Widget QuizU"
 
-#: multipq_setup.php:62
+#: quizu_setup.php:62
 msgid "Use to display your branched quizzes"
 msgstr "Úsalo para mostrar tus quizes"
 
-#: multipq_setup.php:171
+#: quizu_setup.php:171
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: multipq_setup.php:266
+#: quizu_setup.php:266
 msgid "Clone"
 msgstr "Clonar"
 
-#: multipq_setup.php:413
+#: quizu_setup.php:413
 msgid "Branched Quiz"
 msgstr "Quiz Ramificado"
 
-#: multipq_setup.php:414
+#: quizu_setup.php:414
 msgid "QuizU Linked Quiz"
 msgstr "Quiz enlazado de QuizU"
 
-#: multipq_setup.php:445
+#: quizu_setup.php:445
 msgid "Add New Branched Quiz"
 msgstr "Añadir Nuevo QuizU"
 
-#: multipq_setup.php:446
+#: quizu_setup.php:446
 msgid "New Quiz"
 msgstr "Nuevo Quiz"
 
-#: multipq_setup.php:454
+#: quizu_setup.php:454
 msgid "QuizU Settings"
 msgstr "Configuración QuizU"
 
-#: multipq_setup.php:455
+#: quizu_setup.php:455
 msgid "Settings"
 msgstr "Configuración"
 
-#: multipq_setup.php:514
+#: quizu_setup.php:514
 msgid "Essay op."
 msgstr "Op. ensayo"
 
-#: multipq_setup.php:528
+#: quizu_setup.php:528
 msgid "Select or upload a picture"
 msgstr "Selecciona o sube una fota"
 
-#: multipq_setup.php:529
+#: quizu_setup.php:529
 msgid "Use this picture"
 msgstr "Usar esta foto"
 
-#: multipq_utils.php:189
+#: quizu_utils.php:189
 msgid "Enable social and email sharing?"
 msgstr "Activar compartir por email y redes sociales?"
 
-#: multipq_utils.php:190
+#: quizu_utils.php:190
 msgid "Enable auto-save on quiz edit screens?"
 msgstr "Activar guardado automático en las pantallas de edición de Quiz?"
 
-#: multipq_utils.php:191
+#: quizu_utils.php:191
 msgid "Enable quizzes only for logged in users?"
 msgstr "Solo para usuarios registrados?"
 
-#: multipq_utils.php:202
+#: quizu_utils.php:202
 msgid "Your results on {{quiz-title}}"
 msgstr "Tus resultados para {{quiz-title}}"
 
-#: multipq_utils.php:203
+#: quizu_utils.php:203
 msgid ""
 "Thank you for taking quiz {{quiz-title}}. Here are your results:&#13;&#13;"
 "{{result-title}}&#13;&#13;{{result-content}}"
@@ -134,87 +134,87 @@ msgstr ""
 "Gracias por tomar el quiz {{quiz-title}}. Estos son tus resultados:&#13;&#13;"
 "{{result-title}}&#13;&#13;{{result-content}}"
 
-#: multipq_utils.php:207
+#: quizu_utils.php:207
 msgid "Reset"
 msgstr "Reiniciar"
 
-#: multipq_utils.php:207
+#: quizu_utils.php:207
 msgid "\"Reset quiz\" button"
 msgstr "Boton \"reiniciar quiz\""
 
-#: multipq_utils.php:208 views/shortcode.php:87
+#: quizu_utils.php:208 views/shortcode.php:87
 msgid "Next"
 msgstr "Siguiente"
 
-#: multipq_utils.php:208
+#: quizu_utils.php:208
 msgid "\"Continue quiz\" button"
 msgstr "Boton \"continuar quiz\""
 
-#: multipq_utils.php:209
+#: quizu_utils.php:209
 msgid "Email result"
 msgstr "Resultado por email"
 
-#: multipq_utils.php:209
+#: quizu_utils.php:209
 msgid "\"1st email sharing\" button"
 msgstr "Primer botón \"compartir por correo\""
 
-#: multipq_utils.php:210
+#: quizu_utils.php:210
 msgid "Send email"
 msgstr "Enviar correo"
 
-#: multipq_utils.php:210
+#: quizu_utils.php:210
 msgid "\"2nd email sharing\" button"
 msgstr "Segundo botón \"compartir por correo\""
 
-#: multipq_utils.php:211
+#: quizu_utils.php:211
 msgid "Hey! I just completed this quiz. Try it out!"
 msgstr "Hey! Acabo de completar este quiz. Intentalo!"
 
-#: multipq_utils.php:211
+#: quizu_utils.php:211
 msgid "\"sharing\" message"
 msgstr "mensaje de \"compartir\""
 
-#: multipq_utils.php:212
+#: quizu_utils.php:212
 msgid "Your results have been sent to: {{user-email}}"
 msgstr "Tus resultados han sido enviados a: {{user-email}}"
 
-#: multipq_utils.php:212
+#: quizu_utils.php:212
 msgid "\"email sent\" message"
 msgstr "mensaje de \"correo enviado\""
 
-#: multipq_utils.php:213
+#: quizu_utils.php:213
 msgid "There was a problem. Please try again."
 msgstr "Ocurrio un inconveniente. Por favor intenta nuevamente."
 
-#: multipq_utils.php:213
+#: quizu_utils.php:213
 msgid "\"email was not sent\" error message"
 msgstr "Mensaje de error para \"correo no enviado\""
 
-#: multipq_utils.php:214
+#: quizu_utils.php:214
 msgid "Your score is"
 msgstr "Tu puntaje es"
 
-#: multipq_utils.php:214
+#: quizu_utils.php:214
 msgid "total score message"
 msgstr "mensaje para puntaje total"
 
-#: multipq_utils.php:215
+#: quizu_utils.php:215
 msgid "Please enter an answer."
 msgstr "Por favor ingresa una respuesta."
 
-#: multipq_utils.php:215
+#: quizu_utils.php:215
 msgid "\"missing essay answer\" error message"
 msgstr "Mensaje de erro para \"respuesta ensayo faltante\""
 
-#: multipq_utils.php:216
+#: quizu_utils.php:216
 msgid "Please select an answer."
 msgstr "Por favor selecciona una respuesta."
 
-#: multipq_utils.php:216
+#: quizu_utils.php:216
 msgid "\"missing multiple answers\" error message"
 msgstr "Mensaje de error para \"respuestas de selección multiple faltantes\""
 
-#: multipq_utils.php:217
+#: quizu_utils.php:217
 msgid ""
 "There seems to be a problem with this quiz. If the problem persists after "
 "reloading, please contact support."
@@ -222,31 +222,31 @@ msgstr ""
 "Parece que hay un problema con este quiz. Si el problema persiste después de "
 "recargar la pagina, por favor contacta a soporte técnico."
 
-#: multipq_utils.php:217
+#: quizu_utils.php:217
 msgid "\"quiz error\" message"
 msgstr "Mensaje para \"error en el quiz\""
 
-#: multipq_utils.php:218
+#: quizu_utils.php:218
 msgid "This result's score overlaps with"
 msgstr "El puntaje de este resultado se cruza con"
 
-#: multipq_utils.php:218
+#: quizu_utils.php:218
 msgid "\"overlapping score\" error message"
 msgstr "Mensaje de error para \"puntaje entrecruzado\""
 
-#: multipq_utils.php:219
+#: quizu_utils.php:219
 msgid "Minimal score must be smaller than or equal to maximum score"
 msgstr "El puntaje mínimo debe ser menos o igual que el puntaje máximo"
 
-#: multipq_utils.php:219
+#: quizu_utils.php:219
 msgid "\"minimal score must be greater\" error message"
 msgstr "Mensaje de error para \"puntaje minimo\""
 
-#: multipq_utils.php:220
+#: quizu_utils.php:220
 msgid "Please enter numbers only"
 msgstr "Por favor ingrese únicamente números"
 
-#: multipq_utils.php:220
+#: quizu_utils.php:220
 msgid "\"score is not a number\" error message"
 msgstr "Mensaje de error para \"el puntaje no es un numero\""
 

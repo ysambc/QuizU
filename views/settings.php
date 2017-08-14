@@ -1,18 +1,18 @@
 <?php
 
-	if (isset($_POST['mpq_settings']) && !wp_verify_nonce( $_POST['mpq_settings']['nonce'], 'mpq_settings_save' )) {
+	if (isset($_POST['quizu_settings']) && !wp_verify_nonce( $_POST['quizu_settings']['nonce'], 'quizu_settings_save' )) {
 		exit;
 	}
 
-	wp_enqueue_style('multipq_admin_css');
+	wp_enqueue_style('quizu_admin_css');
 
-	$master_config_list = multipq_master_config_list();
+	$master_config_list = quizu_master_config_list();
 
-	if (isset($_POST['mpq_settings'])) {
+	if (isset($_POST['quizu_settings'])) {
 
-		$stripedvars = $_POST['mpq_settings'];
+		$stripedvars = $_POST['quizu_settings'];
 
-		array_walk_recursive($stripedvars, 'multipq_sanitize_deep');
+		array_walk_recursive($stripedvars, 'quizu_sanitize_deep');
 
 		foreach ($stripedvars['permanent'] as $permanent => $value) 
 		{
@@ -79,66 +79,66 @@
 			}
 		}
 
-		// update_option( 'mpq_settings_auto_email_flag', $stripedvars['auto_email_flag'] );
-		update_option( 'mpq_settings_permissions', $stripedvars['permissions']);
-		multipq_caps_updates();
+		// update_option( 'quizu_settings_auto_email_flag', $stripedvars['auto_email_flag'] );
+		update_option( 'quizu_settings_permissions', $stripedvars['permissions']);
+		quizu_caps_updates();
 
-		update_option( 'mpq_settings_default_color', $stripedvars['default_color']);
+		update_option( 'quizu_settings_default_color', $stripedvars['default_color']);
 
 		
 		foreach ($stripedvars['flags'] as $flag => $value)
 		{
-			update_option( 'mpq_settings_'.$flag, $value);
+			update_option( 'quizu_settings_'.$flag, $value);
 		}
 
 		
 		foreach ($stripedvars['permanent'] as $permanent => $value)
 		{
-			update_option('mpq_settings_permanent_'.$permanent, $value);
+			update_option('quizu_settings_permanent_'.$permanent, $value);
 		}
 
 
 		foreach ($stripedvars['email_sender'] as $email => $value)
 		{
-			update_option( 'mpq_settings_email_'.$email, $value);
+			update_option( 'quizu_settings_email_'.$email, $value);
 		}
 
 		foreach ($stripedvars['texts'] as $text => $value)
 		{
-			update_option( 'mpq_settings_texts_'.$text, $value);
+			update_option( 'quizu_settings_texts_'.$text, $value);
 		}
 
 	}
 
 
-	// $mpq_auto_email_flag = get_option( 'mpq_settings_auto_email_flag');
-	$permissions = get_option('mpq_settings_permissions');
-	$default_color = get_option( 'mpq_settings_default_color');
+	// $quizu_auto_email_flag = get_option( 'quizu_settings_auto_email_flag');
+	$permissions = get_option('quizu_settings_permissions');
+	$default_color = get_option( 'quizu_settings_default_color');
 
 	foreach ($master_config_list['permanent_list'] as $permanent => $value)
 	{
-		$permanents[$permanent] = get_option('mpq_settings_permanent_'.$permanent);
+		$permanents[$permanent] = get_option('quizu_settings_permanent_'.$permanent);
 	}
 
 	foreach ($master_config_list['flag_list'] as $flag => $value)
 	{
 		$flags[$flag]['label'] = $value;
-		$flags[$flag]['value'] = get_option( 'mpq_settings_'.$flag);
+		$flags[$flag]['value'] = get_option( 'quizu_settings_'.$flag);
 	}
 
 	foreach ($master_config_list['texts_list'] as $text => $value)
 	{
-		$texts[$text] = get_option('mpq_settings_texts_'.$text);
+		$texts[$text] = get_option('quizu_settings_texts_'.$text);
 	}
 
 	foreach ($master_config_list['email_sender_list'] as $email => $value)
 	{
-		$emails[$email] = get_option('mpq_settings_email_'.$email);
+		$emails[$email] = get_option('quizu_settings_email_'.$email);
 	}
 
  ?>
 
-<div id="mpq_settings" class="mpq_admin_screen">
+<div id="quizu_settings" class="quizu_admin_screen">
 
 	<h1><?php esc_html_e('QuizU settings', 'quizuint') ?></h1>
 
@@ -151,9 +151,9 @@
 
 					<p class="label"><?php esc_html_e($value['label'], 'quizuint') ?></p>
 
-					<label class="switch" labelfor="<?php echo '#mpq_flags_'.$flag ?>">
+					<label class="switch" labelfor="<?php echo '#quizu_flags_'.$flag ?>">
 						<div>
-						 	<input id="<?php echo 'mpq_flags_'.$flag ?>" type="checkbox" value="true" name="mpq_settings[flags][<?php echo $flag ?>]" <?php echo $flags[$flag]['value'] == 'true' ? 'checked' : '' ; ?>>
+						 	<input id="<?php echo 'quizu_flags_'.$flag ?>" type="checkbox" value="true" name="quizu_settings[flags][<?php echo $flag ?>]" <?php echo $flags[$flag]['value'] == 'true' ? 'checked' : '' ; ?>>
 						 	<div class="slider round"></div>
 						</div>
 					</label>
@@ -164,11 +164,11 @@
 
 			<div class="option">
 
-				<label labelfor="#mpq_default_color">
+				<label labelfor="#quizu_default_color">
 					<?php esc_html_e('Default color for buttons and options', 'quizuint') ?>
 				</label>
 
-				<input id="mpq_default_color" type="text" class="mpq_color_picker" name="mpq_settings[default_color]" value="<?php echo !empty(get_option('mpq_settings_default_color')) ? esc_attr(get_option('mpq_settings_default_color')) : '' ; ?>" />
+				<input id="quizu_default_color" type="text" class="quizu_color_picker" name="quizu_settings[default_color]" value="<?php echo $default_color ?>" />
 
 			</div>
 
@@ -180,8 +180,8 @@
 
 
 					<?php foreach (get_editable_roles() as $role => $value): ?>
-						<label class="permission" labelfor="#mpq_permissions_<?php echo $role ?>">
-							<input id="mpq_permissions_<?php echo $role ?>" type="checkbox" name="mpq_settings[permissions][<?php echo $role ?>]" value="<?php echo $role ?>" <?php echo !empty($permissions) && array_key_exists($role, $permissions) ? 'checked': ''; ?>>
+						<label class="permission" labelfor="#quizu_permissions_<?php echo $role ?>">
+							<input id="quizu_permissions_<?php echo $role ?>" type="checkbox" name="quizu_settings[permissions][<?php echo $role ?>]" value="<?php echo $role ?>" <?php echo !empty($permissions) && array_key_exists($role, $permissions) ? 'checked': ''; ?>>
 							<?php echo $value['name'] ?>
 						</label>
 					<?php endforeach ?>
@@ -195,15 +195,15 @@
 				
 				<div class="option">
 					
-					<label labelfor="<?php echo '#mpq_permanent_'.$permanent ?>">
+					<label labelfor="<?php echo '#quizu_permanent_'.$permanent ?>">
 						<?php esc_html_e('Show this quiz in all', 'quizuint'); echo ' ' . $value_pe; ?>
 					</label>
 
-					<select id="<?php echo 'mpq_permanent_'.$permanent ?>" name="mpq_settings[permanent][<?php echo $permanent ?>]">
+					<select id="<?php echo 'quizu_permanent_'.$permanent ?>" name="quizu_settings[permanent][<?php echo $permanent ?>]">
 							
 							<option value="">---</option>
 
-						<?php $args = array( 'post_type' => 'mpq_quiz', 'numberposts' => -1); $postss = get_posts( $args );  ?>
+						<?php $args = array( 'post_type' => 'quizu_quiz', 'numberposts' => -1); $postss = get_posts( $args );  ?>
 						<?php foreach ($postss as $quiz => $value_qu): ?>
 
 							<option value="<?php echo esc_attr($value_qu->ID) ?>" <?php echo $permanents[$permanent] == $value_qu->ID ? 'selected' : '' ; ?>><?php echo esc_html($value_qu->post_title) ?></option>
@@ -235,7 +235,7 @@
 						<?php echo esc_html_e('Email sender', 'quizuint').' '.str_replace('_', ' ', $email) ?>
 					</label>
 
-					<textarea id="<?php echo 'email_sender_'.$email ?>" name="mpq_settings[email_sender][<?php echo $email ?>]"><?php echo $emails[$email]  ?></textarea>
+					<textarea id="<?php echo 'email_sender_'.$email ?>" name="quizu_settings[email_sender][<?php echo $email ?>]"><?php echo $emails[$email]  ?></textarea>
 
 				</div>
 
@@ -251,11 +251,11 @@
 				
 				<div class="option">
 
-					<label labelfor="<?php echo '#mpq_texts_'.$text ?>">
+					<label labelfor="<?php echo '#quizu_texts_'.$text ?>">
 						<?php esc_html_e('Text for '.$value['label'], 'quizuint') ?>
 					</label>
 
-					<textarea id="<?php echo 'mpq_texts_'.$text ?>" name="mpq_settings[texts][<?php echo $text ?>]"><?php echo $texts[$text] ?></textarea>
+					<textarea id="<?php echo 'quizu_texts_'.$text ?>" name="quizu_settings[texts][<?php echo $text ?>]"><?php echo $texts[$text] ?></textarea>
 
 				</div>
 
@@ -265,13 +265,13 @@
 
 		<button class="submit button button-primary"><?php esc_html_e('Save Changes', 'quizuint') ?></button>
 
-		<?php wp_nonce_field( 'mpq_settings_save', 'mpq_settings[nonce]'); ?>
+		<?php wp_nonce_field( 'quizu_settings_save', 'quizu_settings[nonce]'); ?>
 
 	</form>
 
 	<script type="text/javascript">
 		jQuery(document).ready(function(){
-			jQuery('.mpq_color_picker').wpColorPicker({});
+			jQuery('.quizu_color_picker').wpColorPicker({});
 		});
 	</script>
 

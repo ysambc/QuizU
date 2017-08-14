@@ -386,7 +386,7 @@
         margin-bottom: 0; }
         #quizu_questions li.option .essay:last-of-type:after {
           display: none; }
-    #quizu_questions li.option:first-of-type, #quizu_questions li.option.essay_option, #quizu_questions li.option.essay_option + .not_essay {
+    #quizu_questions li.option:first-of-type, #quizu_questions li.option.essay_option, #quizu_questions li.option.essay_option:first-of-type + .not_essay {
       border-top: 0; }
     @media screen and (min-width: 992px) {
       #quizu_questions li.option {

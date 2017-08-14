@@ -25,226 +25,226 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-7: sftp-config.json\n"
 "X-Poedit-SearchPathExcluded-8: to-do.txt\n"
 
-#: models/multipq_admin_ajax_model.php:33
+#: models/quizu_admin_ajax_model.php:33
 msgid "Branch "
 msgstr ""
 
-#: models/multipq_admin_ajax_model.php:41
+#: models/quizu_admin_ajax_model.php:41
 msgid "default branch"
 msgstr ""
 
-#: models/multipq_admin_ajax_model.php:75
+#: models/quizu_admin_ajax_model.php:75
 msgid "Result"
 msgstr ""
 
-#: models/multipq_admin_ajax_model.php:132
+#: models/quizu_admin_ajax_model.php:132
 msgid "Question"
 msgstr ""
 
-#: models/multipq_admin_ajax_model.php:136
-#: models/multipq_admin_ajax_model.php:325 multipq_setup.php:162
-#: multipq_setup.php:518 views/result.php:92
+#: models/quizu_admin_ajax_model.php:136
+#: models/quizu_admin_ajax_model.php:325 quizu_setup.php:162
+#: quizu_setup.php:518 views/result.php:92
 msgid "Option"
 msgstr ""
 
-#: models/multipq_admin_ajax_model.php:159
-#: models/multipq_admin_ajax_model.php:368
+#: models/quizu_admin_ajax_model.php:159
+#: models/quizu_admin_ajax_model.php:368
 msgid "Answer"
 msgstr ""
 
-#: multipq_setup.php:27
+#: quizu_setup.php:27
 msgid "Branched Quizes"
 msgstr ""
 
-#: multipq_setup.php:66
+#: quizu_setup.php:66
 msgid "QuizU Widget"
 msgstr ""
 
-#: multipq_setup.php:67
+#: quizu_setup.php:67
 msgid "Use to display your branched quizzes"
 msgstr ""
 
-#: multipq_setup.php:109
+#: quizu_setup.php:109
 msgid "Title:"
 msgstr ""
 
-#: multipq_setup.php:176
+#: quizu_setup.php:176
 msgid "Shortcode"
 msgstr ""
 
-#: multipq_setup.php:271
+#: quizu_setup.php:271
 msgid "Clone"
 msgstr ""
 
-#: multipq_setup.php:418
+#: quizu_setup.php:418
 msgid "Branched Quiz"
 msgstr ""
 
-#: multipq_setup.php:419
+#: quizu_setup.php:419
 msgid "QuizU Linked Quiz"
 msgstr ""
 
-#: multipq_setup.php:450
+#: quizu_setup.php:450
 msgid "Add New Branched Quiz"
 msgstr ""
 
-#: multipq_setup.php:451
+#: quizu_setup.php:451
 msgid "New Quiz"
 msgstr ""
 
-#: multipq_setup.php:459
+#: quizu_setup.php:459
 msgid "QuizU Settings"
 msgstr ""
 
-#: multipq_setup.php:460
+#: quizu_setup.php:460
 msgid "Settings"
 msgstr ""
 
-#: multipq_setup.php:519
+#: quizu_setup.php:519
 msgid "Essay op."
 msgstr ""
 
-#: multipq_setup.php:533
+#: quizu_setup.php:533
 msgid "Select or upload a picture"
 msgstr ""
 
-#: multipq_setup.php:534
+#: quizu_setup.php:534
 msgid "Use this picture"
 msgstr ""
 
-#: multipq_utils.php:189
+#: quizu_utils.php:189
 msgid "Enable social and email sharing?"
 msgstr ""
 
-#: multipq_utils.php:190
+#: quizu_utils.php:190
 msgid "Enable auto-save on quiz edit screens?"
 msgstr ""
 
-#: multipq_utils.php:191
+#: quizu_utils.php:191
 msgid "Enable quizzes only for logged in users?"
 msgstr ""
 
-#: multipq_utils.php:202
+#: quizu_utils.php:202
 msgid "Your results on {{quiz-title}}"
 msgstr ""
 
-#: multipq_utils.php:203
+#: quizu_utils.php:203
 msgid ""
 "Thank you for taking quiz {{quiz-title}}. Here are your results:&#13;&#13;"
 "{{result-title}}&#13;&#13;{{result-content}}"
 msgstr ""
 
-#: multipq_utils.php:207
+#: quizu_utils.php:207
 msgid "Reset"
 msgstr ""
 
-#: multipq_utils.php:207
+#: quizu_utils.php:207
 msgid "\"Reset quiz\" button"
 msgstr ""
 
-#: multipq_utils.php:208 views/shortcode.php:87
+#: quizu_utils.php:208 views/shortcode.php:87
 msgid "Next"
 msgstr ""
 
-#: multipq_utils.php:208
+#: quizu_utils.php:208
 msgid "\"Continue quiz\" button"
 msgstr ""
 
-#: multipq_utils.php:209
+#: quizu_utils.php:209
 msgid "Email result"
 msgstr ""
 
-#: multipq_utils.php:209
+#: quizu_utils.php:209
 msgid "\"1st email sharing\" button"
 msgstr ""
 
-#: multipq_utils.php:210
+#: quizu_utils.php:210
 msgid "Send email"
 msgstr ""
 
-#: multipq_utils.php:210
+#: quizu_utils.php:210
 msgid "\"2nd email sharing\" button"
 msgstr ""
 
-#: multipq_utils.php:211
+#: quizu_utils.php:211
 msgid "Hey! I just completed this quiz. Try it out!"
 msgstr ""
 
-#: multipq_utils.php:211
+#: quizu_utils.php:211
 msgid "\"sharing\" message"
 msgstr ""
 
-#: multipq_utils.php:212
+#: quizu_utils.php:212
 msgid "Your results have been sent to: {{user-email}}"
 msgstr ""
 
-#: multipq_utils.php:212
+#: quizu_utils.php:212
 msgid "\"email sent\" message"
 msgstr ""
 
-#: multipq_utils.php:213
+#: quizu_utils.php:213
 msgid "There was a problem. Please try again."
 msgstr ""
 
-#: multipq_utils.php:213
+#: quizu_utils.php:213
 msgid "\"email was not sent\" error message"
 msgstr ""
 
-#: multipq_utils.php:214
+#: quizu_utils.php:214
 msgid "Your score is"
 msgstr ""
 
-#: multipq_utils.php:214
+#: quizu_utils.php:214
 msgid "total score message"
 msgstr ""
 
-#: multipq_utils.php:215
+#: quizu_utils.php:215
 msgid "Please enter an answer."
 msgstr ""
 
-#: multipq_utils.php:215
+#: quizu_utils.php:215
 msgid "\"missing essay answer\" error message"
 msgstr ""
 
-#: multipq_utils.php:216
+#: quizu_utils.php:216
 msgid "Please select an answer."
 msgstr ""
 
-#: multipq_utils.php:216
+#: quizu_utils.php:216
 msgid "\"missing multiple answers\" error message"
 msgstr ""
 
-#: multipq_utils.php:217
+#: quizu_utils.php:217
 msgid ""
 "There seems to be a problem with this quiz. If the problem persists after "
 "reloading, please contact support."
 msgstr ""
 
-#: multipq_utils.php:217
+#: quizu_utils.php:217
 msgid "\"quiz error\" message"
 msgstr ""
 
-#: multipq_utils.php:218
+#: quizu_utils.php:218
 msgid "This result's score overlaps with"
 msgstr ""
 
-#: multipq_utils.php:218
+#: quizu_utils.php:218
 msgid "\"overlapping score\" error message"
 msgstr ""
 
-#: multipq_utils.php:219
+#: quizu_utils.php:219
 msgid "Minimal score must be smaller than or equal to maximum score"
 msgstr ""
 
-#: multipq_utils.php:219
+#: quizu_utils.php:219
 msgid "\"minimal score must be greater\" error message"
 msgstr ""
 
-#: multipq_utils.php:220
+#: quizu_utils.php:220
 msgid "Please enter numbers only"
 msgstr ""
 
-#: multipq_utils.php:220
+#: quizu_utils.php:220
 msgid "\"score is not a number\" error message"
 msgstr ""
 

@@ -2,23 +2,26 @@
 
 <?php 
 
-	$aggregated = multipq_aggregate_qr($mpq);
+	$aggregated = quizu_aggregate_qr($quizu);
 
-	$mpq_result_criteria_flag = get_post_meta($mpq->mpq_id, '_mpq_result_criteria_flag', true);
+
+	$result_criteria_flag = get_post_meta($quizu->quizu_id, '_quizu_result_criteria_flag', true);
+	$result_criteria_class = !empty($result_criteria_flag) && $result_criteria_flag != 'results_by_path' ? 'results_by_score' : '';
+	$is_result_flag = $questionb['result'] == 'true' ? 'true': 'false';
 
  ?>
 
 
 <li class="option parent <?php echo $option['id'] == 'essay' ? 'essay_option' : 'not_essay' ?>" data-path="<?php echo esc_attr($path_id) ?>" data-question="<?php echo esc_attr($question_id) ?>" data-option="<?php echo esc_attr($option_id); ?>">
 	
-	<input class="option_id" type="hidden" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option_id) ?>][id]" value="<?php echo esc_attr($option['id']) ?>">
+	<input class="option_id" type="hidden" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option_id) ?>][id]" value="<?php echo esc_attr($option['id']) ?>">
 
-	<input class="option title" type="text" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][value]" value="<?php echo esc_attr($option['value']) ?>">
+	<input class="option title" type="text" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][value]" value="<?php echo esc_attr($option['value']) ?>">
 
 	<div class="score_container <?php echo $option['id'] == 'essay' ? 'hidden' : '' ?>">
 		<label>
 			<?php esc_html_e('Score', 'quizuint') ?>
-			<input class="score" type="text" placeholder="0/100" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][score]" value="<?php echo !empty($option['score']) ? esc_attr($option['score']) : 0; ?>">
+			<input class="score" type="text" placeholder="0/100" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][score]" value="<?php echo !empty($option['score']) ? esc_attr($option['score']) : 0; ?>">
 		</label>
 	</div>
 	
@@ -31,16 +34,16 @@
 			</button>
 		<?php endif ?>
 
-		<select class="link main <?php echo $mpq_result_criteria_flag != 'results_by_path' && !empty($mpq_result_criteria_flag) ? 'results_by_score' : '' ?>" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][link]">
+		<select class="link main <?php echo $result_criteria_class ?>" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][link]">
 			<option value=""><?php esc_html_e( 'Next Question', 'quizuint' ); ?></option>
 			
 			<?php foreach ($aggregated as $questionb) : /* Reversed for display*/?>
 				<?php if ($option['link']['linkid'] == $questionb['id'] && $option['link']['linkid'] !== ''): ?>
-					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" <?php echo (!empty($questionb['result']) && $questionb['result'] == 'true' ? 'data-result="true"': 'data-result="false"'); ?> selected value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $is_result_flag; ?>" selected value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 				<?php elseif($question['id'] == $questionb['id']): ?>
-					<option class="hidden" data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" <?php echo (!empty($questionb['result']) && $questionb['result'] == 'true' ? 'data-result="true"': 'data-result="false"'); ?> value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+					<option class="hidden" data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $is_result_flag; ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 				<?php elseif($question['id'] !== $questionb['id']): ?>
-					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" <?php echo (!empty($questionb['result']) && $questionb['result'] == 'true' ? 'data-result="true"': 'data-result="false"'); ?> value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $is_result_flag; ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 				<?php endif; ?>
 			<?php endforeach; ?>
 
@@ -69,8 +72,8 @@
 				<i class="fa fa-remove"></i>
 			</button>
 
-			<input class="image_id option_image_id" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][img][id]" type="hidden" value="<?php echo esc_attr($option['img']['id']) ?>" />
-			<input class="image_url option_image_url" name="mpq_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][img][url]" type="hidden" value="<?php echo esc_attr($option['img']['url']) ?>" />
+			<input class="image_id option_image_id" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][img][id]" type="hidden" value="<?php echo esc_attr($option['img']['id']) ?>" />
+			<input class="image_url option_image_url" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][img][url]" type="hidden" value="<?php echo esc_attr($option['img']['url']) ?>" />
 			<input class="option_image_flag" type="hidden" name="option_image_<?php echo esc_attr($question['id']) . '_' . esc_attr($option['id']) ?>_manual_save_flag" value="true" />
 
 	</div>
@@ -88,7 +91,7 @@
 		</button>
 
 		<div class="essay_options">
-			<?php foreach ($option['essay'] as $essay => $value_es): ?>
+			<?php foreach ($option['essay_ops'] as $essay => $value_es): ?>
 				<?php include( plugin_dir_path( __DIR__ ) . 'views/essay.php'); ?>
 			<?php endforeach ?>
 		</div>
