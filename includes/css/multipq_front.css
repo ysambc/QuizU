@@ -1,0 +1,156 @@
+.no-margin {
+  margin: 0 !important; }
+
+.widget.widget_quizu_widget {
+  margin-top: 103.552px;
+  margin-bottom: 103.552px; }
+
+.quizu_widget {
+  position: relative; }
+  .quizu_widget button:focus {
+    box-shadow: none;
+    outline: none; }
+  .quizu_widget *:not(.fa-spinner) {
+    visibility: hidden; }
+  .quizu_widget .fa-spinner {
+    position: absolute;
+    font-size: 1em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+  .quizu_widget .quiz {
+    text-align: center;
+    padding: 0 !important;
+    margin-bottom: 51.776px; }
+  .quizu_widget .content {
+    margin-bottom: 51.776px; }
+  .quizu_widget .score {
+    margin-bottom: 25.888px; }
+  .quizu_widget .option_score:last-of-type {
+    margin-bottom: 51.776px; }
+  .quizu_widget .question {
+    margin-bottom: 25.888px;
+    font-weight: bold;
+    font-size: 1em; }
+  .quizu_widget .open_answer {
+    margin-bottom: 51.776px; }
+  .quizu_widget .option_next {
+    position: relative;
+    margin-bottom: 25.888px;
+    cursor: hand;
+    cursor: pointer; }
+    .quizu_widget .option_next p {
+      color: white;
+      padding-left: 12.944px;
+      padding-right: 45px;
+      padding-top: 1.618px;
+      padding-bottom: 1.618px;
+      border-radius: 25.888px;
+      transition: 0.5s; }
+    .quizu_widget .option_next .option_image {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      height: 38.832px !important;
+      width: 38.832px !important; }
+    .quizu_widget .option_next.checked p {
+      background-color: white;
+      font-weight: bold; }
+  .quizu_widget .result_image {
+    margin-bottom: 25.888px; }
+  .quizu_widget .result {
+    margin-bottom: 51.776px; }
+  .quizu_widget .reset, .quizu_widget .next {
+    border-radius: 25.888px;
+    position: relative;
+    color: white;
+    padding-right: 25.888px;
+    padding-left: 25.888px;
+    padding-top: 4.31467px;
+    padding-bottom: 4.31467px;
+    margin-bottom: 25.888px;
+    border: 0;
+    right: -50%;
+    transform: translateX(-50%);
+    background-color: dimgray;
+    display: block; }
+  .quizu_widget .next {
+    display: none;
+    margin-bottom: 0; }
+  .quizu_widget .email.input, .quizu_widget .send.email, .quizu_widget .email.address {
+    position: relative;
+    background: 0;
+    color: dimgray;
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 8.62933px;
+    padding-bottom: 8.62933px;
+    margin-bottom: 25.888px;
+    text-align: center;
+    border: 0;
+    right: -50%;
+    transform: translateX(-50%);
+    display: block;
+    border-bottom: 2px solid dimgray;
+    font-size: 0.75em; }
+    .quizu_widget .email.input i, .quizu_widget .send.email i, .quizu_widget .email.address i {
+      display: inline-block;
+      position: relative;
+      left: 0;
+      right: 0; }
+  .quizu_widget .email.address {
+    border: 0;
+    padding: 12.944px; }
+  .quizu_widget .email.post {
+    width: 100%;
+    display: inline-block;
+    text-align: center; }
+  .quizu_widget .error.email {
+    padding-top: 25.888px;
+    padding-bottom: 25.888px; }
+  .quizu_widget .jssocials {
+    margin-bottom: 25.888px;
+    text-align: center; }
+    .quizu_widget .jssocials * {
+      color: white; }
+    .quizu_widget .jssocials .jssocials-shares:after {
+      content: '';
+      display: inline-block;
+      width: 100%; }
+    .quizu_widget .jssocials .jssocials-share {
+      text-align: center;
+      display: inline-block;
+      margin: 12.944px 4.31467px 12.944px 4.31467px; }
+      .quizu_widget .jssocials .jssocials-share i {
+        height: 1.5em;
+        width: 1.5em; }
+  .quizu_widget.rendered *:not(.fa-spinner) {
+    visibility: visible; }
+  .quizu_widget.rendered .fa-spinner {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+  .quizu_widget:not(.sidebar) {
+    max-width: 20em;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 51.776px;
+    padding-bottom: 51.776px;
+    margin-bottom: 77.664px;
+    margin-top: 77.664px;
+    padding-left: 25.888px;
+    padding-right: 25.888px;
+    border-radius: 15px; }
+    .quizu_widget:not(.sidebar) .option_next p {
+      padding-left: 12.944px !important;
+      padding-right: 45px !important;
+      padding-top: 1.618px !important;
+      padding-bottom: 1.618px !important; }
+    .quizu_widget:not(.sidebar) .option_image {
+      padding: 0; }
+  .quizu_widget.multiple_choice:not(.essay_type) .next {
+    display: inline-block; }
