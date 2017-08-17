@@ -23,18 +23,11 @@
 			}
 		}
 
-
-		if (isset($stripedvars['flags'])) 
-		{
-			foreach ($stripedvars['flags'] as $flag => $value) {
-				if ( $value == 'true') {
-					$stripedvars['flags'][$flag] =  'true';
-				}else{
-					$stripedvars['flags'][$flag] = 'false';
-				}
+		foreach ($master_config_list['flag_list'] as $flag => $value) {
+			if ($stripedvars['flags'][$flag] != 'true') {
+				$stripedvars['flags'][$flag] =  'false';
 			}
 		}
-
 
 		if (isset($stripedvars['email_sender'])) 
 		{
@@ -219,7 +212,7 @@
 		</div>
 
 		<div class="tag_notice">
-			<p><?php esc_html_e('You may use these tags in all "text-areas" beyond this point (except email sender&#8217;s name and address). Leave "text-areas" blank to return to default:', 'quizuint') ?></p>
+			<p><?php esc_html_e('You may use these tags in all "text-areas" beyond this point (Except for email sender&#8217;s name and address, and buttons). Use results related tags only in "text-areas" that show up after quiz completion. Leave "text-areas" blank to return to default:', 'quizuint') ?></p>
 			<p>{{quiz-title}} &ensp;&ensp;<span>||</span>&ensp;&ensp; {{result-title}} &ensp;&ensp;<span>||</span>&ensp;&ensp; {{result-content}} &ensp;&ensp;<span>||</span>&ensp;&ensp; {{user-email}} &ensp;&ensp;<span>||</span>&ensp;&ensp; {{admin-email}} &ensp;&ensp;<span>||</span>&ensp;&ensp; {{site-url}}</p>
 		</div>
 

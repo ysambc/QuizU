@@ -21,7 +21,7 @@ jQuery(document).ready( function($) {
     
     command = controller.attr('data-command');
     path = controller.closest('.parent').attr('data-path');
-    parent = controller.closest('.parent').attr('data-question');
+    quparent = controller.closest('.parent').attr('data-question');
     option = controller.closest('.parent').attr('data-option');
     color = controller.closest('.parent').find('.color_picker').val();/*Get question's title*/
     title = controller.closest('.parent').find('.title').val();/*Get question's title*/
@@ -120,7 +120,7 @@ jQuery(document).ready( function($) {
         prefix = 'option';
       }
       
-      formData.append('parent', parent);
+      formData.append('parent', quparent);
       formData.append('flag', flag);
       formData.append('action', 'quizu_admin_ajax');
       formData.append('_ajax_nonce', quizu_nonce);
@@ -169,14 +169,16 @@ jQuery(document).ready( function($) {
 
   // WP-ADMIN NEW QUESTION------------------------------------------------------------------------------------------------------------------
 
-  var toggleControllersSelector = 'button, input:not([type="hidden"])';
+  var toggleControllersSelector = 'button, input:not([type="hidden"]), #publish';
   
   var disableControllers = function(){
-    $('#quizu_questions').find(toggleControllersSelector).attr('disabled', true);
+    $(toggleControllersSelector).attr('disabled', true);
+    $('#quizu_questions .wp-color-result').hide();
   }
 
   var enableControllers = function(){
-    $('#quizu_questions').find(toggleControllersSelector).removeAttr('disabled');
+    $(toggleControllersSelector).removeAttr('disabled');
+    $('#quizu_questions .wp-color-result').show();
   }
 
   // CONTROLLER COMMANDS------------------------------------------------------------------------------------------------------------------
@@ -317,7 +319,7 @@ jQuery(document).ready( function($) {
           $(this).html(title.substring(0, 2) + title.slice(-1) + pathTit.substring(pathTit.indexOf(':')));
         };
 
-        if (command == 'update_question' && $(this).val() != '' && $(this).attr('data-linkid') == parent) {
+        if (command == 'update_question' && $(this).val() != '' && $(this).attr('data-linkid') == quparent) {
           /*Update select option list*/
           optionTit = $(this).html();
           $(this).html(optionTit.substring(0, optionTit.indexOf(':')+1) + ' ' + title);
@@ -325,7 +327,7 @@ jQuery(document).ready( function($) {
 
         if (command == 'update_result') {
           $('#quizu_questions').find('select.link option').each(function(){/*Update select boxes*/
-            if ($(this).attr('data-linkid') == parent && $(this).val() != '' ) {
+            if ($(this).attr('data-linkid') == quparent && $(this).val() != '' ) {
               $(this).html('Res: ' + title);
             };
           });
@@ -370,9 +372,9 @@ jQuery(document).ready( function($) {
   var quizuControllerProcessing = function(control){/*This function handles all SAVE and DELETE operations*/
     
     if (control.type == 'click') {
-      controller = $(this);/*Define this as controller for use in post-ajax functions*/
+      controller = $(this);
     }else{
-      controller = control;
+      controller = typeof control !== 'undefined' ? control : $(this);
     };
 
     getVariables(controller);
@@ -387,7 +389,7 @@ jQuery(document).ready( function($) {
           rangeMin = $(this).find('.range.min').val();
           rangeMax = $(this).find('.range.max').val();
 
-          if (parent != $(this).attr('data-question') && scoreMin + scoreMax != 0 && rangeMin + rangeMax != 0) {
+          if (quparent != $(this).attr('data-question') && scoreMin + scoreMax != 0 && rangeMin + rangeMax != 0) {
             if (Math.max(scoreMin, rangeMin) <= Math.min(scoreMax, rangeMax)) {
               alert(quizuObj.overlap + ' ' +$(this).find('.title.result').val());
               command = 'abort';
@@ -438,31 +440,34 @@ jQuery(document).ready( function($) {
       quizuControllerProcessingComplete();
     }else{
 
+      console.log(quparent);
+      console.log(option);
+
       $.ajax({/*Perform ajax requests*/
 
         url:   ajaxurl,
         data: {
-        action : 'quizu_admin_ajax', 
-        _ajax_nonce : quizu_nonce, 
-        quizu_id : quizuId, 
-        command : command, 
-        parent : parent, 
-        option : option, 
-        option_img : optionImg, 
-        path: path, 
-        title: title, 
-        content: content, 
-        highest: highest, 
-        options: options, 
-        color : color, 
-        flag : flag,
-        flags : {
-          essay_flag : essayFlag,
-          multiple_flag : multipleFlag
-        },
-        score_min : scoreMin,
-        score_max : scoreMax,
-        non_save_item_count : nonSaveItemCount,
+          action : 'quizu_admin_ajax', 
+          _ajax_nonce : quizu_nonce,
+          quizu_id : quizuId,
+          command : command,
+          parent : quparent,
+          option : option,
+          option_img : optionImg, 
+          path: path, 
+          title: title, 
+          content: content, 
+          highest: highest, 
+          options: options, 
+          color : color, 
+          flag : flag,
+          flags : {
+            essay_flag : essayFlag,
+            multiple_flag : multipleFlag
+          },
+          score_min : scoreMin,
+          score_max : scoreMax,
+          non_save_item_count : nonSaveItemCount,
         },
         type: 'POST',
         dataType: 'html',
@@ -482,7 +487,10 @@ jQuery(document).ready( function($) {
 
   }
 
-  $('#quizu_questions').on('click','.controller:not(.flag)', quizuControllerProcessing);
+  $('#quizu_questions').on('click','.controller:not(.flag)', function(event){
+    event.preventDefault();
+    quizuControllerProcessing($(this));
+  });
 
   // WP-ADMIN SORT QUESTIONS------------------------------------------------------------------------------------------------------------------
   
@@ -544,9 +552,11 @@ jQuery(document).ready( function($) {
 
   // WP-ADMIN SORT QUESTIONS------------------------------------------------------------------------------------------------------------------
   
-  var imageUpload = function(control){
+  var imageUpload = function(control, event){
 
-    event.preventDefault();
+    if (typeof event !== 'undefined') {
+      event.preventDefault();
+    };
 
     controller = control;
 
@@ -583,8 +593,7 @@ jQuery(document).ready( function($) {
       /*Create new inputs*/
 
       imgIdInput.val(attachment.id);
-
-      console.log(imgIdInput.val());
+      imgUrlInput.val(attachment.url);
 
       getVariables(controller, attachment);
 
@@ -621,17 +630,17 @@ jQuery(document).ready( function($) {
   makesort = function(){/*Make questions sorting possible*/
     connected = false;
     $('#quizu_questions .questions').sortable({
-      connectWith: ".path .questions.container",
+      // connectWith: ".path .questions.container",
       handle: ".sort_handle",
       receive: function( event, ui ){
 
-        new_path = ui.item.closest('.path.parent').attr('data-path');/*Get receiving parent path*/
-        prev_path = ui.sender.attr('data-path');/*Get previous parent path*/
+        new_path = ui.item.closest('.path.parent').attr('data-path');/*Get receiving quparent path*/
+        prev_path = ui.sender.attr('data-path');/*Get previous quparent path*/
 
         prev_quest = ui.item.attr('data-id');/*Get previous question ID*/
 
         pathDad = ui.item.closest('.parent.path');
-        pathTit = pathDad.find('> wraper > .title.path').val();/*Get parent path title*/
+        pathTit = pathDad.find('> wraper > .title.path').val();/*Get quparent path title*/
 
         ui.item.find('input').each(function(){
 
@@ -662,20 +671,20 @@ jQuery(document).ready( function($) {
 
        toSend = {action : 'quizu_admin_ajax', _ajax_nonce : quizu_nonce, quizu_id : quizuId, command : command, new_order : new_order};
 
-       if (connected == true) {/*Check if sorting in self list, or sorting to other list*/
-         connectedToSend = {/*Define ajax variables*/
-           'prev_quest' : prev_quest, 
-           'new_path' : new_path, 
-           'prev_path' : prev_path,
-           connected : connected
-         };
-         Object.keys(connectedToSend).forEach(function(item){
-           toSend[item] = connectedToSend[item];
-         });
-       }else{
-         new_path = ui.item.closest('.parent').attr('data-path');
-         toSend['new_path'] = new_path;
-       };
+       // if (connected == true) {/*Check if sorting in self list, or sorting to other list*/
+       //   connectedToSend = {/*Define ajax variables*/
+       //     'prev_quest' : prev_quest, 
+       //     'new_path' : new_path, 
+       //     'prev_path' : prev_path,
+       //     connected : connected
+       //   };
+       //   Object.keys(connectedToSend).forEach(function(item){
+       //     toSend[item] = connectedToSend[item];
+       //   });
+       // }else{
+       //   new_path = ui.item.closest('.parent').attr('data-path');
+       //   toSend['new_path'] = new_path;
+       // };
 
        ui.item.attr('data-path', new_path);/*Update new path on item*/
 
@@ -831,7 +840,7 @@ jQuery(document).ready( function($) {
 
   // OPTION / RESULT IMAGE UPLOAD / DELETE
 
-  $('#quizu_questions').on('click', '.image.upload', function(){
-    imageUpload($(this));
+  $('#quizu_questions').on('click', '.image.upload', function(event){
+    imageUpload($(this), event);
   });
 });

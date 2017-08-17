@@ -150,6 +150,8 @@ function quizu_run_string_template($string, $linked_quiz = NULL)
   (   /*Some templates are replaced in the frontend (email)*/
       '{{admin-email}}' => !empty(get_option('quizu_settings_email_address')) ? get_option('quizu_settings_email_address') : get_bloginfo('admin_email'),
       '{{quiz-title}}' => get_the_title($linked_quiz),
+      // '{{result-title}}' => !empty($result) ? $result['title'] :,
+      // '{{result-content}}' =>  !empty($result) ? $result['content'] :,
       '{{site-url}}' => get_bloginfo('url')
   );
 
@@ -243,31 +245,29 @@ function quizu_caps_updates(){
 
     if ($role_is_capable) {
 
-      $cap->add_cap( 'quizu_edit_quizzes' );
-      $cap->add_cap( 'read_quizu' );
-      $cap->add_cap( 'read_quizus' );
-      $cap->add_cap( 'edit_quizu' );
-      $cap->add_cap( 'edit_quizus' );
-      $cap->add_cap( 'delete_quizu' );
-      $cap->add_cap( 'edit_published_quizus' );
-      $cap->add_cap( 'delete_published_quizus' );
-      $cap->add_cap( 'edit_others_quizus' );
-      $cap->add_cap( 'publish_quizus' );
-      $cap->add_cap( 'read_private_quizus' );
+      $cap->add_cap('quizu_edit_quizzes');
+      $cap->add_cap('edit_quizu');
+      $cap->add_cap('edit_quizus');
+      $cap->add_cap('delete_quizu');
+      $cap->add_cap('delete_quizus');
+      $cap->add_cap('edit_published_quizus');
+      $cap->add_cap('delete_published_quizus');
+      $cap->add_cap('edit_others_quizus');
+      $cap->add_cap('delete_others_quizus');
+      $cap->add_cap('publish_quizus');
 
     }else{
 
-      $cap->remove_cap( 'quizu_edit_quizzes' );
-      $cap->remove_cap( 'read_quizu' );
-      $cap->remove_cap( 'read_quizus' );
-      $cap->remove_cap( 'edit_quizu' );
-      $cap->remove_cap( 'edit_quizus' );
-      $cap->remove_cap( 'delete_quizu' );
-      $cap->remove_cap( 'edit_published_quizus' );
-      $cap->remove_cap( 'delete_published_quizus' );
-      $cap->remove_cap( 'edit_others_quizus' );
-      $cap->remove_cap( 'publish_quizus' );
-      $cap->remove_cap( 'read_private_quizus' );
+      $cap->remove_cap('quizu_edit_quizzes');
+      $cap->remove_cap('edit_quizu');
+      $cap->remove_cap('edit_quizus');
+      $cap->remove_cap('delete_quizu');
+      $cap->remove_cap('delete_quizus');
+      $cap->remove_cap('edit_published_quizus');
+      $cap->remove_cap('delete_published_quizus');
+      $cap->remove_cap('edit_others_quizus');
+      $cap->remove_cap('delete_others_quizus');
+      $cap->remove_cap('publish_quizus');
     
     }
   }

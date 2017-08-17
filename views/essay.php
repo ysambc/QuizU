@@ -21,7 +21,7 @@
 		
 		<?php foreach ($aggregated as $questionb) : /* Reversed for display*/?>
 			<?php if ($value_es['link']['linkid'] == $questionb['id'] && $value_es['link']['linkid'] !== ''): ?>
-				<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" <?php echo ($questionb['result'] == 'true' ? 'data-result="true"': 'data-result="false"'); ?> selected value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+				<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo ($questionb['result'] == 'true' ? 'true': 'false'); ?>" selected value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 			<?php elseif($question['id'] == $questionb['id']): ?>
 				<option class="hidden" data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo ($questionb['result'] == 'true' ? 'true': 'false'); ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 			<?php elseif($question['id'] !== $questionb['id']): ?>

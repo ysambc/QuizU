@@ -240,11 +240,11 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 	}
 	
 	public function update_quiz_tc($quizu_id, $title, $content){/*Update existing result from admin panel input*/
-		echo 'here';
 		$postarr = array(
 			'ID' => $quizu_id,
 			'post_title' => $title,
 			'post_content' => quizu_wp_kses($content),
+			'post_type' => 'quizu_quiz',
 		);
 
 		wp_update_post( $postarr);

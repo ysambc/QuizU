@@ -4,7 +4,7 @@
 **Tags:** quiz, quizzes, branched, chained, path
 **Requires at least:** 3.3
 **Tested up to:** 4.8.1
-**Stable tag:** 1.0.0
+**Stable tag:** 1.1.0
 
 Create quizzes with multiple "branches" or "paths" taking your users to different results.
 
@@ -20,64 +20,64 @@ Branches or paths, coupled with different question types, provide QuizU with lot
 
 *	**Shortcodes, widgets and global quizzes**
 
-	QuizU's widget rests in your sidebar and shows up when it detects a quiz linked to the current post. Aditionally, every quiz has its own shortcode to copy and paste into the content of any page or post.
+QuizU's widget rests in your sidebar and shows up when it detects a quiz linked to the current post. Aditionally, every quiz has its own shortcode to copy and paste into the content of any page or post.
 
-	If you want a more global solution, you can also select a quiz to be displayed in all posts or pages.
+If you want a more global solution, you can also select a quiz to be displayed in all posts or pages.
 
 
 *	**Link each answer to a different question or result**
 
-	Each answer can be linked to a question of your choice, to a specific result, or to the calculation of the final scores. If no answer is linked, the next question in the same branch, or in the next one will be selected. If QuizU does not find a next answer, and the current answer is not liknked to a result, the first result created will be displayed.
-
-
-*	**Score based results**
-
-	Assign positive or negative scores for each answer. The sum of all scores at the end will determine the correct result according to the total score, or the highest scoring option (ie. A, B, C, D, etc).
-
-
-*	**Control the words displayed**.
-
-	Type in the exact phrases your users will see while progressing through your quiz.
-
-
-*	**Color code your branches**
-
-	Choose a default color to theme your quizzes, and specific colors for each branch.
-
-
-*	**Manage permissions**
-
-	Choose who can edit, and who can take your quizzes.
-
-
-*	**Social networks and email sharing**.
-
-	Let your users share your quizzes through their preferred channels. Supports e-mail, Facebook, Google +, Twitter and Whatsapp.
+Each answer can be linked to a question of your choice, to a specific result, or to the calculation of the final scores. If no answer is linked, the next question in the same branch, or in the next one will be selected. If QuizU does not find a next answer, and the current answer is not liknked to a result, the first result created will be displayed.
 
 
 *	**Single choice, multiple choice, and essay-type questions**.
 
-	Decide the score or path that each answer will lead to for all question types. You can create an unlimited set of correct or incorrect answers for essay-type questions.
+Decide the score or path that each answer will lead to for all question types. You can create an unlimited set of correct or incorrect answers for essay-type questions.
+
+
+*	**Score based results**
+
+Assign positive or negative scores for each answer. The sum of all scores at the end will determine the correct result according to the total score, or the highest scoring option (ie. A, B, C, D, etc).
+
+
+*	**Control the words displayed**.
+
+Customize the phrases your users will see while progressing through your quiz.
+
+
+*	**Color code your branches**
+
+Choose a default color to theme your quizzes, and specific colors for each branch.
+
+
+*	**Manage permissions**
+
+Choose who can edit, and who can take your quizzes.
+
+
+*	**Social networks and email sharing**.
+
+Let your users share your quizzes through their preferred channels. Supports e-mail, Facebook, Google +, Twitter and Whatsapp.
 
 
 *	**Thumbnail hint for each option**.
 
-	Setup a “hint” image to be displayed next to each option.
+Setup a “hint” image to be displayed next to each option.
 
 
 *	**Drag & drop question sorting**
 
-	Reorder questions by clicking and holding the “X” icon at their top right corner.
+Reorder questions by clicking and holding the “X” icon at their top right corner.
 
 
 *	**Real time editing and autosave (optional)**
 
-	No page reloading. No information loss. You can choose to save every change instantly, or to save everything at the end with a single click.
+No page reloading. No information loss. You can choose to save every change instantly, or to save everything at the end with a single click.
 
 
 *	**Quiz preview**.
 
-	Experience your quiz the way your users would, before publishing it. If autosave has been disabled, you will need to save your quiz before previewing it.
+Experience your quiz the way your users would; before publishing it. If autosave has been disabled, you will need to save your quiz before previewing it.
 
 
 == Installation ==
@@ -104,15 +104,15 @@ You may choose to have the final scores listed for your users once they complete
 
 *	**Branched**
 
-	You determine exactly which question will lead to which result.
+You determine exactly which question will lead to which result.
 
 *	**Total Score**
 
-	Results are displayed according to the sum of the final scores awarded to the user.
+Results are displayed according to the sum of the final scores awarded to the user.
 
 *	**Highest scoring option**
 
-	The score of each “option index” (ie. A, B, C, D, etc) is summed separately, and the winning "index" is calculated.
+The score of each “option index” (ie. A, B, C, D, etc) is summed separately, and the winning "index" is calculated.
 
 
 == Types of Questions ==
@@ -122,18 +122,18 @@ Each of the questions’ answers may award a positive or negative score. Essay-t
 
 *	**Single Choice**
 
-	The chosen answer will determine the “branch” the user will follow.
+The chosen answer will determine the “branch” the user will follow.
 
 
 *	**Multiple Choice**
 
-	The scores of all chosen answers will be summed with the total. Only the linked question or result of the first option will be used. 
+The scores of all chosen answers will be summed with the total. Only the linked question or result of the first option will be used. 
 
 
 *	**Essay-Type**
 
 
-	Open answers with an infinite number of possible correct (or penalty) answers. The score of the typed answer will only be summed if it matches an item in the set of answers. This type of question has two types of link. The "main" one, for the question itself, and another one for each answer. If no matching answer is provided or the matched answer is not linked, the main link will be used.
+Open answers with an infinite number of possible correct (or penalty) answers. The score of the typed answer will only be summed if it matches an item in the set of answers. This type of question has two types of link. The "main" one, for the question itself, and another one for each answer. If no matching answer is provided or the matched answer is not linked, the main link will be used.
 
 
 == Frequently Asked Questions ==
@@ -155,12 +155,20 @@ None so far. Please use the forum.
 
 *	First stable version
 
+= 1.1.0 =
+
+*	Minor bug fixes
+
 
 == Upgrade Notice ==
 
 = 1.0 =
 
 *	This is the first stable version
+
+= 1.1.0 =
+
+*	A number of bugs have been corrected. Upgrade your plugin version to avoid conflicts/loss of data.
 
 
 == Translations ==
@@ -175,4 +183,5 @@ Thanks to:
 
 *	WordPress
 *	jQuery
+*	JsSocials
 *	FontAwesome

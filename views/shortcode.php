@@ -84,7 +84,7 @@ if ((get_post_status($linked_quiz) == 'publish' || is_preview()) && !$login_rest
 			<?php endforeach ?>
 		<?php endif; ?>
 
-		<button class="next" style="background-color:<?php echo esc_attr($current_color) ?>;" data-nonce="<?php echo esc_attr(wp_create_nonce( 'next' )); ?>" data-path="<?php echo esc_attr($quizu->path) ?>" data-current="<?php echo !empty($question) ? esc_attr($question['id']) : '' ?>" data-command="next" data-path="<?php echo esc_attr($quizu->path) ?>" data-quizu="<?php echo esc_attr($quizu->quizu_id) ?>"><?php esc_html_e('Next', 'quizuint') ?></button>
+		<button class="next" style="background-color:<?php echo esc_attr($current_color) ?>;" data-nonce="<?php echo esc_attr(wp_create_nonce( 'next' )); ?>" data-path="<?php echo esc_attr($quizu->path) ?>" data-current="<?php echo !empty($question) ? esc_attr($question['id']) : '' ?>" data-command="next" data-path="<?php echo esc_attr($quizu->path) ?>" data-quizu="<?php echo esc_attr($quizu->quizu_id) ?>"><?php echo quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_next'), 'quizuint')) ?></button>
 
 	</div>
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: quizuint\n"
-"POT-Creation-Date: 2017-08-02 12:33-0500\n"
-"PO-Revision-Date: 2017-08-02 12:33-0500\n"
+"POT-Creation-Date: 2017-08-17 17:24-0500\n"
+"PO-Revision-Date: 2017-08-17 17:24-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -12,16 +12,14 @@ msgstr ""
 "X-Generator: Poedit 2.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: esc_html__;esc_html_e;__;_e\n"
+"X-Poedit-KeywordsList: esc_html__;esc_html_e;esc_attr__;esc_attr_e;__;_e\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: controllers\n"
-"X-Poedit-SearchPath-1: models\n"
-"X-Poedit-SearchPath-2: views\n"
-"X-Poedit-SearchPath-3: assets/basic_email.php\n"
-"X-Poedit-SearchPath-4: quizu_init.php\n"
-"X-Poedit-SearchPath-5: quizu_setup.php\n"
-"X-Poedit-SearchPath-6: quizu_utils.php\n"
-"X-Poedit-SearchPath-7: uninstall.php\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: .sass-cache\n"
+"X-Poedit-SearchPathExcluded-1: assets\n"
+"X-Poedit-SearchPathExcluded-2: includes/css\n"
+"X-Poedit-SearchPathExcluded-3: includes/js\n"
+"X-Poedit-SearchPathExcluded-4: node_modules\n"
 
 #: models/quizu_admin_ajax_model.php:33
 msgid "Branch "
@@ -39,9 +37,8 @@ msgstr "Resultado"
 msgid "Question"
 msgstr "Pregunta"
 
-#: models/quizu_admin_ajax_model.php:136
-#: models/quizu_admin_ajax_model.php:325 quizu_setup.php:157
-#: quizu_setup.php:513 views/result.php:92
+#: models/quizu_admin_ajax_model.php:136 models/quizu_admin_ajax_model.php:326
+#: quizu_setup.php:159 quizu_setup.php:514 views/result.php:92
 msgid "Option"
 msgstr "Opción"
 
@@ -49,84 +46,95 @@ msgstr "Opción"
 msgid "Open Answer"
 msgstr "Respuesta Abierta"
 
-#: models/quizu_admin_ajax_model.php:159
-#: models/quizu_admin_ajax_model.php:368
+#: models/quizu_admin_ajax_model.php:159 models/quizu_admin_ajax_model.php:369
 msgid "Answer"
 msgstr "Respuesta"
 
-#: quizu_setup.php:27
+#: quizu_setup.php:28
 msgid "Branched Quizes"
 msgstr "Quizes Ramificados"
 
-#: quizu_setup.php:61
+#: quizu_setup.php:63
 msgid "QuizU Widget"
 msgstr "Widget QuizU"
 
-#: quizu_setup.php:62
+#: quizu_setup.php:64
 msgid "Use to display your branched quizzes"
 msgstr "Úsalo para mostrar tus quizes"
 
-#: quizu_setup.php:171
+#: quizu_setup.php:116
+msgid "Title:"
+msgstr "Titulo:"
+
+#: quizu_setup.php:173
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: quizu_setup.php:266
+#: quizu_setup.php:259
+msgid "Post creation failed, could not find original post"
+msgstr "La creación del post fallo, no se pudo encontrar el original"
+
+#: quizu_setup.php:268
 msgid "Clone"
 msgstr "Clonar"
 
-#: quizu_setup.php:413
+#: quizu_setup.php:415
 msgid "Branched Quiz"
 msgstr "Quiz Ramificado"
 
-#: quizu_setup.php:414
+#: quizu_setup.php:416
 msgid "QuizU Linked Quiz"
 msgstr "Quiz enlazado de QuizU"
 
-#: quizu_setup.php:445
+#: quizu_setup.php:436
+msgid "Branched Quizzes"
+msgstr "Quizes Ramificados"
+
+#: quizu_setup.php:447
 msgid "Add New Branched Quiz"
 msgstr "Añadir Nuevo QuizU"
 
-#: quizu_setup.php:446
+#: quizu_setup.php:448
 msgid "New Quiz"
 msgstr "Nuevo Quiz"
 
-#: quizu_setup.php:454
+#: quizu_setup.php:456
 msgid "QuizU Settings"
 msgstr "Configuración QuizU"
 
-#: quizu_setup.php:455
+#: quizu_setup.php:457
 msgid "Settings"
 msgstr "Configuración"
 
-#: quizu_setup.php:514
+#: quizu_setup.php:515
 msgid "Essay op."
 msgstr "Op. ensayo"
 
-#: quizu_setup.php:528
+#: quizu_setup.php:529
 msgid "Select or upload a picture"
 msgstr "Selecciona o sube una fota"
 
-#: quizu_setup.php:529
+#: quizu_setup.php:530
 msgid "Use this picture"
 msgstr "Usar esta foto"
 
-#: quizu_utils.php:189
+#: quizu_utils.php:191
 msgid "Enable social and email sharing?"
 msgstr "Activar compartir por email y redes sociales?"
 
-#: quizu_utils.php:190
+#: quizu_utils.php:192
 msgid "Enable auto-save on quiz edit screens?"
 msgstr "Activar guardado automático en las pantallas de edición de Quiz?"
 
-#: quizu_utils.php:191
+#: quizu_utils.php:193
 msgid "Enable quizzes only for logged in users?"
 msgstr "Solo para usuarios registrados?"
 
-#: quizu_utils.php:202
+#: quizu_utils.php:204
 msgid "Your results on {{quiz-title}}"
 msgstr "Tus resultados para {{quiz-title}}"
 
-#: quizu_utils.php:203
+#: quizu_utils.php:205
 msgid ""
 "Thank you for taking quiz {{quiz-title}}. Here are your results:&#13;&#13;"
 "{{result-title}}&#13;&#13;{{result-content}}"
@@ -134,87 +142,87 @@ msgstr ""
 "Gracias por tomar el quiz {{quiz-title}}. Estos son tus resultados:&#13;&#13;"
 "{{result-title}}&#13;&#13;{{result-content}}"
 
-#: quizu_utils.php:207
+#: quizu_utils.php:209
 msgid "Reset"
 msgstr "Reiniciar"
 
-#: quizu_utils.php:207
+#: quizu_utils.php:209
 msgid "\"Reset quiz\" button"
 msgstr "Boton \"reiniciar quiz\""
 
-#: quizu_utils.php:208 views/shortcode.php:87
+#: quizu_utils.php:210
 msgid "Next"
 msgstr "Siguiente"
 
-#: quizu_utils.php:208
+#: quizu_utils.php:210
 msgid "\"Continue quiz\" button"
 msgstr "Boton \"continuar quiz\""
 
-#: quizu_utils.php:209
+#: quizu_utils.php:211
 msgid "Email result"
 msgstr "Resultado por email"
 
-#: quizu_utils.php:209
+#: quizu_utils.php:211
 msgid "\"1st email sharing\" button"
 msgstr "Primer botón \"compartir por correo\""
 
-#: quizu_utils.php:210
+#: quizu_utils.php:212
 msgid "Send email"
 msgstr "Enviar correo"
 
-#: quizu_utils.php:210
+#: quizu_utils.php:212
 msgid "\"2nd email sharing\" button"
 msgstr "Segundo botón \"compartir por correo\""
 
-#: quizu_utils.php:211
+#: quizu_utils.php:213
 msgid "Hey! I just completed this quiz. Try it out!"
 msgstr "Hey! Acabo de completar este quiz. Intentalo!"
 
-#: quizu_utils.php:211
+#: quizu_utils.php:213
 msgid "\"sharing\" message"
 msgstr "mensaje de \"compartir\""
 
-#: quizu_utils.php:212
+#: quizu_utils.php:214
 msgid "Your results have been sent to: {{user-email}}"
 msgstr "Tus resultados han sido enviados a: {{user-email}}"
 
-#: quizu_utils.php:212
+#: quizu_utils.php:214
 msgid "\"email sent\" message"
 msgstr "mensaje de \"correo enviado\""
 
-#: quizu_utils.php:213
+#: quizu_utils.php:215
 msgid "There was a problem. Please try again."
 msgstr "Ocurrio un inconveniente. Por favor intenta nuevamente."
 
-#: quizu_utils.php:213
+#: quizu_utils.php:215
 msgid "\"email was not sent\" error message"
 msgstr "Mensaje de error para \"correo no enviado\""
 
-#: quizu_utils.php:214
+#: quizu_utils.php:216
 msgid "Your score is"
 msgstr "Tu puntaje es"
 
-#: quizu_utils.php:214
+#: quizu_utils.php:216
 msgid "total score message"
 msgstr "mensaje para puntaje total"
 
-#: quizu_utils.php:215
+#: quizu_utils.php:217
 msgid "Please enter an answer."
 msgstr "Por favor ingresa una respuesta."
 
-#: quizu_utils.php:215
+#: quizu_utils.php:217
 msgid "\"missing essay answer\" error message"
 msgstr "Mensaje de erro para \"respuesta ensayo faltante\""
 
-#: quizu_utils.php:216
+#: quizu_utils.php:218
 msgid "Please select an answer."
 msgstr "Por favor selecciona una respuesta."
 
-#: quizu_utils.php:216
+#: quizu_utils.php:218
 msgid "\"missing multiple answers\" error message"
 msgstr "Mensaje de error para \"respuestas de selección multiple faltantes\""
 
-#: quizu_utils.php:217
+#: quizu_utils.php:219
 msgid ""
 "There seems to be a problem with this quiz. If the problem persists after "
 "reloading, please contact support."
@@ -222,80 +230,80 @@ msgstr ""
 "Parece que hay un problema con este quiz. Si el problema persiste después de "
 "recargar la pagina, por favor contacta a soporte técnico."
 
-#: quizu_utils.php:217
+#: quizu_utils.php:219
 msgid "\"quiz error\" message"
 msgstr "Mensaje para \"error en el quiz\""
 
-#: quizu_utils.php:218
+#: quizu_utils.php:220
 msgid "This result's score overlaps with"
 msgstr "El puntaje de este resultado se cruza con"
 
-#: quizu_utils.php:218
+#: quizu_utils.php:220
 msgid "\"overlapping score\" error message"
 msgstr "Mensaje de error para \"puntaje entrecruzado\""
 
-#: quizu_utils.php:219
+#: quizu_utils.php:221
 msgid "Minimal score must be smaller than or equal to maximum score"
 msgstr "El puntaje mínimo debe ser menos o igual que el puntaje máximo"
 
-#: quizu_utils.php:219
+#: quizu_utils.php:221
 msgid "\"minimal score must be greater\" error message"
 msgstr "Mensaje de error para \"puntaje minimo\""
 
-#: quizu_utils.php:220
+#: quizu_utils.php:222
 msgid "Please enter numbers only"
 msgstr "Por favor ingrese únicamente números"
 
-#: quizu_utils.php:220
+#: quizu_utils.php:222
 msgid "\"score is not a number\" error message"
 msgstr "Mensaje de error para \"el puntaje no es un numero\""
 
-#: views/admin.php:15
+#: views/admin.php:20
 msgid "Show only for logged in users"
 msgstr "Solo para usuarios registrados"
 
-#: views/admin.php:23
+#: views/admin.php:28
 msgid "New Branch"
 msgstr "Nueva Rama"
 
-#: views/admin.php:39
+#: views/admin.php:44
 msgid "Determine quiz results by"
 msgstr "Determinar los resultados del quiz segun"
 
-#: views/admin.php:43
+#: views/admin.php:48
 msgid "Branch"
 msgstr "Rama"
 
-#: views/admin.php:44
+#: views/admin.php:49
 msgid "Score total"
 msgstr "Puntaje total"
 
-#: views/admin.php:45
+#: views/admin.php:50
 msgid "Highest option"
 msgstr "Opcion ganadora"
 
-#: views/admin.php:50
+#: views/admin.php:55
 msgid "Show scores after quiz is completed"
 msgstr "Mostrar puntajes despues de completar el quiz"
 
-#: views/admin.php:63
+#: views/admin.php:68
 msgid "New Result"
 msgstr "Nuevo Resultado"
 
-#: views/essay.php:8 views/option.php:20
+#: views/essay.php:14 views/option.php:22
 msgid "Score"
 msgstr "Puntaje"
 
-#: views/essay.php:14 views/option.php:35
+#: views/essay.php:20 views/option.php:37
 msgid "Next Question"
 msgstr "Siguiente Pregunta"
 
-#: views/essay.php:26 views/option.php:47
+#: views/essay.php:32 views/option.php:49
 msgid "Finalize Quiz"
 msgstr "Finalizar Quiz"
 
-#: views/essay.php:32 views/option.php:30 views/path.php:12
-#: views/question.php:12 views/result.php:52
+#: views/essay.php:38 views/option.php:32 views/path.php:12
+#: views/question.php:19 views/result.php:52
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -303,15 +311,15 @@ msgstr "Eliminar"
 msgid "Select Quiz"
 msgstr "Seleccionar Quiz"
 
-#: views/option.php:60
+#: views/option.php:62
 msgid "Image"
 msgstr "Imagen"
 
-#: views/option.php:83
+#: views/option.php:85
 msgid "Answers"
 msgstr "Respuestas"
 
-#: views/option.php:87
+#: views/option.php:89
 msgid "Add New"
 msgstr "Añadir Nueva"
 
@@ -319,19 +327,19 @@ msgstr "Añadir Nueva"
 msgid "New Question"
 msgstr "Neva Pregunta"
 
-#: views/path.php:25 views/question.php:22 views/result.php:57
+#: views/path.php:25 views/question.php:29 views/result.php:57
 msgid "Save"
 msgstr "Guardar"
 
-#: views/question.php:17
+#: views/question.php:24
 msgid "New Option"
 msgstr "Nueva Opción"
 
-#: views/question.php:27
+#: views/question.php:34
 msgid "Essay type?"
 msgstr "Tipo ensayo?"
 
-#: views/question.php:51
+#: views/question.php:58
 msgid "Multiple choice?"
 msgstr "Seleccion multiple?"
 
@@ -351,49 +359,52 @@ msgstr "Opcion seleccionada"
 msgid "Essay option"
 msgstr "Opcion ensayo"
 
-#: views/settings.php:143
+#: views/settings.php:136
 msgid "QuizU settings"
 msgstr "Configuración QuizU"
 
-#: views/settings.php:168
+#: views/settings.php:161
 msgid "Default color for buttons and options"
 msgstr "Color principal para botones y opciones"
 
-#: views/settings.php:177
+#: views/settings.php:170
 msgid "Roles Allowed to Handle Quizzes"
 msgstr "Roles que pueden administrar los quizes"
 
-#: views/settings.php:199
+#: views/settings.php:192
 msgid "Show this quiz in all"
 msgstr "Mostrar este quiz en cualquier"
 
-#: views/settings.php:222
+#: views/settings.php:215
 msgid ""
-"You may use these tags in all \"text-areas\" beyond this point (except email "
-"sender&#8217;s name and address). Leave \"text-areas\" blank to return to "
-"default:"
+"You may use these tags in all \"text-areas\" beyond this point (Except for "
+"email sender&#8217;s name and address, and buttons). Use results related "
+"tags only in \"text-areas\" that show up after quiz completion. Leave \"text-"
+"areas\" blank to return to default:"
 msgstr ""
 "Puedes usar estas etiquetas en todas las \"areas de texto\" mas alla de este "
-"punto (excepto el nombre y la direccion del emisor). Deja las \"areas de "
-"texto\" en blanco para volver al valor por defecto:"
+"punto (excepto el nombre y la direccion del emisor de los email, y los "
+"botones). Usa las etiquetas relacionadas a los resultados únicamente en las "
+"\"áreas de texto\" que aparecen después de completar el quiz. Deja las "
+"\"areas de texto\" en blanco para volver al valor por defecto:"
 
-#: views/settings.php:228
+#: views/settings.php:221
 msgid "Email settings"
 msgstr "Configuracion de Email"
 
-#: views/settings.php:235
+#: views/settings.php:228
 msgid "Email sender"
 msgstr "Emisor del email"
 
-#: views/settings.php:248
+#: views/settings.php:241
 msgid "Text display settings"
 msgstr "Ajuste de textos"
 
-#: views/settings.php:255
+#: views/settings.php:248
 msgid "Text for "
 msgstr "Texto para "
 
-#: views/settings.php:266
+#: views/settings.php:259
 msgid "Save Changes"
 msgstr "Guardar cambios"
 

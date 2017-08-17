@@ -125,7 +125,7 @@ jQuery(document).ready(function($){
 
 		if (quizPaths['paths'][currentPath]['questions'][currentQuestion]['flags']['essay_flag'] == 'true') {
 
-			essay_options = quizPaths['paths'][currentPath]['questions'][currentQuestion]['options']['essay']['essay'];
+			essay_options = quizPaths['paths'][currentPath]['questions'][currentQuestion]['options']['essay']['essay_ops'];
 
 			chosen_essay = quizuElem.find('.open_answer').val();
 
@@ -182,7 +182,7 @@ jQuery(document).ready(function($){
 			if (quizPaths['resultsCriteriaFlag'] == 'results_by_total') {
 				$.each(quizPaths['results'], function(key, value){
 					if (parseInt(value['score']['min']) <= parseInt(quizProgress['summScores']['total']) && parseInt(quizProgress['summScores']['total']) <= parseInt(value['score']['max'])) {
-						Object.assign(selResult, value);
+						$.extend(selResult, value);
 						return false;
 					}
 				});
@@ -191,14 +191,14 @@ jQuery(document).ready(function($){
 			if (quizPaths['resultsCriteriaFlag'] == 'results_by_option') {
 				$.each(quizPaths['results'], function(key, value){
 					if (value['highest'] == quizProgress['summScores']['highest']) {
-						Object.assign(selResult, value);
+						$.extend(selResult, value);
 						return false;
 					}
 				});
 			};
 
 			if (!selResult['id']) {
-				Object.assign(selResult, quizPaths['results'][Object.keys(quizPaths['results'])[0]]);
+				$.extend(selResult, quizPaths['results'][Object.keys(quizPaths['results'])[0]]);
 			};
 
 		}else{
@@ -249,6 +249,8 @@ jQuery(document).ready(function($){
 			};
 
 		}
+
+		quizuFrontRunStringTemplates();
 
 	}
 
@@ -365,6 +367,7 @@ jQuery(document).ready(function($){
 		quizuElem.find('.next').attr('data-current', selQuestion.id);/*Update current question ID indicator*/
 		quizuElem.find('.next').attr('data-path', (linkPath == '' || linkPath == 'undefined' || typeof linkPath === 'undefined'  ? quizuElem.find('.next').attr('data-path') : linkPath) );/*Update current question path indicator*/
 		quizuElem.find('.next').css({'background-color': currentColor});/*Update current question path indicator*/
+		quizuElem.find('.next').html(quizuObj.next);/*Update current question path indicator*/
 
 	}
 
@@ -374,6 +377,10 @@ jQuery(document).ready(function($){
 
 		var quizuReset = $('<button class="reset" style="background-color: '+quizuObj.currentColor+';">'+quizuObj.reset+'</button>');/*Create reset button*/
 		quizuElem.find('.question').html(selResult.title);/*Insert result title*/
+
+		toInsertR = true;
+		quizuFrontRunStringTemplates();
+		toInsertR = false;
 
 		if (selResult.content == '<p><br></p>' || selResult.content == '') {
 			selResult.content = '';
@@ -504,12 +511,14 @@ jQuery(document).ready(function($){
 				if (!quizProgress['summScores']['options']['option_'+value.place]) {
 					quizProgress['summScores']['options']['option_'+value.place] = 0;
 				};
-				
+
+							console.log(value);
 				if (value.id == 'essay') {
-					$.each(value.essay, function(key_es, value_es){
-						if (openAnswer.toLowerCase() == value_es.value.toLowerCase() && value_qu['id'] == currentQuestion) {
+					$.each(value.essay_ops, function(key_es, value_es){
+						if ((openAnswer.toLowerCase() == value_es.value.toLowerCase()) || (quizProgress['summScores']['options']['option_'+value.place]['answer'] == value_es.value.toLowerCase()) && value_qu['id'] == currentQuestion) {
 							quizProgress['summScores']['options']['option_'+value.place] += parseInt(value_es.score);
 							quizProgress['summScores']['total'] += parseInt(value_es.score);
+							quizProgress['summScores']['options']['option_'+value.place]['answer'] = openAnswer.toLowerCase();
 						};
 					});
 				}else{
@@ -539,6 +548,42 @@ jQuery(document).ready(function($){
 
 	}
 
+	var quizuFrontRunStringTemplates = function(){
+
+		title = quizuElem.find('.question').text();
+		result = quizuElem.find('.result').text();
+		quiz = quizuElem.find('h3').text();
+		email = quizuElem.find('.email.address').change().val();
+
+		var frontStringTemplates = {
+			'{{user-email}}' : quizuObj.userEmail,
+		};
+
+		if (typeof email !== 'undefined' && email != quizuObj['userEmail'] && email != frontStringTemplates[quizuObj['userEmail']]) {
+			frontStringTemplates[quizuObj['userEmail']] =  email;
+		}
+
+		if (typeof toInsertR !== 'undefined' && toInsertR == true){
+			frontStringTemplates['{{result-title}}'] = title;
+			frontStringTemplates['{{result-content}}'] = result;
+		}
+
+		$.each(quizuObj, function(obj, string){
+
+			if (obj != 'flags') {
+				$.each(frontStringTemplates, function(index, value){
+
+					while(string.indexOf(index) !== -1) {
+						string = string.replace(index, value);
+						quizuObj[obj] = string;
+					};
+
+				});
+			};
+
+		});
+	}
+
 	/*In case any error happens, get quiz data once more*/
 	window.onerror = quizuFrontGetQuiz;
 
@@ -549,6 +594,8 @@ jQuery(document).ready(function($){
 	$('.quizu_widget').each(function(){
 		
 		frontSetup($(this));
+
+		quizuFrontRunStringTemplates();
 
 		if(!quizBase || !(quizuId in quizBase) && typeof quizuFirstNonce !== 'undefined'){/*If there are no results stored, download quiz data*/
 
@@ -627,9 +674,8 @@ jQuery(document).ready(function($){
 
 			frontSetup($(this).closest('.quizu_widget'));
 
-			var type = 'multiple';
-
 			if (quizPaths['paths'][currentPath]['questions'][currentQuestion]['flags']['multiple_choice_flag'] == 'true') {
+				var type = 'multiple';
 				quizuFrontNextChecks(type);/*Run checks*/
 			};
 
@@ -678,11 +724,8 @@ jQuery(document).ready(function($){
 			quizuElem.find('.send.email').attr('disabled', 'true');
 
 			emailNonce = quizuElem.attr('data-email');
-			title = quizuElem.find('.question').text();
-			result = quizuElem.find('.result').text();
-			quiz = quizuElem.find('h3').text();
 
-			email = quizuElem.find('.email.address').change().val();
+			quizuFrontRunStringTemplates();
 
 			that = $(this);
 
@@ -696,28 +739,6 @@ jQuery(document).ready(function($){
 					that.html('<i class="fa fa-spinner fa-spin"></i>');
 				},
 				success: function(data){
-
-					var frontStringTemplates = {
-						'{{user-email}}' : '<br><br><strong>'+email+'</strong>',
-						'{{quiz-title}}' : quiz,
-						'{{result-title}}' : title,
-						'{{result-content}}' : result,
-					};
-
-					$.each(quizuObj, function(obj, string){
-
-						if (obj != 'flags') {
-							$.each(frontStringTemplates, function(index, value){
-
-								while(string.indexOf(index) !== -1) {
-									string = string.replace(index, value);
-									quizuObj[obj] = string;
-								};
-
-							});
-						};
-
-					});
 
 					if (data.success == true) {
 						quizuElem.find('.send.email').remove();
@@ -741,9 +762,6 @@ jQuery(document).ready(function($){
 		});
 
 		quizuElem.on('keypress', '.email.address', function (e) {
-	         
-	        frontSetup($(this).closest('.quizu_widget'));
-
 	        if(e.which === 13){
 	        	quizuElem.find('.send.email').click();
 	        }

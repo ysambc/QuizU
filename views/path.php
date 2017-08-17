@@ -2,7 +2,7 @@
 
 	<div class="wraper">
 
-		<input class="title path" type="text" value="<?php echo esc_attr_e($path['name'], 'quizuint') ?>" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][name]">
+		<input class="title path" type="text" value="<?php echo esc_attr__($path['name'], 'quizuint') ?>" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][name]">
 		<input class="path_id" type="hidden" value="<?php echo esc_attr($path['id']) ?>" name="quizu_all_questions[<?php echo esc_attr($path_id) ?>][id]">
 
 		<div class="buttons">

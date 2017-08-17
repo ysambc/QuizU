@@ -7,7 +7,6 @@
 
 	$result_criteria_flag = get_post_meta($quizu->quizu_id, '_quizu_result_criteria_flag', true);
 	$result_criteria_class = !empty($result_criteria_flag) && $result_criteria_flag != 'results_by_path' ? 'results_by_score' : '';
-	$is_result_flag = $questionb['result'] == 'true' ? 'true': 'false';
 
  ?>
 
@@ -39,11 +38,11 @@
 			
 			<?php foreach ($aggregated as $questionb) : /* Reversed for display*/?>
 				<?php if ($option['link']['linkid'] == $questionb['id'] && $option['link']['linkid'] !== ''): ?>
-					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $is_result_flag; ?>" selected value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $questionb['result'] == 'true' ? 'true': 'false'; ?>" selected value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 				<?php elseif($question['id'] == $questionb['id']): ?>
-					<option class="hidden" data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $is_result_flag; ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+					<option class="hidden" data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $questionb['result'] == 'true' ? 'true': 'false'; ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 				<?php elseif($question['id'] !== $questionb['id']): ?>
-					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $is_result_flag; ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
+					<option data-linkpath="<?php echo esc_attr($questionb['path']) ?>" data-linkid="<?php echo esc_attr($questionb['id']) ?>" data-result="<?php echo $questionb['result'] == 'true' ? 'true': 'false'; ?>" value="<?php echo esc_attr($questionb['id']) . '||' . esc_attr($questionb['path']) ?>"><?php echo esc_html($questionb['title']) ?></option>
 				<?php endif; ?>
 			<?php endforeach; ?>
 

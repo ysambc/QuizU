@@ -337,7 +337,7 @@ $u: $vertical-unit;
 			top: $u;
 
 			@media screen and (min-width: 650px){
-				right: $u;
+				right: $u/2;
 			}
 		}
 
@@ -457,7 +457,7 @@ $u: $vertical-unit;
 			}
 
 			.image{
-				bottom: initial;
+				bottom: auto;
 				top: $u*1.5;
 			}
 
@@ -602,6 +602,7 @@ $u: $vertical-unit;
 
 		.remove_essay{
 			position: absolute;
+			padding-right: 0;
 			bottom: 0;
 			right: $u/2;
 		}
@@ -620,8 +621,6 @@ $u: $vertical-unit;
 				height: 1px;
 				width: 100%;
 				padding-top: $u*1.25;
-				padding-left: $u/2;
-				padding-right: $u/2;
 				border-bottom: 1px solid whitesmoke;
 			}
 
