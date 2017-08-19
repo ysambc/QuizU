@@ -55,6 +55,7 @@ $u: $vertical-unit;
 
 	.question{
 		margin-bottom: $u;
+		text-align: center;
 		font-weight: bold;
 		font-size: 1em;
 	}
@@ -154,6 +155,7 @@ $u: $vertical-unit;
 	.email.address{
 		border: 0;
 		padding: $u/2;
+		width: auto;
 	}
 
 	.email.post{
@@ -228,6 +230,20 @@ $u: $vertical-unit;
 
 		.option_image{
 			padding: 0;
+		}
+	}
+
+	&.essay_type{
+		.option_next{
+			text-align: center;
+
+			p{
+				padding-right: $u;
+				padding-left: $u;
+				padding-top: $u/6;
+				padding-bottom: $u/6;
+				display: inline-block;
+			}
 		}
 	}
 

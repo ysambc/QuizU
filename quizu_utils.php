@@ -80,9 +80,10 @@ function quizu_wp_kses($value) {
   return $ksesed;
 }
 
-function quizu_get_file_output($file_uri, $linked_quiz = NULL) {
+function quizu_get_file_output($file_uri, $mail_parts = NULL) {
   
   ob_start();
+  extract($mail_parts);
   include($file_uri);
   $content = ob_get_contents();
   ob_end_clean();

@@ -7,7 +7,9 @@ jQuery(document).ready(function($){
 		quizuId = quizuElem.attr('data-id');/*Get current Quiz ID*/
 		quizuFirstNonce = quizuElem.attr('data-first');/*Get action nonce*/
 
-		quizBase = {};
+		quizBase = quizuObj['base'];
+
+		quizPaths = quizBase;
 		selQuestion = {};
 		optIds = {};
 
@@ -24,12 +26,6 @@ jQuery(document).ready(function($){
 		currentQuestion = quizuElem.find('.next').attr('data-current');/*Get current question ID*/
 		currentPath = quizuElem.find('.next').attr('data-path');/*Get current path ID*/
 
-		if(typeof localStorage.quizuQuizesQuestions !== 'undefined'){/*Check if there are questions stored*/
-			quizBase = JSON.parse(localStorage.quizuQuizesQuestions);/*If there are, retrieve questions*/
-		}
-
-		quizPaths = quizBase[quizuId];/*If there are, retrieve questions*/
-
 		if(typeof localStorage.quizuQuizesResults !== 'undefined'){/*Check if there are user results stored*/
 
 			quizResults = JSON.parse(localStorage.quizuQuizesResults);/*If there are, retrieve user results*/
@@ -39,32 +35,6 @@ jQuery(document).ready(function($){
 			};
 
 		}
-	}
-
-	var quizuFrontGetQuiz = function (){/*This function is used to download quiz questions*/
-		$.ajax({/*Questions are requested via AJAX*/
-			url:   quizuObj.ajaxurl,
-			data: {action : 'quizu_front_ajax', _ajax_nonce : quizuFirstNonce, quizu_id : quizuId, command : 'first'},
-			type: 'POST',
-			dataType: 'json',
-
-			beforeSend: function(xhr){
-				delete quizBase[quizuId];
-				quizuElem.find('.reset').attr('disabled');
-			},
-			success: function(data){
-				
-				quizBase[data.id] = data;/*Insert/update Quiz data in questions object*/
-				quizBase[data.id]['timestamp'] = new Date();/*Insert/update Quiz data in questions object*/
-				quizPaths = quizBase[data.id];/*Insert/update Quiz data in questions object*/
-				localStorage.setItem('quizuQuizesQuestions', JSON.stringify(quizBase));/*Store updated Quiz data*/
-				frontSetup(quizuElem);
-				quizuElem.find('.reset').html(quizuObj.reset);
-			},
-			complete: function(xhr, textStatus){
-				quizuElem.find('.reset').removeAttr('disabled');
-			}
-		});
 	}
 
 	/*This function downloads and replaces Quiz data and allows user to reset quiz*/
@@ -78,8 +48,6 @@ jQuery(document).ready(function($){
 
 		quizuElem.append(quizuReset);/*Append reset button*/
 		quizuElem.find('.question').html(quizuObj.error);/*Append error message*/
-
-		quizuFrontGetQuiz();/*Download Quiz data*/
 
 	}
 
@@ -375,12 +343,7 @@ jQuery(document).ready(function($){
 
 		quizCleanup();
 
-		var quizuReset = $('<button class="reset" style="background-color: '+quizuObj.currentColor+';">'+quizuObj.reset+'</button>');/*Create reset button*/
 		quizuElem.find('.question').html(selResult.title);/*Insert result title*/
-
-		toInsertR = true;
-		quizuFrontRunStringTemplates();
-		toInsertR = false;
 
 		if (selResult.content == '<p><br></p>' || selResult.content == '') {
 			selResult.content = '';
@@ -389,6 +352,11 @@ jQuery(document).ready(function($){
 			quizuElem.append('<div class="result">'+selResult.content+'</div>');/*Insert reset button*/
 		}
 
+		toInsertR = true;
+		quizuFrontRunStringTemplates();
+		toInsertR = false;
+
+		var quizuReset = $('<button class="reset" style="background-color: '+quizuObj.defaultColor+';">'+quizuObj.reset+'</button>');/*Create reset button*/
 		quizuElem.append(quizuReset);/*Insert reset button*/
 
 		if (quizPaths['showScoresFlag'] == 'true') {
@@ -512,7 +480,6 @@ jQuery(document).ready(function($){
 					quizProgress['summScores']['options']['option_'+value.place] = 0;
 				};
 
-							console.log(value);
 				if (value.id == 'essay') {
 					$.each(value.essay_ops, function(key_es, value_es){
 						if ((openAnswer.toLowerCase() == value_es.value.toLowerCase()) || (quizProgress['summScores']['options']['option_'+value.place]['answer'] == value_es.value.toLowerCase()) && value_qu['id'] == currentQuestion) {
@@ -564,13 +531,20 @@ jQuery(document).ready(function($){
 		}
 
 		if (typeof toInsertR !== 'undefined' && toInsertR == true){
+			if (typeof quizuObj['pastResultTitle'] !== 'undefined' && title != quizuObj['pastResultTitle'] && title != frontStringTemplates[quizuObj['pastResultTitle']]) {
+				frontStringTemplates[quizuObj['pastResultTitle']] = title;
+			}
+
 			frontStringTemplates['{{result-title}}'] = title;
 			frontStringTemplates['{{result-content}}'] = result;
+			quizuObj['pastResultTitle'] = title;
+			quizuObj['pastResultContent'] = result;
 		}
+
 
 		$.each(quizuObj, function(obj, string){
 
-			if (obj != 'flags') {
+			if (obj != 'flags' && obj != 'base') {
 				$.each(frontStringTemplates, function(index, value){
 
 					while(string.indexOf(index) !== -1) {
@@ -584,8 +558,7 @@ jQuery(document).ready(function($){
 		});
 	}
 
-	/*In case any error happens, get quiz data once more*/
-	window.onerror = quizuFrontGetQuiz;
+	// window.onerror = quizuFrontGetQuiz;
 
 	$(window).on('unload', function(){
 	  sessionStorage.removeItem('quizuQuizProgress');
@@ -597,20 +570,8 @@ jQuery(document).ready(function($){
 
 		quizuFrontRunStringTemplates();
 
-		if(!quizBase || !(quizuId in quizBase) && typeof quizuFirstNonce !== 'undefined'){/*If there are no results stored, download quiz data*/
-
-			quizuFrontGetQuiz();
-
-		}else{
-			if (quizuId in quizResults) {/*If there are, check if a user result is already stored*/
-
-				quizuFrontInsertResult();/*IF there IS, insert result*/
-
-			};		
-		};
-
-		if (quizuObj.flags.isPreview == true) {
-			quizuFrontGetQuiz();
+		if (quizuId in quizResults) {/*If there are, check if a user result is already stored*/
+			quizuFrontInsertResult();/*IF there IS, insert result*/
 		};
 
 		quizuElem.addClass('rendered');
@@ -723,6 +684,17 @@ jQuery(document).ready(function($){
 
 			quizuElem.find('.send.email').attr('disabled', 'true');
 
+			var scores = {};
+			scores['main'] ={};
+			scores['options'] ={};
+
+			scores['main'] = quizuElem.find('.score').html();
+
+
+			quizuElem.find('.option_score').each(function(index){
+				scores['options'][index] = $(this).html();
+			});
+
 			emailNonce = quizuElem.attr('data-email');
 
 			quizuFrontRunStringTemplates();
@@ -731,7 +703,7 @@ jQuery(document).ready(function($){
 
 			$.ajax({/*Questions are requested via AJAX*/
 				url:   quizuObj.ajaxurl,
-				data: {action : 'quizu_front_ajax', _ajax_nonce : emailNonce, command : 'email', email : email, title : title, content : result, quiz : quiz, quizu_id : quizuId},
+				data: {action : 'quizu_front_ajax', _ajax_nonce : emailNonce, command : 'email', email : email, title : title, message : quizuObj['emailMessage'], content : result, quiz : quiz, scores : scores, quizu_id : quizuId},
 				type: 'POST',
 				dataType: 'json',
 
@@ -766,6 +738,12 @@ jQuery(document).ready(function($){
 	        	quizuElem.find('.send.email').click();
 	        }
 	   	});
+
+   		quizuElem.on('keypress', '.open_answer', function (e) {
+   	        if(e.which === 13){
+   	        	quizuElem.find('.option_next').click();
+   	        }
+   	   	});
 	});
 
 });

@@ -24,13 +24,16 @@ defined('ABSPATH') or die("Cannot access pages directly.");
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
+ * Brands, names, logs, images and other creative products are protected
+ * by copyright laws and are not associated with this program's licence.
+ *
  */
 
 function quizu_init(){
 
+	include( plugin_dir_path( __FILE__ ) . 'models/quizu_main_model.php');
 	include( plugin_dir_path( __FILE__ ) . 'quizu_utils.php');
 	include( plugin_dir_path( __FILE__ ) . 'quizu_setup.php');
-	include( plugin_dir_path( __FILE__ ) . 'models/quizu_main_model.php');
 
 	if (is_array(array_intersect_key(wp_get_current_user()->roles, get_option('quizu_settings_permissions')))) {
 	  $current_user_is_capable = true;
@@ -42,8 +45,6 @@ function quizu_init(){
 		include( plugin_dir_path( __FILE__ ) . 'models/quizu_admin_ajax_model.php');
 		include( plugin_dir_path( __FILE__ ) . 'controllers/quizu_admin_ajax_controller.php');
 	}
-
-	/*CANT !is_admin() ON FRONTEND COMPONENTS. AJAX IS ALWAYS ADMIN.*/
 
 	include( plugin_dir_path( __FILE__ ) . 'models/quizu_front_ajax_model.php');
 	include( plugin_dir_path( __FILE__ ) . 'controllers/quizu_front_ajax_controller.php');

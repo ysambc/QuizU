@@ -382,7 +382,7 @@ jQuery(document).ready( function($) {
     if (command == 'update_question' || command == 'update_result') {
       if (scoreMin > scoreMax) {
         command = 'abort';
-        alert(quizuObj.minimal);
+        // alert(quizuObj.minimal);
       }else{
         $('.result.parent').each(function(key, value){
 

@@ -19,7 +19,7 @@ function quizu_front_ajax(){
 	/*Initialize quizu obj*/
 	$quizu = new quizu_front_ajax_controller_model($stripedvars['quizu_id']);
 
-	$allowed_commands = array('first', 'email');
+	$allowed_commands = array('email');
 
 	if (isset($stripedvars['command']) && in_array($stripedvars['command'], $allowed_commands)) {
 		$stripedvars['command'] = sanitize_text_field($stripedvars['command']);
@@ -45,10 +45,16 @@ function quizu_front_ajax(){
 		$stripedvars['quiz'] = '';
 	}
 
-	if (isset($stripedvars['image'])) {
-		$stripedvars['image'] = esc_url($stripedvars['image']);
+	if (isset($stripedvars['message'])) {
+		$stripedvars['message'] = sanitize_textarea_field($stripedvars['message']);
 	}else{
-		$stripedvars['image'] = '';
+		$stripedvars['message'] = '';
+	}
+
+	if (isset($stripedvars['scores']) && is_array($stripedvars['scores'])) {
+		$stripedvars['scores'] = $stripedvars['scores'];
+	}else{
+		$stripedvars['scores'] = array();
 	}
 
 	if (isset($stripedvars['content'])) {
@@ -60,34 +66,23 @@ function quizu_front_ajax(){
 	
 	/*Choose what to do*/
 	switch ($stripedvars['command']) {
-		
-		/*Download quiz*/
-		case 'first':
-
-			$id = $quizu->quizu_id;
-			$questions = $quizu->all_questions;
-			$results = $quizu->all_results;
-
-			foreach ($results as $result => $value_re) {
-				$results[$result]['content'] = quizu_run_shortcodes(quizu_wp_kses($value_re['content']));
-			}
-			
-			/*Pass Quiz object to front JS*/
-			print json_encode(array('id' => $id, 'paths' => $questions, 'results' => $results, 'resultsCriteriaFlag' => esc_html(get_post_meta($id, '_quizu_result_criteria_flag', true)), 'showScoresFlag' => esc_html(get_post_meta($id, '_quizu_show_scores_flag', true))));
-
-		break;
 
 		/*Send email*/
 		case 'email':
 			
 			$to = $stripedvars['email'];
 			$title = $stripedvars['title'];
-			$image = $stripedvars['image'];
 			$content = quizu_wp_kses($stripedvars['content']);
-			
-			$subject = htmlspecialchars_decode(quizu_run_string_template(get_option('quizu_settings_email_subject'), $quizu->quizu_id));
+			$message = quizu_wp_kses($stripedvars['message']);
+			$subject = htmlspecialchars_decode(quizu_run_string_template(esc_html__(get_option('quizu_settings_email_subject'), $quizu->quizu_id)));
 
-			$email = quizu_get_file_output(plugin_dir_path( __DIR__ ) . 'includes/basic_email.php');
+			$mail_parts['title'] = $title;
+			$mail_parts['subject'] = $subject;
+			$mail_parts['content'] = $content;
+			$mail_parts['message'] = $message;
+			$mail_parts['scores'] = $stripedvars['scores'];
+
+			$email = quizu_get_file_output(plugin_dir_path( __DIR__ ) . 'includes/basic_email.php', $mail_parts);
 
 			function set_content_type( $content_type ) {
 				return 'text/html';
@@ -117,7 +112,7 @@ function quizu_front_ajax(){
 			remove_filter( 'wp_mail_from_name', 'wpb_sender_name' );
 			remove_filter( 'wp_mail_from', 'wpb_sender_email' );
 
-			print json_encode(array('success' => $status, 'image' => $image));
+			print json_encode(array('success' => $status, 'email' => $email));
 
 		break;
 		

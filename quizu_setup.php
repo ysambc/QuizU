@@ -4,6 +4,7 @@ defined('ABSPATH') or die("Cannot access pages directly.");
 
 // DEFAULTS SETTINGS----------------------------------------------------------------------------------------------------------------
 
+$quizu = new quizu_main_model(quizu_find_linked_quiz());
 $master_list = quizu_master_config_list();
 $permited_roles = get_option('quizu_settings_permissions');
 
@@ -41,7 +42,7 @@ add_action( 'init', 'quizu_post_types_setup' );
 load_plugin_textdomain('quizuint', false, dirname(plugin_basename(__FILE__ )) . '/languages');
 
 
-// REGISTER QUIZES WIDGET----------------------------------------------------------------------------------------------------------------
+// REGISTER QUIZES ----------------------------------------------------------------------------------------------------------------
 
 // register Foo_Widget widget
 function register_quizu_widget() {
@@ -496,7 +497,7 @@ if (!is_admin()) {
 
   // REGISTER AND ENQUEUE FRONT SCRIPTS AND STYLES----------------------------------------------------------------------------------------------------------------
 
-  function quizu_front_enqueues($linked_quiz) {/*Enqueues for front*/
+  function quizu_front_enqueues() {/*Enqueues for front*/
     
     wp_enqueue_script('quizu-front-js', plugins_url( '/includes/js/quizu-front.js', __FILE__ ), array('jquery'), null, true);
     wp_enqueue_script('jssocials', 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js', array('jquery'), null, true);
@@ -505,9 +506,19 @@ if (!is_admin()) {
 
     $quizu_current_user = wp_get_current_user();
     $linked_quiz = quizu_find_linked_quiz();
+    $quizu = new quizu_main_model($linked_quiz);
+    $base_paths = $quizu->all_questions;
+    $base_results = $quizu->all_results;
 
     wp_localize_script( 'quizu-front-js', 'quizuObj', array(
       'ajaxurl' => admin_url( 'admin-ajax.php' ),
+      'base' => array(
+        'id' => $quizu->quizu_id, 
+        'paths' => $base_paths,
+        'results' => $base_results, 
+        'resultsCriteriaFlag' => esc_html(get_post_meta($quizu->quizu_id, '_quizu_result_criteria_flag', true)), 
+        'showScoresFlag' => esc_html(get_post_meta($quizu->quizu_id, '_quizu_show_scores_flag', true))
+      ),
       'defaultColor' => esc_html(get_option('quizu_settings_default_color')),
       'reset' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_reset'), 'quizuint'))),
       'next' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_next'), 'quizuint'))),
@@ -519,6 +530,7 @@ if (!is_admin()) {
       'share' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_share'), 'quizuint'))),
       'email' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_email'), 'quizuint'))),
       'send' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_send'), 'quizuint'))),
+      'emailMessage' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_email_message'), 'quizuint'))),
       'senderEmail' => esc_html(get_option('quizu_settings_email_address')),
       'senderName' => esc_html(get_option('quizu_settings_email_name')),
       'userEmail' => sanitize_email($quizu_current_user->user_email),

@@ -30,6 +30,7 @@
     margin-bottom: 51.776px; }
   .quizu_widget .question {
     margin-bottom: 25.888px;
+    text-align: center;
     font-weight: bold;
     font-size: 1em; }
   .quizu_widget .open_answer {
@@ -102,7 +103,8 @@
       right: 0; }
   .quizu_widget .email.address {
     border: 0;
-    padding: 12.944px; }
+    padding: 12.944px;
+    width: auto; }
   .quizu_widget .email.post {
     width: 100%;
     display: inline-block;
@@ -152,5 +154,13 @@
       padding-bottom: 1.618px !important; }
     .quizu_widget:not(.sidebar) .option_image {
       padding: 0; }
+  .quizu_widget.essay_type .option_next {
+    text-align: center; }
+    .quizu_widget.essay_type .option_next p {
+      padding-right: 25.888px;
+      padding-left: 25.888px;
+      padding-top: 4.31467px;
+      padding-bottom: 4.31467px;
+      display: inline-block; }
   .quizu_widget.multiple_choice:not(.essay_type) .next {
     display: inline-block; }
