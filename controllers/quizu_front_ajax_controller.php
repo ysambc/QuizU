@@ -45,6 +45,12 @@ function quizu_front_ajax(){
 		$stripedvars['quiz'] = '';
 	}
 
+	if (isset($stripedvars['subject'])) {
+		$stripedvars['subject'] = sanitize_textarea_field($stripedvars['subject']);
+	}else{
+		$stripedvars['subject'] = '';
+	}
+
 	if (isset($stripedvars['message'])) {
 		$stripedvars['message'] = sanitize_textarea_field($stripedvars['message']);
 	}else{
@@ -74,7 +80,7 @@ function quizu_front_ajax(){
 			$title = $stripedvars['title'];
 			$content = quizu_wp_kses($stripedvars['content']);
 			$message = quizu_wp_kses($stripedvars['message']);
-			$subject = htmlspecialchars_decode(quizu_run_string_template(esc_html__(get_option('quizu_settings_email_subject'), $quizu->quizu_id)));
+			$subject = $stripedvars['subject'];
 
 			$mail_parts['title'] = $title;
 			$mail_parts['subject'] = $subject;

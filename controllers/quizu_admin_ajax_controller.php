@@ -62,28 +62,28 @@ function quizu_admin_ajax(){
 	}
 
 	// Retrieve result ID
-	if (isset($stripedvars['result_id']) && strlen($stripedvars['result_id']) == 13) {
+	if (isset($stripedvars['result_id']) && is_string($stripedvars['result_id'])) {
 		$result_id = sanitize_text_field($stripedvars['result_id']);
 	}
 
 	// Retrieve parent question / option
-	if (isset($stripedvars['parent']) && strlen($stripedvars['parent']) == 13) {
+	if (isset($stripedvars['parent']) && is_string($stripedvars['parent'])) {
 		$parent = sanitize_text_field($stripedvars['parent']);
 	}
 
 	// Retrieve option
-	if (isset($stripedvars['option']) && (strlen($stripedvars['option']) == 13 || $stripedvars['option'] == 'essay')) {
+	if (isset($stripedvars['option']) && is_string($stripedvars['option'])) {
 		$option = sanitize_text_field($stripedvars['option']);
 	}
 
 	// Retrieve option image ID
-	if (isset($stripedvars['option_img']) && strlen($stripedvars['option_img']) == 3) {
+	if (isset($stripedvars['option_img'])) {
 		$option_img = sanitize_text_field($stripedvars['option_img']);
 	}
 
 	// Retrieve titles
 	if (isset($stripedvars['title'])) {
-		$title = sanitize_text_field($stripedvars['title']);
+		$title = sanitize_textarea_field($stripedvars['title']);
 	}
 
 	// Retrieve content
@@ -102,10 +102,10 @@ function quizu_admin_ajax(){
 	}
 
 	// Retrieve path
-	if (!isset($stripedvars['path']) || empty($stripedvars['path'])) {
+	if (empty($stripedvars['path'])) {
 		$path = uniqid();
 	}else{
-		if (strlen($stripedvars['path']) == 13 || $stripedvars['path'] == 'default') {
+		if (is_string($stripedvars['path'])) {
 			$path = sanitize_text_field($stripedvars['path']);
 		}
 	}
@@ -116,17 +116,17 @@ function quizu_admin_ajax(){
 	}
 
 	// Retrieve new sorted path
-	if (isset($stripedvars['new_path']) && ($stripedvars['new_path'] == 'default' || strlen($stripedvars['new_path']) == 13)) {
+	if (isset($stripedvars['new_path']) && ($stripedvars['new_path'] == 'default' || is_string($stripedvars['new_path']))) {
 		$new_path = sanitize_text_field($stripedvars['new_path']);
 	}
 
 	// Retrieve previous question
-	if (isset($stripedvars['prev_quest']) && strlen($stripedvars['prev_quest']) == 13) {
+	if (isset($stripedvars['prev_quest']) && is_string($stripedvars['prev_quest'])) {
 		$prev_quest = sanitize_text_field($stripedvars['prev_quest']);
 	}
 
 	// Retrieve path before sorting
-	if (isset($stripedvars['prev_path']) && ($stripedvars['new_path'] == 'default' || strlen($stripedvars['new_path']) == 13)) {
+	if (isset($stripedvars['prev_path']) && ($stripedvars['prev_path'] == 'default' || is_string($stripedvars['prev_path']))) {
 		$prev_path = sanitize_text_field($stripedvars['prev_path']);
 	}
 
@@ -150,7 +150,7 @@ function quizu_admin_ajax(){
 	}
 
 	// Non-save Item count
-	if (isset($stripedvars['non_save_item_count']) && is_numeric($stripedvars['non_save_item_count'])) {
+	if (isset($stripedvars['non_save_item_count'])) {
 		$nonsic = $stripedvars['non_save_item_count'];
 	}
 
@@ -186,23 +186,19 @@ function quizu_admin_ajax(){
 
 
 	// Retrieve option image file
-	if (isset($_FILES['option_image_'. $option ]) && ($_FILES['option_image_'. $option ]['size'] > 0) && wp_check_filetype(basename($_FILES['option_image_'. $option ]['name'])) ) {
-		$file = $_FILES['option_image_'. $option ];
-	}elseif(isset($stripedvars['option_image_'. $option]) && ($stripedvars['option_image_'. $option ]['filesizeInBytes'] > 0) && wp_check_filetype(basename($stripedvars['option_image_'. $option ]['filename']))){
+	if(isset($stripedvars['option_image_'. $option]) && ($stripedvars['option_image_'. $option ]['filesizeInBytes'] > 0) && wp_check_filetype(basename($stripedvars['option_image_'. $option ]['filename']))){
 		$file = $stripedvars['option_image_'. $option ];
 	}
 
 	// Retrieve result image file
-	if (isset($_FILES['result_image_'. $parent ]) && ($_FILES['result_image_'. $parent ]['size'] > 0) && wp_check_filetype(basename($_FILES['result_image_'. $parent ]['name'])) ) {
-		$file = $_FILES['result_image_'. $parent ];
-	}elseif(isset($stripedvars['result_image_'. $parent]) && ($stripedvars['result_image_'. $parent ]['filesizeInBytes'] > 0) && wp_check_filetype(basename($stripedvars['result_image_'. $parent ]['filename']))){
+	if(isset($stripedvars['result_image_'. $parent]) && ($stripedvars['result_image_'. $parent ]['filesizeInBytes'] > 0) && wp_check_filetype(basename($stripedvars['result_image_'. $parent ]['filename']))){
 		$file = $stripedvars['result_image_'. $parent ];
 	}
 
-	$current_post_status = get_post_status($stripedvars['quizu_id']);
+	$current_post_status = get_post_status($quizu_id);
 
 	$postarr = array(
-		'ID' => $stripedvars['quizu_id'],
+		'ID' => $quizu_id,
 		'post_type' => 'quizu_quiz',
 	);
 
@@ -212,7 +208,7 @@ function quizu_admin_ajax(){
 
 	// Game on.
 
-	$quizu = new quizu_admin_ajax_controller_model($quizu_id, $path);
+	$quizu = new quizu_admin_ajax_controller_model($stripedvars['quizu_id'], $path);
 
 	switch ($command) {
 

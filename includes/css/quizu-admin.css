@@ -1,3 +1,6 @@
+.clearfix {
+  clear: both; }
+
 .quizu_admin_screen {
   /* Rounded sliders */ }
   .quizu_admin_screen ul, .quizu_admin_screen li {
@@ -52,16 +55,26 @@
 
 #quizu_questions {
   position: relative; }
-  @media screen and (min-width: 992px) {
-    #quizu_questions .inside {
-      max-width: 673.088px;
-      margin: 0 auto;
-      margin-top: 51.776px;
-      margin-bottom: 25.888px;
-      padding-left: 25.888px;
-      padding-right: 25.888px; } }
+  #quizu_questions h2.hndle {
+    background: white; }
+  #quizu_questions .quizu_admin_screen {
+    background: white;
+    margin: 0 auto;
+    max-width: 517.76px; }
+    #quizu_questions .quizu_admin_screen > .label {
+      margin-bottom: 51.776px; }
+    @media screen and (min-width: 992px) {
+      #quizu_questions .quizu_admin_screen {
+        margin-top: 51.776px;
+        margin-bottom: 38.832px;
+        padding-left: 25.888px;
+        padding-right: 25.888px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e5e5;
+        padding-top: 51.776px; } }
   #quizu_questions .heading {
-    font-size: 41.88678px;
+    font-size: 33.6544px;
+    font-weight: bold;
     text-align: center;
     padding-bottom: 51.776px;
     margin: 0; }
@@ -74,23 +87,28 @@
   #quizu_questions input {
     background: 0;
     box-shadow: none;
-    border: 0;
-    border-radius: 0;
+    border: 1px solid transparent;
+    border-radius: 4.31467px;
     transition: border-bottom .5s;
-    padding: 12.944px;
+    padding: 6.472px;
     margin: 0;
-    margin-bottom: 12.944px;
-    transition: box-shadow 0.5s; }
+    transition: 0.5s; }
     #quizu_questions input:focus {
-      border: 0;
-      box-shadow: 0px 4px 11px 2px rgba(79, 94, 101, 0.38); }
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e5e5e5; }
   #quizu_questions textarea {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e5e5e5;
     border-radius: 4.31467px;
     box-shadow: none;
-    transition: box-shadow 0.5s; }
+    transition: 0.5s; }
     #quizu_questions textarea:focus {
-      border: 0;
+      border: 2px solid transparent;
       box-shadow: 0px 4px 11px 2px rgba(79, 94, 101, 0.38); }
+  #quizu_questions .collapse {
+    cursor: pointer;
+    cursor: hand;
+    transition: 0.5s; }
   #quizu_questions .link {
     display: block;
     font-size: 12.944px;
@@ -101,7 +119,8 @@
     #quizu_questions .link option.hidden, #quizu_questions .link option.finalize {
       display: none; }
     #quizu_questions .link.second {
-      margin-left: 12.944px; }
+      margin-left: 12.944px;
+      display: block; }
     #quizu_questions .link.results_by_score option[data-result="true"] {
       display: none !important; }
     #quizu_questions .link.results_by_score option.finalize {
@@ -111,7 +130,10 @@
         max-width: 137px; } }
     @media screen and (min-width: 500px) {
       #quizu_questions .link {
-        max-width: 200px; } }
+        max-width: 200px;
+        display: inline-block;
+        margin-left: 25.888px;
+        vertical-align: super; } }
   #quizu_questions #results_criteria {
     display: inline;
     float: right;
@@ -120,9 +142,8 @@
       #quizu_questions #results_criteria {
         float: none;
         width: auto; } }
-  #quizu_questions .controller.new_path {
-    margin-bottom: 77.664px; }
   #quizu_questions .controller.new_result {
+    margin-top: 51.776px;
     margin-bottom: 51.776px; }
   #quizu_questions .controller.new_path, #quizu_questions .controller.new_result {
     float: right;
@@ -146,14 +167,13 @@
     width: 100%;
     margin-right: 0;
     margin-top: 0;
-    text-transform: capitalize; }
+    text-transform: capitalize;
+    font-weight: bold; }
     #quizu_questions input.title.path {
-      font-size: 28.72274px;
+      font-size: 20.7104px; }
+    #quizu_questions input.title.result {
+      font-size: 20.7104px;
       font-weight: bold; }
-    #quizu_questions input.title.question {
-      font-size: 22.26368px; }
-    #quizu_questions input.title.option {
-      font-size: 15.99878px; }
   #quizu_questions button {
     font-size: 12.944px;
     border: 0;
@@ -164,8 +184,6 @@
   #quizu_questions button, #quizu_questions select {
     cursor: hand;
     cursor: pointer; }
-  #quizu_questions label {
-    font-size: 11px; }
   #quizu_questions .switch.main {
     float: right; }
     @media screen and (min-width: 400px) {
@@ -197,17 +215,23 @@
   #quizu_questions div.path {
     display: inline-block;
     position: relative;
+    padding-top: 51.776px;
     padding-bottom: 51.776px;
+    border-bottom: 1px solid #f1f1f1;
+    transition: 0.5s;
     width: 100%; }
-    #quizu_questions div.path .wraper {
-      padding-bottom: 25.888px; }
+    #quizu_questions div.path .wraper .buttons {
+      padding-top: 12.944px;
+      padding-bottom: 31.0656px; }
+    #quizu_questions div.path .wraper .collapse {
+      top: 64.72px;
+      transition: 0.5s; }
     #quizu_questions div.path .collapse {
       position: absolute;
       font-size: 15.99878px;
-      cursor: pointer;
-      cursor: hand;
       right: 0;
-      top: 25.888px; }
+      top: 25.888px;
+      z-index: 10; }
       @media screen and (min-width: 650px) {
         #quizu_questions div.path .collapse {
           right: 12.944px; } }
@@ -215,42 +239,68 @@
       float: right;
       z-index: 10;
       display: inline;
-      transform: translateY(-15%);
+      transform: translateY(12.944px);
       position: relative; }
       #quizu_questions div.path .wp-picker-container .wp-color-result {
         margin: 0; }
       #quizu_questions div.path .wp-picker-container .wp-picker-holder {
         position: absolute; }
-    #quizu_questions div.path:first-of-type {
-      clear: right;
-      margin-top: 0; }
-    #quizu_questions div.path:last-of-type {
-      padding-bottom: 129.44px; }
+      @media screen and (min-width: 363px) {
+        #quizu_questions div.path .wp-picker-container {
+          transform: none; } }
+      @media screen and (min-width: 992px) {
+        #quizu_questions div.path .wp-picker-container {
+          transform: translateY(-15%); } }
+    #quizu_questions div.path.collapsed {
+      padding-top: 12.944px;
+      padding-bottom: 19.416px; }
+      #quizu_questions div.path.collapsed .wraper, #quizu_questions div.path.collapsed .buttons {
+        padding-bottom: 0; }
+      #quizu_questions div.path.collapsed .wraper .title {
+        margin-bottom: 0; }
+      #quizu_questions div.path.collapsed .wraper .collapse {
+        top: 32.36px; }
+  #quizu_questions ul.container.questions {
+    padding-top: 12.944px; }
   #quizu_questions ul.container.options {
-    border: 1px solid whitesmoke;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e5e5e5;
     margin-top: 51.776px;
     padding: 12.944px;
     padding-top: 0;
     padding-bottom: 0; }
-  #quizu_questions ul.container.collapsed {
-    display: none !important; }
   #quizu_questions li.question {
     position: relative;
-    padding-top: 38.832px;
-    padding-bottom: 51.776px; }
+    padding-top: 25.888px;
+    padding-bottom: 51.776px;
+    transition: padding 0.5s; }
+    #quizu_questions li.question .question.title {
+      padding: 12.944px;
+      width: 100%;
+      height: 77.664px;
+      margin-bottom: 25.888px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e5e5e5;
+      font-weight: bold; }
     #quizu_questions li.question .sort_handle {
       cursor: pointer;
       font-size: 12.944px;
       cursor: hand;
       position: absolute;
-      top: 77.664px;
-      right: 38.832px; }
-      @media screen and (min-width: 650px) {
+      top: 0;
+      right: 38.832px;
+      transition: 0.5s;
+      visibility: hidden;
+      opacity: 0; }
+      @media screen and (min-width: 992px) {
         #quizu_questions li.question .sort_handle {
-          right: 77.664px; } }
+          right: 64.72px; } }
     #quizu_questions li.question .collapse {
-      top: 77.664px;
-      right: 38.832px; }
+      top: 0;
+      right: 12.944px; }
+      @media screen and (min-width: 992px) {
+        #quizu_questions li.question .collapse {
+          right: 38.832px; } }
     #quizu_questions li.question .image, #quizu_questions li.question .score_container {
       position: absolute;
       right: 12.944px; }
@@ -264,19 +314,24 @@
       width: auto;
       position: relative;
       text-align: right;
-      padding-right: 12.944px; }
+      padding-right: 12.944px;
+      padding-top: 25.888px; }
       #quizu_questions li.question .essay_switch p.label, #quizu_questions li.question .multiple_choice_switch p.label {
         width: auto;
         margin: 0; }
-    #quizu_questions li.question .essay_switch {
-      padding-top: 25.888px; }
+      #quizu_questions li.question .essay_switch .switch, #quizu_questions li.question .multiple_choice_switch .switch {
+        margin-left: 3.236px; }
       @media screen and (min-width: 425px) {
-        #quizu_questions li.question .essay_switch {
+        #quizu_questions li.question .essay_switch, #quizu_questions li.question .multiple_choice_switch {
           padding-top: 0;
           display: inline-block;
           float: right; } }
     #quizu_questions li.question .essay_option {
       display: none; }
+      #quizu_questions li.question .essay_option .link {
+        margin-top: 12.944px; }
+        #quizu_questions li.question .essay_option .link.main {
+          margin-left: 0; }
     #quizu_questions li.question label.essay {
       font-weight: bold; }
     #quizu_questions li.question.essay_type .essay_option {
@@ -289,23 +344,37 @@
       right: 12.944px; }
     #quizu_questions li.question.essay_type li:not(.essay_option) {
       display: none; }
+    #quizu_questions li.question .multiple_choice_switch {
+      padding-top: 6.472px; }
     #quizu_questions li.question .image {
       bottom: 0; }
     #quizu_questions li.question .score_container {
       top: 25.888px; }
-    #quizu_questions li.question .multiple_choice_switch {
-      padding-top: 38.832px; }
-    #quizu_questions li.question:before {
-      content: '';
-      position: absolute;
-      background: #f1efef;
-      background: rgba(214, 214, 214, 0.38);
-      top: 0;
-      height: 1px;
-      left: 0;
-      right: 0; }
     #quizu_questions li.question.multiple_choice:not(.essay_type) .option.not_essay ~ .option .link {
       display: none; }
+    #quizu_questions li.question.collapsed {
+      padding-top: 12.944px;
+      padding-bottom: 12.944px; }
+      #quizu_questions li.question.collapsed .title {
+        height: 25.888px;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        resize: none;
+        background-color: #f7f7f7;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e5e5;
+        overflow: hidden; }
+        #quizu_questions li.question.collapsed .title:focus {
+          background-color: white; }
+      #quizu_questions li.question.collapsed .collapse, #quizu_questions li.question.collapsed .sort_handle {
+        top: 20.7104px; }
+      #quizu_questions li.question.collapsed .sort_handle {
+        visibility: visible;
+        opacity: 1; }
+    #quizu_questions li.question:last-of-type {
+      padding-bottom: 0; }
     @media screen and (min-width: 992px) {
       #quizu_questions li.question {
         padding-right: 25.888px;
@@ -320,10 +389,11 @@
       vertical-align: super; }
     #quizu_questions li.option .title {
       width: 70%;
-      display: block; }
+      display: block;
+      margin-left: 6.472px; }
     #quizu_questions li.option .score_container {
       line-height: 25.888px;
-      padding-top: 12.944px; }
+      padding-top: 6.472px; }
       #quizu_questions li.option .score_container label {
         vertical-align: top; }
       #quizu_questions li.option .score_container .score {
@@ -331,7 +401,11 @@
         padding: 0;
         margin: 0;
         text-align: right;
-        display: inline; }
+        display: inline;
+        margin: 0;
+        margin-left: 3.236px;
+        padding-left: 3.236px;
+        padding-right: 3.236px; }
     #quizu_questions li.option .buttons {
       width: auto;
       display: inline-block; }
@@ -350,7 +424,8 @@
       #quizu_questions li.option .image.uploaded .uploaded_image {
         display: inline; }
       #quizu_questions li.option .image.uploaded .image_delete {
-        display: inline-block; }
+        display: inline-block;
+        padding-right: 0; }
     #quizu_questions li.option .essay_options {
       padding-top: 25.888px; }
     #quizu_questions li.option .essay_label {
@@ -369,7 +444,10 @@
       position: absolute;
       padding-right: 0;
       bottom: 0;
-      right: 12.944px; }
+      right: 12.944px;
+      top: 38.832px; }
+    #quizu_questions li.option .essay_answer {
+      margin-left: 6.472px; }
     #quizu_questions li.option .essay {
       position: relative;
       margin-bottom: 51.776px; }
@@ -392,16 +470,34 @@
         padding-left: 12.944px;
         padding-right: 12.944px; } }
   #quizu_questions div.result {
-    padding-bottom: 77.664px; }
-    #quizu_questions div.result .title {
-      font-size: 25.888px;
-      font-weight: bold; }
+    padding-top: 38.832px;
+    padding-bottom: 38.832px;
+    border-bottom: 1px solid #f1f1f1;
+    position: relative;
+    transition: 0.5s; }
+    #quizu_questions div.result textarea {
+      height: 500px; }
+    #quizu_questions div.result .title.result {
+      margin-bottom: 12.944px; }
+    #quizu_questions div.result .collapse {
+      position: absolute;
+      top: 51.776px;
+      right: 12.944px;
+      transition: 0.5s; }
+    #quizu_questions div.result .delete_result {
+      vertical-align: text-top; }
+    @media screen and (min-width: 364px) {
+      #quizu_questions div.result .scores, #quizu_questions div.result .highest {
+        float: right; } }
     #quizu_questions div.result .range {
       width: 60px;
-      text-align: center;
-      vertical-align: baseline; }
+      text-align: right;
+      width: 35px;
+      padding: 0;
+      vertical-align: sub; }
+      #quizu_questions div.result .range.min {
+        margin-right: 12.944px; }
     #quizu_questions div.result label {
-      margin-left: 12.944px;
       vertical-align: middle; }
     #quizu_questions div.result .buttons {
       padding-top: 25.888px; }
@@ -412,11 +508,25 @@
       #quizu_questions div.result .buttons.results_by_option .scores {
         display: none; }
       #quizu_questions div.result .buttons.results_by_option .highest {
-        display: inline-block; }
+        display: inline-block;
+        transform: translateY(-8.62933px); }
     #quizu_questions div.result .wp-editor-tools > * > :not(.insert-media):not(.wp-switch-editor) {
       display: none; }
     #quizu_questions div.result .wp-switch-editor {
       display: none; }
+    #quizu_questions div.result.collapsed {
+      padding-top: 12.944px;
+      padding-bottom: 25.888px; }
+      #quizu_questions div.result.collapsed .title {
+        margin-bottom: 0; }
+      #quizu_questions div.result.collapsed .collapse {
+        top: 32.36px; }
+  #quizu_questions .collapsed > :not(.title):not(.collapse):not(.sort_handle):not(.wraper):not(.buttons),
+  #quizu_questions .collapsed .buttons .new {
+    display: none !important; }
+  @media screen and (min-width: 992px) {
+    #quizu_questions {
+      background: #f7f7f7; } }
 
 #quizu_settings {
   padding-top: 10px;
@@ -462,8 +572,6 @@
       min-height: 64px; } }
   #quizu_settings .switch, #quizu_settings .wp-color-result, #quizu_settings label, #quizu_settings .label, #quizu_settings textarea, #quizu_settings select {
     margin-bottom: 32.36px; }
-  #quizu_settings .option label {
-    line-height: 1.3em; }
   #quizu_settings .option .container {
     display: inline-block;
     width: calc(100% - 230px);

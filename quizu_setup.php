@@ -6,18 +6,15 @@ defined('ABSPATH') or die("Cannot access pages directly.");
 
 $quizu = new quizu_main_model(quizu_find_linked_quiz());
 $master_list = quizu_master_config_list();
-$permited_roles = get_option('quizu_settings_permissions');
 
 if (empty(get_option('quizu_settings_defaults_stored'))) {
   quizu_set_defaults($master_list);
   update_option('quizu_settings_defaults_stored', 'true');
 }
 
-if (is_array(array_intersect_key(wp_get_current_user()->roles, $permited_roles))) {
-  $current_user_is_capable = true;
-}else{
-  $current_user_is_capable = false;
-}
+$permited_roles = get_option('quizu_settings_permissions');
+
+$current_user_is_capable = quizu_check_is_user_cap();
 
 // REGISTER POST TYPES----------------------------------------------------------------------------------------------------------------
 
@@ -31,10 +28,9 @@ function quizu_post_types_setup(){/*Define Quiz post type*/
       'capability_type' => 'quizu',
       'map_meta_cap' => true
     );
-
     register_post_type( 'quizu_quiz', $args );
 }
-add_action( 'init', 'quizu_post_types_setup' );
+add_action( 'init', 'quizu_post_types_setup', 10);
 
 
 // INTERNATIONALIZATION----------------------------------------------------------------------------------------------------------------
@@ -42,13 +38,13 @@ add_action( 'init', 'quizu_post_types_setup' );
 load_plugin_textdomain('quizuint', false, dirname(plugin_basename(__FILE__ )) . '/languages');
 
 
-// REGISTER QUIZES ----------------------------------------------------------------------------------------------------------------
+// REGISTER QUIZES Widget ----------------------------------------------------------------------------------------------------------------
 
 // register Foo_Widget widget
 function register_quizu_widget() {
     register_widget( 'quizu_Widget' );
 }
-add_action( 'widgets_init', 'register_quizu_widget' );
+add_action( 'widgets_init', 'register_quizu_widget', 10);
 
 /**
  * Adds quizu widget.
@@ -96,18 +92,20 @@ class quizu_Widget extends WP_Widget {
     }
 
     if (!$quizu_login_restriction_flag) {
-      echo $args['before_widget'];
-    }
 
-    if ( ! empty( $instance['title'] ) ) {
-      echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
-    }
-    $quizu_in_sidebar = true;
-    include( plugin_dir_path( __FILE__ ) . 'views/shortcode.php');
-    if (!$quizu_login_restriction_flag) {
+      echo $args['before_widget'];
+
+      if ( ! empty( $instance['title'] ) ) {
+        echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+      }
+
+      $quizu_in_sidebar = true;
+      include( plugin_dir_path( __FILE__ ) . 'views/shortcode.php');
+      
       echo $args['after_widget'];
+      unset($quizu_in_sidebar);
+
     }
-    unset($quizu_in_sidebar);
   }
 
   public function form( $instance ) {/*Input for widget title*/
@@ -147,7 +145,7 @@ if (is_user_logged_in() && $current_user_is_capable) {
     wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style( 'wp-color-picker');
 
-    wp_enqueue_script('quizu-admin-js', plugins_url( '/includes/js/quizu-admin.js', __FILE__ ), array('jquery'), null, true);
+    wp_enqueue_script('quizu-admin-js', plugins_url( '/assets/js/quizu-admin.js', __FILE__ ), array('jquery'), null, true);
     wp_enqueue_script('jquery-ui-sortable');
     wp_enqueue_script('wp-color-picker');
 
@@ -155,7 +153,6 @@ if (is_user_logged_in() && $current_user_is_capable) {
 
     wp_localize_script( 'quizu-admin-js', 'quizuObj', array(
       'overlap' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_overlap')))),
-      'minimal' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_minimal')))),
       'integer' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_integer')))),
       'option' => esc_html__('Option', 'quizuint'),
       'flags' => array(
@@ -164,18 +161,18 @@ if (is_user_logged_in() && $current_user_is_capable) {
     ));
   }
 
-  add_action('admin_enqueue_scripts','quizu_admin_enqueues');
+  add_action('admin_enqueue_scripts','quizu_admin_enqueues', 10, 1);
 
   // REGISTER CUSTOM COLUMNS----------------------------------------------------------------------------------------------------------------
 
   // Add the custom columns to the book post type:
 
-    function quizu_quiz_list_columns($columns) {
+    function quizu_quiz_archive_columns($columns) {
         $columns['quizu_shortcode'] = __( 'Shortcode', 'quizuint' );
         return $columns;
     }
 
-    add_filter( 'manage_quizu_quiz_posts_columns' , 'quizu_quiz_list_columns', 10, 2 );
+    add_filter( 'manage_quizu_quiz_posts_columns' , 'quizu_quiz_archive_columns', 10, 1 );
 
     // Add the data to the custom columns for the book post type:
 
@@ -185,7 +182,6 @@ if (is_user_logged_in() && $current_user_is_capable) {
         case 'quizu_shortcode':
             echo '<input type="text" value="[quizu id='.'&#34;'.$id.'&#34;'.']" size="15" readonly onclick="this.select()">';
           break;
-
       }
     }
 
@@ -194,9 +190,10 @@ if (is_user_logged_in() && $current_user_is_capable) {
 
   // POST CLONE-----------------------------------------------------------------------------------------------------------------
 
-  function quizu_quiz_archive_clone_quiz(){
+  function quizu_clone_quiz(){
 
    if (is_post_type_archive('quizu_quiz') && isset($_GET['quizu_settings']['quizu_clone'])) {
+      
       $stripedvars = $_GET['quizu_settings'];
 
       array_walk_recursive($stripedvars, 'quizu_sanitize_deep');
@@ -236,6 +233,7 @@ if (is_user_logged_in() && $current_user_is_capable) {
            * get all current post terms ad set them to the new post draft
            */
           $taxonomies = get_object_taxonomies($current_post->post_type); // returns array of taxonomy names for post type, ex array("category", "post_tag");
+
           foreach ($taxonomies as $taxonomy) {
             $current_post_terms = wp_get_object_terms($current_post_id, $taxonomy, array('fields' => 'slugs'));
             wp_set_object_terms($new_post_id, $current_post_terms, $taxonomy, false);
@@ -250,7 +248,6 @@ if (is_user_logged_in() && $current_user_is_capable) {
             update_post_meta($new_post_id, $meta, get_post_meta($current_post->ID, $meta, true));
           }
        
-       
           /*
            * finally, redirect to the edit post screen for the new draft
            */
@@ -262,23 +259,23 @@ if (is_user_logged_in() && $current_user_is_capable) {
     }
   }
 
-  add_action( 'pre_get_posts', 'quizu_quiz_archive_clone_quiz');
+  add_action( 'pre_get_posts', 'quizu_clone_quiz', 10);
 
-  function quizu_duplicate_quiz_link_button( $actions, $post ) {
+  function quizu_quiz_archive_clone_link( $actions, $post ) {
     if (current_user_can('edit_posts')) {
       $actions['duplicate'] = '<a href="edit.php?&post_type=quizu_quiz&quizu_settings%5Bquizu_clone%5D='.$post->ID.'">'.esc_html__('Clone', 'quizuint').'</a>';
     }
     return $actions;
   }
    
-  add_filter( 'post_row_actions', 'quizu_duplicate_quiz_link_button', 10, 2 );
+  add_filter( 'post_row_actions', 'quizu_quiz_archive_clone_link', 10, 2 );
 
 
   // SETUP quizu POST BEHAVIOUR-----------------------------------------------------------------------------------------------------------------
 
   function quizu_disable_mce_buttons( $opt ) {
       //set button that will be show in row 1
-      $opt['theme_advanced_buttons1'] = 'bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,wp_more,|,spellchecker,wp_fullscreen,wp_adv,separator';
+      $opt['theme_advanced_buttons1'] = 'bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,spellchecker,wp_adv,separator';
       return $opt;
   }
 
@@ -306,10 +303,6 @@ if (is_user_logged_in() && $current_user_is_capable) {
         return;
       };
 
-      $all_questions = $_POST['quizu_all_questions'];
-
-      $all_results = $_POST['quizu_all_results'];
-
       $all_flags = array(
           'user_login_flag',
           'show_scores_flag',
@@ -317,8 +310,24 @@ if (is_user_logged_in() && $current_user_is_capable) {
       );
 
       foreach ($all_flags as $flag) {
-        update_post_meta(get_the_id(), '_quizu_'.$flag, $_POST['quizu_all_flags'][$flag] == 'on' ? 'true' : $_POST['quizu_all_flags'][$flag]);
+        if ($flag == 'result_criteria_flag') {
+
+          $allowed_criteria = array(
+            'results_by_path',
+            'results_by_total',
+            'results_by_option',
+          );
+
+          update_post_meta(get_the_id(), '_quizu_'.$flag, in_array($_POST['quizu_all_flags'][$flag], $allowed_criteria) ? $_POST['quizu_all_flags'][$flag] : '');
+          
+        }else{
+          update_post_meta(get_the_id(), '_quizu_'.$flag, $_POST['quizu_all_flags'][$flag] == 'on' ? 'true' : 'false');
+        }
       }
+
+      $all_questions = $_POST['quizu_all_questions'];
+
+      $all_results = $_POST['quizu_all_results'];
 
       array_walk_recursive($all_questions, "quizu_sanitize_deep");/*Sanitize array with htmlspecialchars*/
       array_walk_recursive($all_results, "quizu_sanitize_deep");/*Sanitize array with htmlspecialchars*/
@@ -326,9 +335,11 @@ if (is_user_logged_in() && $current_user_is_capable) {
       $all_questions_R = array_reverse($all_questions);/*Reverse array from display order*/
 
       foreach ($all_questions_R as $path) {
-        $questionsR = array_reverse($path['questions']);/*Reverse array from display order*/
-        $all_questions_R[$path['id']]['questions'] = $questionsR;/*Update questions*/
-        foreach ($questionsR as $question) {
+        
+        $questions_R = array_reverse($path['questions']);/*Reverse array from display order*/
+        $all_questions_R[$path['id']]['questions'] = $questions_R;/*Update questions*/
+        
+        foreach ($questions_R as $question) {
 
           if (!empty($question['flags']['essay_flag']) && $question['flags']['essay_flag'] == 'on') {
             $all_questions_R[$path['id']]['questions'][$question['id']]['flags']['essay_flag'] = 'true';/*Update options*/
@@ -345,19 +356,24 @@ if (is_user_logged_in() && $current_user_is_capable) {
           $options = $question['options'];/*Reverse array from display order*/
 
           foreach ($options as $option) {
+            
             $split = explode('||', $option['link']);
+
             $option['link'] = array();
             $option['link']['linkid'] = $split[0];
             $option['link']['linkpath'] = $split[1];
 
             if (!empty($option['essay_ops'])) {
               foreach ($option['essay_ops'] as $essay) {
+
                 $split2 = explode('||', $essay['link']);
+
                 $essay['link'] = array();
                 $essay['link']['linkid'] = $split2[0];
                 $essay['link']['linkpath'] = $split2[1];
 
                 $option['essay_ops'][$essay['id']] = $essay;
+
               }
             }
 
@@ -369,13 +385,16 @@ if (is_user_logged_in() && $current_user_is_capable) {
       }
 
       foreach ($all_results as $result => $value_re) {
+
         foreach ($all_results as $result_2 => $value_re_2) {
+
           if (
                   $value_re['id'] != $value_re_2['id'] 
               &&  intval($value_re_2['score']['min']) + intval($value_re_2['score']['max']) != 0
               &&  intval($value_re['score']['min']) + intval($value_re['score']['max']) != 0
 
             ) {
+
             if (max($value_re['score']['min'], $value_re_2['score']['min']) <= min($value_re['score']['max'], $value_re_2['score']['max'])) {
               
               $all_results[$value_re['id']]['score']['min'] = 0;
@@ -385,6 +404,7 @@ if (is_user_logged_in() && $current_user_is_capable) {
               $all_results[$value_re_2['id']]['score']['max'] = 0;
 
             }
+
           };
         }
       }
@@ -406,17 +426,18 @@ if (is_user_logged_in() && $current_user_is_capable) {
       $quizu_linked_quiz = htmlspecialchars((int)$_POST['quizu_linked_quiz']);/*Get linked quiz ID*/
 
       update_post_meta(get_the_id(), '_quizu_linked_quiz', $quizu_linked_quiz);/*Store linked quiz ID*/
+
     }
   }
-  add_action( 'save_post', 'quizu_quiz_save_behaviour' );
+  add_action( 'save_post', 'quizu_quiz_save_behaviour', 10);
 
   // REGISTER ADMIN META-BOXES----------------------------------------------------------------------------------------------------------------
 
-  function quizu_questions_metabox(){/*Register Quiz config admin panel meta-boxes*/
+  function quizu_metaboxes(){/*Register Quiz config admin panel meta-boxes*/
     add_meta_box( 'quizu_questions', esc_html__('Branched Quiz', 'quizuint') , 'quizu_questions_metabox_content', 'quizu_quiz', 'normal' , 'high');
     add_meta_box( 'quizu_linked_quizes', esc_html__('QuizU Linked Quiz', 'quizuint') , 'quizu_linked_quizzes_metabox_content', array('post', 'page'), 'side' , 'high');
   }
-  add_action ( 'add_meta_boxes' , 'quizu_questions_metabox' ) ;
+  add_action('add_meta_boxes' , 'quizu_metaboxes', 10);
 
   function quizu_questions_metabox_content(){/*Define quiz config admin panel contents*/
     wp_nonce_field( basename( __FILE__ ), 'quizu_quiz_save_behaviour' );
@@ -467,23 +488,21 @@ if (is_user_logged_in() && $current_user_is_capable) {
     include( plugin_dir_path( __FILE__ ) . 'views/settings.php');
   }
 
-  add_action( 'admin_menu', 'quizu_settings_menu' );
+  add_action( 'admin_menu', 'quizu_settings_menu', 10);
 
 }
 
 // REGISTER QUIZES SHORTCODE----------------------------------------------------------------------------------------------------------------
 
 function quizu_quiz_shortcode($atts) {/*Define and register front end Quiz shortcode*/
+  
   $quizu_atts = shortcode_atts(array(
     'id' => '',
   ), $atts );
 
   $linked_quiz = $quizu_atts['id'];
 
-  ob_start();
-  include(plugin_dir_path( __FILE__ ) . 'views/shortcode.php');
-  $output = ob_get_contents();
-  ob_end_clean();
+  $output = quizu_get_file_output(plugin_dir_path( __FILE__ ) . 'views/shortcode.php');
 
   return $output;
 
@@ -499,7 +518,7 @@ if (!is_admin()) {
 
   function quizu_front_enqueues() {/*Enqueues for front*/
     
-    wp_enqueue_script('quizu-front-js', plugins_url( '/includes/js/quizu-front.js', __FILE__ ), array('jquery'), null, true);
+    wp_enqueue_script('quizu-front-js', plugins_url( '/assets/js/quizu-front.js', __FILE__ ), array('jquery'), null, true);
     wp_enqueue_script('jssocials', 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js', array('jquery'), null, true);
     wp_enqueue_style('quizu-front-css', plugins_url( '/includes/css/quizu-front.css', __FILE__ ));
     wp_enqueue_style('jsscoials-flat', 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css');
@@ -509,6 +528,10 @@ if (!is_admin()) {
     $quizu = new quizu_main_model($linked_quiz);
     $base_paths = $quizu->all_questions;
     $base_results = $quizu->all_results;
+
+    foreach ($base_results as $result => $value_re) {
+      $base_results[$value_re['id']]['content'] = quizu_run_shortcodes(htmlspecialchars_decode($value_re['content']));
+    }
 
     wp_localize_script( 'quizu-front-js', 'quizuObj', array(
       'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -531,10 +554,10 @@ if (!is_admin()) {
       'email' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_email'), 'quizuint'))),
       'send' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_send'), 'quizuint'))),
       'emailMessage' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_email_message'), 'quizuint'))),
-      'senderEmail' => esc_html(get_option('quizu_settings_email_address')),
+      'senderEmail' => sanitize_email(get_option('quizu_settings_email_address')),
       'senderName' => esc_html(get_option('quizu_settings_email_name')),
       'userEmail' => sanitize_email($quizu_current_user->user_email),
-      'emailSubject' => htmlspecialchars_decode(quizu_run_string_template(get_option('quizu_settings_email_subject'))),
+      'emailSubject' => quizu_run_string_template(esc_html__(htmlspecialchars_decode(get_option('quizu_settings_email_subject')))),
       'postEmail' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_post_email'), 'quizuint'))),
       'emailError' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_email_error'), 'quizuint'))),
       'totalScore' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_total_score'), 'quizuint'))),
@@ -545,6 +568,22 @@ if (!is_admin()) {
               'userLoggedInFlag' => is_user_logged_in(),
               'isPreview' => is_preview(),
         )
+    ));
+
+    wp_localize_script( 'quizu-front-js', 'quizuObjOrT', array(
+      'reset' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_reset'), 'quizuint'))),
+      'next' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_next'), 'quizuint'))),
+      'essayError' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_essay_error'), 'quizuint'))),
+      'checkedError' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_checked_error'), 'quizuint'))),
+      'error' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_error'), 'quizuint'))),
+      'share' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_share'), 'quizuint'))),
+      'email' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_email'), 'quizuint'))),
+      'send' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_send'), 'quizuint'))),
+      'emailMessage' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_email_message'), 'quizuint'))),
+      'emailSubject' => htmlspecialchars_decode(quizu_run_string_template(get_option('quizu_settings_email_subject'))),
+      'postEmail' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_post_email'), 'quizuint'))),
+      'emailError' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_email_error'), 'quizuint'))),
+      'totalScore' => nl2br(quizu_run_string_template(esc_html__(get_option('quizu_settings_texts_total_score'), 'quizuint'))),
     ));
   }
 

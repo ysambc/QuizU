@@ -35,11 +35,7 @@ function quizu_init(){
 	include( plugin_dir_path( __FILE__ ) . 'quizu_utils.php');
 	include( plugin_dir_path( __FILE__ ) . 'quizu_setup.php');
 
-	if (is_array(array_intersect_key(wp_get_current_user()->roles, get_option('quizu_settings_permissions')))) {
-	  $current_user_is_capable = true;
-	}else{
-	  $current_user_is_capable = false;
-	}
+	$current_user_is_capable = quizu_check_is_user_cap();
 
 	if (is_admin() && $current_user_is_capable) {
 		include( plugin_dir_path( __FILE__ ) . 'models/quizu_admin_ajax_model.php');

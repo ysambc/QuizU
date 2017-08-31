@@ -4,16 +4,14 @@
 
 	$aggregated = quizu_aggregate_qr($quizu);
 
-
 	$result_criteria_flag = get_post_meta($quizu->quizu_id, '_quizu_result_criteria_flag', true);
 	$result_criteria_class = !empty($result_criteria_flag) && $result_criteria_flag != 'results_by_path' ? 'results_by_score' : '';
 
- ?>
+?>
 
-
-<li class="option parent <?php echo $option['id'] == 'essay' ? 'essay_option' : 'not_essay' ?>" data-path="<?php echo esc_attr($path_id) ?>" data-question="<?php echo esc_attr($question_id) ?>" data-option="<?php echo esc_attr($option_id); ?>">
+<li class="option parent <?php echo $option['id'] == 'essay' ? 'essay_option' : 'not_essay' ?>" data-path="<?php echo esc_attr($path['id']) ?>" data-question="<?php echo esc_attr($question['id']) ?>" data-option="<?php echo esc_attr($option['id']); ?>">
 	
-	<input class="option_id" type="hidden" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option_id) ?>][id]" value="<?php echo esc_attr($option['id']) ?>">
+	<input class="option_id" type="hidden" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][id]" value="<?php echo esc_attr($option['id']) ?>">
 
 	<input class="option title" type="text" name="quizu_all_questions[<?php echo esc_attr($path['id']) ?>][questions][<?php echo esc_attr($question['id']) ?>][options][<?php echo esc_attr($option['id']) ?>][value]" value="<?php echo esc_attr($option['value']) ?>">
 
@@ -90,7 +88,7 @@
 		</button>
 
 		<div class="essay_options">
-			<?php foreach ($option['essay_ops'] as $essay => $value_es): ?>
+			<?php foreach ($option['essay_ops'] as $essay): ?>
 				<?php include( plugin_dir_path( __DIR__ ) . 'views/essay.php'); ?>
 			<?php endforeach ?>
 		</div>

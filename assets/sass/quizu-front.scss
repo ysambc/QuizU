@@ -106,7 +106,7 @@ $u: $vertical-unit;
 		margin-bottom: $u*2;
 	}
 
-	.reset, .next{
+	.reset, .reload, .next{
 		border-radius: $u;
 		position: relative;
 		color: white;
@@ -223,7 +223,7 @@ $u: $vertical-unit;
 
 		.option_next p{
 			padding-left: $u/2 !important;
-			padding-right: 45px !important;
+			padding-right: $u/2 !important;
 			padding-top: $u/16 !important;
 			padding-bottom: $u/16 !important;
 		}

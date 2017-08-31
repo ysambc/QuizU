@@ -46,3 +46,5 @@ foreach ($quizu_master_config_list['texts_list'] as $text => $value)
 {
   delete_option( 'quizu_settings_texts_'.$text);
 }
+
+quizu_caps_updates();

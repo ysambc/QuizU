@@ -4,6 +4,16 @@ if ( ! function_exists( 'get_editable_roles' ) ) {
     require_once ABSPATH . 'wp-admin/includes/user.php';
 }
 
+function quizu_check_is_user_cap(){
+  if (is_array(array_intersect_key(wp_get_current_user()->roles, get_option('quizu_settings_permissions')))) {
+    $current_user_is_capable = true;
+  }else{
+    $current_user_is_capable = false;
+  }
+
+  return $current_user_is_capable;
+}
+
 function quizu_set_defaults($master_list){
   if (empty(get_option('quizu_settings_permissions')))
   {
@@ -43,8 +53,8 @@ function quizu_set_defaults($master_list){
   }
 }
 
-function quizu_sanitize_deep(&$value) {
-  $value = htmlspecialchars(stripslashes(trim($value)));
+function quizu_sanitize_deep(&$item) {
+  $item = htmlspecialchars(stripslashes($item));
 }
 
 function quizu_wp_kses($value) {
@@ -78,14 +88,21 @@ function quizu_wp_kses($value) {
   );
 
   return $ksesed;
+
 }
 
-function quizu_get_file_output($file_uri, $mail_parts = NULL) {
+function quizu_get_file_output($file_uri, $data_parts = NULL) {
   
   ob_start();
-  extract($mail_parts);
+  
+  if (!empty($data_parts)) {
+    extract($data_parts);
+  }
+  
   include($file_uri);
+  
   $content = ob_get_contents();
+
   ob_end_clean();
 
   return $content;
@@ -118,21 +135,20 @@ function quizu_find_linked_quiz(){
 function quizu_aggregate_qr($quizu){
   $aggregated = array();/*Retrieve questions and results to fill in the select box*/
 
-  foreach ($quizu->all_questions as $pathec => $val) {/*Aggregate questions*/
-    $pathi = $pathec;
-    foreach ($val['questions'] as $key => $value) {
-      $title = ucwords(substr($val['name'], 0, 2)) . substr($val['name'], -1, 1) . ':  ' .$value['title'];
-      $value['title'] = $title;
-      $value['path'] = $pathi;
-      $aggregated[$key] = $value;
+  foreach ($quizu->all_questions as $path => $value_pa) {/*Aggregate questions*/
+    foreach ($value_pa['questions'] as $question => $value_qu) {
+      $title = ucwords(substr($value_pa['name'], 0, 2)) . substr($value_pa['name'], -1, 1) . ':  ' . $value_qu['title'];
+      $value_qu['title'] = $title;
+      $value_qu['path'] = $path;
+      $aggregated[$question] = $value_qu;
     }
   }
 
-  foreach ($quizu->all_results as $result => $value) {/*Aggregate results*/
-    $title = 'Res: ' . $value['title'];
-    $value['result'] = 'true';
-    $value['title'] = $title;
-    $aggregated[$result] = $value;
+  foreach ($quizu->all_results as $result => $value_re) {/*Aggregate results*/
+    $title_re = 'Res: ' . $value_re['title'];
+    $value_re['result'] = 'true';
+    $value_re['title'] = $title_re;
+    $aggregated[$result] = $value_re;
   }
 
   return $aggregated;
@@ -151,18 +167,17 @@ function quizu_run_string_template($string, $linked_quiz = NULL)
   (   /*Some templates are replaced in the frontend (email)*/
       '{{admin-email}}' => !empty(get_option('quizu_settings_email_address')) ? get_option('quizu_settings_email_address') : get_bloginfo('admin_email'),
       '{{quiz-title}}' => get_the_title($linked_quiz),
-      // '{{result-title}}' => !empty($result) ? $result['title'] :,
-      // '{{result-content}}' =>  !empty($result) ? $result['content'] :,
       '{{site-url}}' => get_bloginfo('url')
   );
+
+  if (current_filter() != 'wp_enqueue_scripts') {
+    $templates['{{user-email}}'] = $current_user->user_email;
+  }
 
   foreach ($templates as $template => $replace) 
   {
 
-    while (strpos($string, $template) !== false)
-    {
-        $string = str_replace($template, $replace, $string);
-    }
+    $string = str_replace($template, $replace, $string);
 
   }
 
@@ -242,33 +257,33 @@ function quizu_caps_updates(){
       $role_is_capable = false;
     }
 
-    $cap = get_role($role);
+    $profile = get_role($role);
 
     if ($role_is_capable) {
 
-      $cap->add_cap('quizu_edit_quizzes');
-      $cap->add_cap('edit_quizu');
-      $cap->add_cap('edit_quizus');
-      $cap->add_cap('delete_quizu');
-      $cap->add_cap('delete_quizus');
-      $cap->add_cap('edit_published_quizus');
-      $cap->add_cap('delete_published_quizus');
-      $cap->add_cap('edit_others_quizus');
-      $cap->add_cap('delete_others_quizus');
-      $cap->add_cap('publish_quizus');
+      $profile->add_cap('quizu_edit_quizzes');
+      $profile->add_cap('edit_quizu');
+      $profile->add_cap('edit_quizus');
+      $profile->add_cap('delete_quizu');
+      $profile->add_cap('delete_quizus');
+      $profile->add_cap('edit_published_quizus');
+      $profile->add_cap('delete_published_quizus');
+      $profile->add_cap('edit_others_quizus');
+      $profile->add_cap('delete_others_quizus');
+      $profile->add_cap('publish_quizus');
 
     }else{
 
-      $cap->remove_cap('quizu_edit_quizzes');
-      $cap->remove_cap('edit_quizu');
-      $cap->remove_cap('edit_quizus');
-      $cap->remove_cap('delete_quizu');
-      $cap->remove_cap('delete_quizus');
-      $cap->remove_cap('edit_published_quizus');
-      $cap->remove_cap('delete_published_quizus');
-      $cap->remove_cap('edit_others_quizus');
-      $cap->remove_cap('delete_others_quizus');
-      $cap->remove_cap('publish_quizus');
+      $profile->remove_cap('quizu_edit_quizzes');
+      $profile->remove_cap('edit_quizu');
+      $profile->remove_cap('edit_quizus');
+      $profile->remove_cap('delete_quizu');
+      $profile->remove_cap('delete_quizus');
+      $profile->remove_cap('edit_published_quizus');
+      $profile->remove_cap('delete_published_quizus');
+      $profile->remove_cap('edit_others_quizus');
+      $profile->remove_cap('delete_others_quizus');
+      $profile->remove_cap('publish_quizus');
     
     }
   }

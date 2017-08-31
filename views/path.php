@@ -1,4 +1,6 @@
-<div class="path parent" data-path="<?php echo esc_attr($path['id']) ?>" data-color="<?php echo esc_attr($path['color']) ?>">
+<?php defined('ABSPATH') or die("Cannot access pages directly."); ?>
+
+<div class="path parent collapsed" data-path="<?php echo esc_attr($path['id']) ?>" data-color="<?php echo esc_attr($path['color']) ?>">
 
 	<div class="wraper">
 

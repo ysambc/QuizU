@@ -25,7 +25,12 @@ class quizu_main_model
 		$this->quizu_id = $quizu_id;/*Get the Quiz ID from POST*/
 		$this->quizu_title = get_the_title($quizu_id);/*Get the Title from POST*/
 		$this->quiz_content = get_post_field('post_content', $this->quizu_id);/*Get the Content from POST*/
-		$this->path = $path;/*Get the Quiz' parent Path from POST. If no path is set in POST, this will fallback to 'default'*/
+
+		if (empty($path)) {
+			$this->path = uniqid();
+		}else{
+			$this->path = $path;/*Get the Quiz' parent Path from POST. If no path is set in POST, this will fallback to 'default'*/
+		}
 
 		$this->field = '_quizu_questions';/*This is the name of the custom field where the questions are going to be stored inside the Quiz type post. Defined for ease*/
 		$this->Rfield = '_quizu_results';/*This is the name of the custom field where the questions are going to be stored inside the Quiz type post. Defined for ease*/

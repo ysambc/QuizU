@@ -1,14 +1,34 @@
-<div class="result parent" data-question="<?php echo esc_attr($result['id']) ?>">
+<?php defined('ABSPATH') or die("Cannot access pages directly."); ?>
+
+<?php 
+
+	$result_criteria_flag = get_post_meta($quizu->quizu_id, '_quizu_result_criteria_flag', true);
+
+	switch ($result_criteria_flag) {
+		case 'results_by_option':
+			$result_criteria = 'results_by_option';
+			break;
+		
+		default:
+			$result_criteria = 'results_by_total';
+			break;
+	}
+
+?>
+
+<div class="result parent collapsed" data-question="<?php echo esc_attr($result['id']) ?>">
 
 	<input class="id" type="hidden" name="quizu_all_results[<?php echo esc_attr($result['id']) ?>][id]" value="<?php echo esc_attr($result['id']) ?>">
 	<input class="title result" type="text" name="quizu_all_results[<?php echo esc_attr($result['id']) ?>][title]" value="<?php echo esc_attr($result['title']) ?>">
-
+	<i class="fa fa-compress collapse"></i>
+	
 	<?php 
 
-	wp_editor( quizu_wp_kses($result['content']), 
+	wp_editor(quizu_wp_kses($result['content']), 
 		'tinymce_'.esc_html($result['id']), array(
 	        'tinymce' => array(
 	            'init_instance_callback' => 'function(ed, e) {
+	            	ed.theme.resizeTo("100%", 300);
 	        		if (quizuObj.flags.autosave == "true") {
 	        			ed.on("change", function(e){
 	                    	if (typeof mceEditorCounter !== "undefined") {
@@ -30,20 +50,6 @@
 	);
 
 	?>
-
-	<?php 
-
-		switch (get_post_meta($quizu->quizu_id, '_quizu_result_criteria_flag', true)) {
-			case 'results_by_option':
-				$result_criteria = 'results_by_option';
-				break;
-			
-			default:
-				$result_criteria = 'results_by_total';
-				break;
-		}
-
-	 ?>
 
 	<div class="buttons <?php echo $result_criteria ?>">
 		

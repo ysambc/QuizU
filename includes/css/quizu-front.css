@@ -63,7 +63,7 @@
     margin-bottom: 25.888px; }
   .quizu_widget .result {
     margin-bottom: 51.776px; }
-  .quizu_widget .reset, .quizu_widget .next {
+  .quizu_widget .reset, .quizu_widget .reload, .quizu_widget .next {
     border-radius: 25.888px;
     position: relative;
     color: white;
@@ -149,7 +149,7 @@
     border-radius: 15px; }
     .quizu_widget:not(.sidebar) .option_next p {
       padding-left: 12.944px !important;
-      padding-right: 45px !important;
+      padding-right: 12.944px !important;
       padding-top: 1.618px !important;
       padding-bottom: 1.618px !important; }
     .quizu_widget:not(.sidebar) .option_image {

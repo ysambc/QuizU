@@ -21,7 +21,7 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 
 		$this->number_path = count($this->all_questions);/*Count all paths*/
 		
-		if (isset($path)) {
+		if (!empty($path)) {
 			$this->number_questions = count($this->all_questions[$path]['questions']);/*Count all questions in the parent path*/
 		}
 
@@ -29,12 +29,12 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 
 	public function new_path($nonsic){/*Add a new path*/
 
+		if(!empty($nonsic)){
+			$this->number_path = $nonsic;
+		}
+
 		$path_id = uniqid();/*Create a random ID for this path*/
 		$path_name = esc_html__('Branch ', 'quizuint') . ' # ' . strval(($this->number_path));/*Assign generic name to path*/
-
-		if(!empty($nonsic)){
-			$this->number_path == $nonsic;
-		}
 
 		if ($this->number_path == 0) {/*If there are no paths, create a default path with random ID*/
 			$path_id = 'default';
@@ -52,6 +52,7 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 		$this->number_questions = count($this->all_questions[$this->path]['questions']);
 
 		$path = $this->all_questions[$this->path];/*Retrieve the path recently inserted to pass it into the admin panel 'new path' view template*/
+		$path['id'] = $this->path;
 
 		$new_question_switch = true;
 
@@ -72,11 +73,12 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 
 		$result_id = uniqid();
 		$number_results = count($this->all_results);
-		$result_title = esc_html__('Result', 'quizuint') . ' # ' . strval(($number_results+1));
 
 		if(!empty($nonsic)){
 			$number_results = $nonsic;
 		}
+
+		$result_title = esc_html__('Result', 'quizuint') . ' # ' . strval(($number_results+1));
 
 		$this->all_results[$result_id] = array(
 			'id' => $result_id,
@@ -116,7 +118,7 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 
 	public function new_question($path, $nonsic){/*Add a new question to current Quiz questions array*/
 
-		if (isset($path)) {
+		if (!empty($path)) {
 			$this->path = $path;
 		}
 
@@ -159,9 +161,11 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 					'essay_ops' => array(array('id' => uniqid(), 'value' => esc_html__('Answer', 'quizuint') . ' # 1')),
 				),
 			),
-			'essay_flag' => 'false',
-			'multiple_choice_flag' => 'false',
 			'result' => 'false',
+			'flags' => array(
+				'essay_flag' => 'false',
+				'multiple_choice_flag' => 'false',
+			),
 		);
 
 		$this->all_questions[$this->path]['questions'][$question['id']] = $question;/*Insert new question into Quiz' questions*/
@@ -173,7 +177,7 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 		$quizu = $this;
 
 		$path = $this->all_questions[$this->path];
-		$path_id = $path['id'];
+		$path['id'] = $this->path;
 
 		include( plugin_dir_path(__DIR__) . 'views/question.php');/*Return new question template for admin panel*/
 	}
@@ -263,11 +267,14 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 	// Sort questions
 	public function sort_questions($new_order, $new_path, $prev_quest, $prev_path){
 
+		if (empty($new_path)) {
+			$new_path = $this->path;
+		}
 		// Get new path questions
 		$new_questions = $this->all_questions[$new_path]['questions'];
 
 		$new_orderR = array_reverse($new_order);
-		
+
 		// Check if previous question and path are defined
 		if (!empty($prev_quest) && !empty($prev_path)) {
 
@@ -281,21 +288,18 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 			$new_questions[$prev_quest] = $prev_question;
 
 			// Unset previous question 
-			foreach ($prev_questions as $question => $value) {
-				if ($question == $prev_quest) {
-					unset($prev_questions[$question]);
-				}
-			}
+			unset($prev_questions[$prev_quest]);
 
 			// Remove old question from path
 			$this->all_questions[$prev_path]['questions'] = $prev_questions;
 
 		}
 
+		var_dump($new_path);
+
 		// Insert new question
 		$this->all_questions[$new_path]['questions'] = array_merge($new_orderR, $new_questions);
 
-		// Update quiz
 
 		if (get_option('quizu_settings_autosave_quiz_flag') == 'true') {
 			update_post_meta( $this->quizu_id, $this->field, $this->all_questions);
@@ -306,12 +310,10 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 	public function new_option($parent, $nonsic){/*Add new option under current question*/
 
 		$path = $this->all_questions[$this->path];
-
-		$path_id = $path['id'];
+		$path['id'] = $this->path;
 
 		$question = $path['questions'][$parent];/*Select question*/
-
-		$question_id = $parent;/*Select question*/
+		$question['id'] = $parent;
 
 		$number_options = count($question['options']) -1;/*Count quesion's options*/
 
@@ -319,15 +321,13 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 			$number_options = $nonsic - 1;
 		}
 
-		$option['id'] = uniqid();/*Define option ID*/
+		$option_id = uniqid();/*Define option ID*/
 
-		$option_id = $option['id'];/*Define option ID*/
+		$option_value = esc_html__('Option', 'quizuint') . ' # ' .($number_options + 1);/*Define default value*/
 
-		$option['value'] = esc_html__('Option', 'quizuint') . ' # ' .($number_options + 1);/*Define default value*/
-
-		$question['options'][$option['id']] = array(
-			'id' => $option['id'], 
-			'value' => $option['value'], 
+		$option = array(
+			'id' => $option_id, 
+			'value' => $option_value, 
 			'link' => array(
 				'linkid' => '', 
 				'linkpath' => ''
@@ -337,7 +337,9 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 				'url' => '',
 			),
 			'score' => 0,
-		);/*Insert option*/
+		);
+
+		$question['options'][$option['id']] = $option; /*Insert option*/
 
 		$this->all_questions[$this->path]['questions'][$parent] = $question;/*Set modified question*/
 
@@ -350,13 +352,16 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 		include( plugin_dir_path(__DIR__) . 'views/option.php');/*Return new option template*/
 	}
 	
-	public function new_essay($parent, $option, $nonsic){
+	public function new_essay($parent, $option_id, $nonsic){
 
 		$path = $this->all_questions[$this->path];
+		$path['id'] = $this->path;
 
 		$question = $this->all_questions[$path['id']]['questions'][$parent];
+		$question['id'] = $parent;
 
-		$option = $this->all_questions[$path['id']]['questions'][$parent]['options'][$option];
+		$option = $this->all_questions[$path['id']]['questions'][$parent]['options'][$option_id];
+		$option['id'] = $option_id;
 
 		$essay_id = uniqid();
 		
@@ -368,11 +373,14 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 		
 		$option['essay_ops'][$essay_id] = array('id' => $essay_id, 'value' => esc_html__('Answer', 'quizuint') . ' # ' . ($essay_count + 1));
 
-		$this->all_questions[$path['id']]['questions'][$parent]['options'][$option['id']] = $option;
+		$this->all_questions[$path['id']]['questions'][$question['id']]['options'][$option['id']] = $option;
 
-		$value_es = $option['essay_ops'][$essay_id];
+		$essay = $option['essay_ops'][$essay_id];
+		$essay['id'] = $essay_id;
 
 		$aggregated = quizu_aggregate_qr($this);
+
+		$quizu = $this;
 
 		include( plugin_dir_path( __DIR__ ) . 'views/essay.php');
 
@@ -417,128 +425,20 @@ class quizu_admin_ajax_controller_model extends quizu_main_model
 	}
 
 	public function upload_option_image($parent, $option, $file, $flag, $is_result){
-		// Get the post type. Since this function will run for ALL post saves (no matter what post type), we need to know this.
-		    // It's also important to note that the save_post action can runs multiple times on every post save, so you need to check and make sure the
-		    // post type in the passed object isn't "revision"
 
-		    $post_type = 'quizu_quiz';
+       if(isset($file) && $file['filesizeInBytes'] > 0) { // No file was passed
+        	
+        	if ($is_result) {
+        		$this->all_results[$parent]['img']['id'] = $file['id'];
+        		$this->all_results[$parent]['img']['url'] = $file['url'];
+            	update_post_meta($this->quizu_id, $this->Rfield, $this->all_results);
+        	}else{
+         		$this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['id'] = $file['id'];
+         		$this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['url'] = $file['url'];
+            	update_post_meta($this->quizu_id, $this->field, $this->all_questions);
+        	}
 
-		    // Make sure our flag is in there, otherwise it's an autosave and we should bail.
-		    if(isset($flag)) { 
+       }
 
-		        // Logic to handle specific post types
-		        switch($post_type) {
-
-		            // If this is a post. You can change this case to reflect your custom post slug
-		            case 'quizu_quiz':
-
-                            	print(json_encode(array('1')));
-		                // HANDLE THE FILE UPLOAD
-
-		                // If the upload field has a file in it
-		               if(isset($file) && $file['size'] > 0) {
-		               
-                            	print(json_encode(array('2')));
-		                    // Get the type of the uploaded file. This is returned as "type/extension"
-		                    $arr_file_type = wp_check_filetype(basename($file['name']));
-		                    $uploaded_file_type = $arr_file_type['type'];
-
-		                    // Set an array containing a list of acceptable formats
-		                    $allowed_file_types = array('image/jpg','image/jpeg','image/gif','image/png');
-
-		                    // If the uploaded file is the right format
-		                    if(in_array($uploaded_file_type, $allowed_file_types)) {
-
-		                        // Options array for the wp_handle_upload function. 'test_upload' => false
-		                        $upload_overrides = array( 'test_form' => false ); 
-
-		                        // Handle the upload using WP's wp_handle_upload function. Takes the posted file and an options array
-		                        $uploaded_file = wp_handle_upload($file, $upload_overrides);
-
-		                        // If the wp_handle_upload call returned a local path for the image
-		                        if(isset($uploaded_file['file'])) {
-
-		                            // The wp_insert_attachment function needs the literal system path, which was passed back from wp_handle_upload
-		                            $file_name_and_location = $uploaded_file['file'];
-
-		                            // Generate a title for the image that'll be used in the media library
-		                            if ($is_result) {
-		                            	$file_title_for_media_library = 'Result image';
-		                            }else{
-		                            	$file_title_for_media_library = 'Option image';
-		                            }
-
-		                            // Set up options array to add this file as an attachment
-		                            $attachment = array(
-		                                'post_mime_type' => $uploaded_file_type,
-		                                'post_title' => 'Uploaded image ' . addslashes($file_title_for_media_library),
-		                                'post_content' => '',
-		                                'post_status' => 'inherit'
-		                            );
-
-		                            // Run the wp_insert_attachment function. This adds the file to the media library and generates the thumbnails. If you wanted to attch this image to a post, you could pass the post id as a third param and it'd magically happen.
-		                            $attach_id = wp_insert_attachment( $attachment, $file_name_and_location );
-		                            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-		                            $attach_data = wp_generate_attachment_metadata( $attach_id, $file_name_and_location );
-		                            wp_update_attachment_metadata($attach_id,  $attach_data);
-
-		                            // Before we update the post meta, trash any previously uploaded image for this post.
-		                           	
-		                           	// You might not want this behavior, depending on how you're using the uploaded images.
-
-		                            $existing_uploaded_image = (int) $this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['id'];
-
-		                            if(is_numeric($existing_uploaded_image)) {
-		                                wp_delete_attachment($existing_uploaded_image);
-		                            }
-
-	                            	$this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['id'] = $attach_id;
-	                            	$this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['url'] = wp_get_attachment_url($attach_id);
-
-		                            update_post_meta($this->quizu_id, $this->field, $this->all_questions);
-
-		                            // Set the feedback flag to false, since the upload was successful
-		                            $upload_feedback = false;
-
-
-		                        } else { // wp_handle_upload returned some kind of error. the return does contain error details, so you can use it here if you want.
-		                            $upload_feedback = 'There was a problem with your upload.';
-		                            update_post_meta($post_id,$option.'_attached_image',$attach_id);
-
-		                        }
-
-		                    } else { // wrong file type
-		                        $upload_feedback = 'Please upload only image files (jpg, gif or png).';
-		                        update_post_meta($post_id,$option.'_attached_image',$attach_id);
-		                    }
-
-		                } elseif(isset($file) && $file['filesizeInBytes'] > 0) { // No file was passed
-                        	if ($is_result) {
-                        		$this->all_results[$parent]['img']['id'] = $file['id'];
-                        		$this->all_results[$parent]['img']['url'] = $file['url'];
-                            	update_post_meta($this->quizu_id, $this->Rfield, $this->all_results);
-                            	print(json_encode(array('ues')));
-                        	}else{
-                         		$this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['id'] = $file['id'];
-                         		$this->all_questions[$this->path]['questions'][$parent]['options'][$option]['img']['url'] = $file['url'];
-                            	update_post_meta($this->quizu_id, $this->field, $this->all_questions);
-                            	print(json_encode(array($parent)));
-                        	}
-
-		                }else{
-		                    $upload_feedback = false;
-		                }
-
-		                // Update the post meta with any feedback
-		                update_post_meta($post_id,$option.'_attached_image_upload_feedback',$upload_feedback);
-
-		            break;
-
-		            default:
-		        } // End switch
-
-		    return;
-
-		} // End if manual save flag
 	}
 }

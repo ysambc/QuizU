@@ -1,3 +1,5 @@
+<?php defined('ABSPATH') or die("Cannot access pages directly."); ?>
+
 <?php
 
 	if (isset($_POST['quizu_settings']) && !wp_verify_nonce( $_POST['quizu_settings']['nonce'], 'quizu_settings_save' )) {
@@ -173,7 +175,7 @@
 
 
 					<?php foreach (get_editable_roles() as $role => $value): ?>
-						<label class="permission" labelfor="#quizu_permissions_<?php echo $role ?>">
+						<label class="permission <?php echo $role == 'administrator' ? 'hidden' : '' ?>" labelfor="#quizu_permissions_<?php echo $role ?>">
 							<input id="quizu_permissions_<?php echo $role ?>" type="checkbox" name="quizu_settings[permissions][<?php echo $role ?>]" value="<?php echo $role ?>" <?php echo !empty($permissions) && array_key_exists($role, $permissions) ? 'checked': ''; ?>>
 							<?php echo $value['name'] ?>
 						</label>

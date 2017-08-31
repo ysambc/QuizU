@@ -7,6 +7,10 @@ $line-height-d: 1.618;
 $vertical-unit: $global-size * $line-height;
 $u: $vertical-unit;
 
+.clearfix{
+	clear: both;
+}
+
 .quizu_admin_screen{
 
 	ul, li{
@@ -84,22 +88,35 @@ $u: $vertical-unit;
 }
 
 #quizu_questions{
-	
 	position: relative;
 
-	.inside{
+	h2.hndle{
+		background: white;
+	}
+
+	.quizu_admin_screen{
+		background: white;
+		margin: 0 auto;
+		max-width: $u*20;
+
+		>.label{
+			margin-bottom: $u*2;
+		}
+
 		@media screen and (min-width: 992px){
-			max-width: $u*26;
-			margin: 0 auto;
 			margin-top: $u*2;
-			margin-bottom: $u;
+			margin-bottom: $u*1.5;
 			padding-left: $u;
 			padding-right: $u;
+			box-shadow: 0 1px 1px rgba(0,0,0,.04);
+			border: 1px solid #e5e5e5;
+			padding-top: $u*2;
 		}
 	}
 
 	.heading{
-		font-size: $u*1.618;
+		font-size: $u*1.3;
+		font-weight: bold;
 		text-align: center;
 		padding-bottom: $u*2;
 		margin: 0;
@@ -118,29 +135,36 @@ $u: $vertical-unit;
 	input{
 		background: 0;
 		box-shadow: none;
-		border: 0;
-		border-radius: 0;
+		border: 1px solid transparent;
+		border-radius: $u/6;
 		transition: border-bottom .5s;
-		padding: $u/2;
+		padding: $u/4;
 		margin: 0;
-		margin-bottom: $u/2;
-		transition: box-shadow 0.5s;
+		transition: 0.5s;
 
 		&:focus{
-			border: 0;
-			box-shadow: 0px 4px 11px 2px rgba(79, 94, 101, 0.38);
+			box-shadow: 0 1px 1px rgba(0,0,0,.04);
+			border: 1px solid #e5e5e5;
 		}
 	}
 
 	textarea{
+		box-shadow: 0 1px 1px rgba(0,0,0,.04);
+		border: 1px solid #e5e5e5;
 		border-radius: $u/6;
 		box-shadow: none;
-		transition: box-shadow 0.5s;
+		transition: 0.5s;
 
 		&:focus{
-			border: 0;
+			border: 2px solid transparent;
 			box-shadow: 0px 4px 11px 2px rgba(79, 94, 101, 0.38);
 		}
+	}
+
+	.collapse{
+		cursor: pointer;
+		cursor: hand;
+		transition: 0.5s;
 	}
 
 	.link{
@@ -157,6 +181,7 @@ $u: $vertical-unit;
 
 		&.second{
 			margin-left: $u/2;
+			display: block;
 		}
 
 		&.results_by_score{
@@ -177,6 +202,9 @@ $u: $vertical-unit;
 
 		@media screen and (min-width: 500px){
 			max-width: 200px;
+			display: inline-block;
+			margin-left: $u;
+			vertical-align: super;
 		}
 	}
 
@@ -191,11 +219,8 @@ $u: $vertical-unit;
 		}
 	}
 
-	.controller.new_path{
-		margin-bottom: $u*3;
-	}
-
 	.controller.new_result{
+		margin-top: $u*2;
 		margin-bottom: $u*2;
 	}
 
@@ -241,19 +266,17 @@ $u: $vertical-unit;
 		margin-right: 0;
 		margin-top: 0;
 		text-transform: capitalize;
+		font-weight: bold;
 
 		&.path{
-			font-size: $u*1.1095;
+			font-size: $u*.8;
+		}
+
+		&.result{
+			font-size: $u*.8;
 			font-weight: bold;
 		}
 
-		&.question{
-			font-size: $u*0.86;
-		}
-
-		&.option{
-			font-size: $u*0.618;
-		}
 	}
 
 	button{
@@ -268,10 +291,6 @@ $u: $vertical-unit;
 	button, select{
 		cursor: hand;
 		cursor: pointer;
-	}
-
-	label{
-		font-size: 11px;
 	}
 
 	.switch.main{
@@ -321,31 +340,42 @@ $u: $vertical-unit;
 	div.path{
 		display: inline-block;
 		position: relative;
+		padding-top: $u*2;
 		padding-bottom: $u*2;
+		border-bottom: 1px solid #f1f1f1;
+		transition: 0.5s;
 		width: 100%;
 
 		.wraper{
-			padding-bottom: $u;
+			.buttons{
+				padding-top: $u*0.5;
+				padding-bottom: $u*1.2;
+			}
+
+			.collapse{
+				top: $u*2.5;
+				transition: 0.5s;
+			}
 		}
 
 		.collapse{
 			position: absolute;
 			font-size: $u*.618;
-			cursor: pointer;
-			cursor: hand;
 			right: 0;
 			top: $u;
+			z-index: 10;
 
 			@media screen and (min-width: 650px){
 				right: $u/2;
 			}
+
 		}
 
 		.wp-picker-container{
 			float: right;
 			z-index: 10;
 			display: inline;
-			transform: translateY(-15%);
+			transform: translateY($u/2);
 			position: relative;
 
 			.wp-color-result{
@@ -355,54 +385,91 @@ $u: $vertical-unit;
 			.wp-picker-holder{
 				position: absolute;
 			}
+
+			@media screen and (min-width: 363px){
+				transform: none;
+			}
+
+			@media screen and (min-width: 992px){
+				transform: translateY(-15%);
+			}
 		}
 
-		&:first-of-type{
-			clear: right;
-			margin-top: 0;
-		}
+		&.collapsed{
+			padding-top: $u/2;
+			padding-bottom: $u*.75;
 
-		&:last-of-type{
-			padding-bottom: $u*5;
+			.wraper, .buttons{
+				padding-bottom: 0;
+			}
+
+			.wraper{
+				.title{
+					margin-bottom: 0;
+				}
+
+				.collapse{
+					top: $u*1.25;
+				}
+			}
 		}
 	}
 
 	ul.container{
 
+		&.questions{
+			padding-top: $u/2;
+		}
+
 		&.options{
-			border: 1px solid whitesmoke;
+			box-shadow: 0 1px 1px rgba(0,0,0,.04);
+			border: 1px solid #e5e5e5;
 			margin-top: $u*2;
 			padding: $u/2;
 			padding-top: 0;
 			padding-bottom: 0;
 		}
-
-		&.collapsed{
-			display: none !important;
-		}
 	}
 
 	li.question{
 		position: relative;
-		padding-top: $u*1.5;
+		padding-top: $u;
 		padding-bottom: $u*2;
+		transition: padding 0.5s;
+
+		.question.title{
+			padding: $u/2;
+			width: 100%;
+			height: $u*3;
+			margin-bottom: $u;
+			box-shadow: 0 1px 1px rgba(0,0,0,.04);
+			border: 1px solid #e5e5e5;
+			font-weight: bold;
+		}
 
 		.sort_handle{
 			cursor: pointer;
 			font-size: $u/2;
 			cursor: hand;
 			position: absolute;
-			top: $u*3;
+			top: 0;
 			right: $u*1.5;
+			transition: 0.5s;
+			visibility: hidden;
+			opacity: 0;
 
-			@media screen and (min-width: 650px){
-				right: $u*3;
+			@media screen and (min-width: 992px){
+				right: $u*2.5;
 			}
 		}
 
 		.collapse{
-			top: $u*3;
-			right: $u*1.5;
+			top: 0;
+			right: $u/2;
+
+			@media screen and (min-width: 992px){
+				right: $u*1.5;
+			}
 		}
 
 		.image, .score_container{
@@ -425,15 +492,16 @@ $u: $vertical-unit;
 			position: relative;
 			text-align: right;
 			padding-right: $u/2;
+			padding-top: $u;
 
 			p.label{
 				width: auto;
 				margin: 0;
 			}
-		}
 
-		.essay_switch{
-			padding-top: $u;
+			.switch{
+				margin-left: $u/8;
+			}
 
 			@media screen and (min-width: 425px){
 				padding-top: 0;
@@ -444,7 +512,12 @@ $u: $vertical-unit;
 
 		.essay_option{
 			display: none;
-
+			.link{
+				margin-top: $u/2;
+				&.main{
+					margin-left: 0;	
+				}
+			}
 		}
 
 		label.essay{
@@ -471,28 +544,17 @@ $u: $vertical-unit;
 			}
 		}
 
+		.multiple_choice_switch{
+			padding-top: $u/4;
+		}
+
 		.image{
 			bottom: 0;
 		}
 
 		.score_container{
 			top: $u;
-		}
-
-		.multiple_choice_switch{
-			padding-top: $u*1.5;
-		}
-		
-		&:before{
-			content: '';
-			position: absolute;
-			background: #f1efef;
-			background: rgba(214, 214, 214, 0.38);
-			top: 0;
-			height: 1px;
-			left: 0;
-			right: 0;
-		}
+		}		
 
 		&.multiple_choice:not(.essay_type){
 			.option.not_essay ~ .option{
@@ -500,6 +562,41 @@ $u: $vertical-unit;
 					display: none;
 				}
 			}
+		}
+
+		&.collapsed{
+			padding-top: $u/2;
+			padding-bottom: $u/2;
+
+			.title{
+				height: $u;
+				margin-top: 0;
+				margin-bottom: 0;
+				padding-top: 0;
+				padding-bottom: 0;
+				resize: none;
+				background-color: #f7f7f7;
+				box-shadow: 0 1px 1px rgba(0,0,0,.04);
+				border: 1px solid #e5e5e5;
+				overflow: hidden;
+
+				&:focus{
+					background-color: white;
+				}
+			}
+
+			.collapse, .sort_handle{
+				top: $u*0.8;
+			}
+
+			.sort_handle{
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+
+		&:last-of-type{
+			padding-bottom: 0;
 		}
 
 		@media screen and (min-width: 992px){
@@ -522,12 +619,12 @@ $u: $vertical-unit;
 		.title{
 			width: 70%;
 			display: block;
+			margin-left: $u/4;
 		}
 
 		.score_container{
-			// margin-top: 6px;
 			line-height: $u;
-			padding-top: $u/2;
+			padding-top: $u/4;
 
 			label{
 				vertical-align: top;
@@ -539,6 +636,10 @@ $u: $vertical-unit;
 				margin: 0;
 				text-align: right;
 				display: inline;
+				margin: 0;
+				margin-left: $u/8;
+				padding-left: $u/8;
+				padding-right: $u/8;
 			}
 		}
 
@@ -575,6 +676,7 @@ $u: $vertical-unit;
 
 				.image_delete{
 					display: inline-block;
+					padding-right: 0;
 				}
 			}
 		}
@@ -605,9 +707,11 @@ $u: $vertical-unit;
 			padding-right: 0;
 			bottom: 0;
 			right: $u/2;
+			top: $u*1.5;
 		}
 
 		.essay_answer{
+			margin-left: $u/4;
 		}
 
 		.essay{
@@ -644,26 +748,56 @@ $u: $vertical-unit;
 	}
 
 	div.result{
-		padding-bottom: $u*3;
+		padding-top: $u*1.5;
+		padding-bottom: $u*1.5;
+		border-bottom: 1px solid #f1f1f1;
+		position: relative;
+		transition: 0.5s;
 
-		.title{
-			font-size: $u;
-			font-weight: bold;
+		textarea{
+			height: 500px;
+		}
+
+		.title.result{
+			margin-bottom: $u/2;
+		}
+
+		.collapse{
+			position: absolute;
+			top: $u*2;
+			right: $u/2;
+			transition: 0.5s;
+		}
+
+		.delete_result{
+			vertical-align: text-top;
+		}
+
+		.scores, .highest{
+			@media screen and (min-width: 364px){
+				float: right;
+			}
 		}
 
 		.range{
 			width: 60px;
-			text-align: center;
-			vertical-align: baseline;
+			text-align: right;
+			width: 35px;
+			padding: 0;
+			vertical-align: sub;
+
+			&.min{
+				margin-right: $u/2;
+			}
 		}
 
 		label{
-			margin-left: $u/2;
 			vertical-align: middle;
 		}
 
 		.buttons{
 			padding-top: $u;
+
 			&.results_by_total{
 				.scores{
 					display: inline-block;
@@ -681,6 +815,7 @@ $u: $vertical-unit;
 				
 				.highest{
 					display: inline-block;
+					transform: translateY(-$u/3);
 				}
 			}
 		}
@@ -694,6 +829,30 @@ $u: $vertical-unit;
 		.wp-switch-editor{
 			display: none;
 		}
+
+		&.collapsed{
+			padding-top: $u/2;
+			padding-bottom: $u;
+
+			.title{
+				margin-bottom: 0;
+			}
+
+			.collapse{
+				top: $u*1.25;
+			}
+		}
+	}
+
+	.collapsed {
+		>:not(.title):not(.collapse):not(.sort_handle):not(.wraper):not(.buttons),
+		.buttons .new{
+			display: none !important;
+		}
+	}
+
+	@media screen and (min-width: 992px){
+		background: #f7f7f7;
 	}
 }
 
@@ -766,10 +925,6 @@ $u: $vertical-unit;
 	}
 
 	.option{
-
-		label{
-			line-height: 1.3em;
-		}
 
 		.container{
 			display: inline-block;

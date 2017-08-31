@@ -1,12 +1,11 @@
 
 jQuery(document).ready( function($) {
 
-  var adminSetup = function(){
+  adminSetup = function(){
 
     $('#quizu_questions').addClass('parent');
 
     quizuId = $('#quizu_id').val();/*Get current quiz ID*/
-    frame = null;
 
   }
 
@@ -88,16 +87,13 @@ jQuery(document).ready( function($) {
     scoreMin = parseInt(controller.closest('.parent').find('input.range.min').val());
     scoreMax = parseInt(controller.closest('.parent').find('input.range.max').val());
 
+
     optionImg = controller.attr('data-img');/*Get option image ID*/
     
-    if (controller.prop('files') && controller.prop('files').length != 0) {
-      file = controller.prop('files')[0];/*Get file data*/
-    }else{
-      if (image) {
-        file = image;
-        optionImg = image.id;
-      };
-    }
+    if (image) {
+      file = image;
+      optionImg = image.id;
+    };
 
     formData = new FormData();
 
@@ -169,21 +165,21 @@ jQuery(document).ready( function($) {
 
   // WP-ADMIN NEW QUESTION------------------------------------------------------------------------------------------------------------------
 
-  var toggleControllersSelector = 'button, input:not([type="hidden"]), #publish';
+  var toggleControllersSelector = 'select, button, input:not([type="hidden"]), textarea, #publish';
   
   var disableControllers = function(){
     $(toggleControllersSelector).attr('disabled', true);
-    $('#quizu_questions .wp-color-result').hide();
+    $('#quizu_questions .wp-color-result').css({'visibility': 'hidden'});
   }
 
   var enableControllers = function(){
     $(toggleControllersSelector).removeAttr('disabled');
-    $('#quizu_questions .wp-color-result').show();
+    $('#quizu_questions .wp-color-result').css({'visibility': 'visible'});
   }
 
   // CONTROLLER COMMANDS------------------------------------------------------------------------------------------------------------------
 
-  var quizuControllerProcessingSuccess = function(data){
+  var controllerProcessingSuccess = function(data){
 
     if (command == 'new_question') {/*Append new question*/
       controller.closest('.path.parent').find('ul.questions.container').prepend(data);
@@ -202,6 +198,9 @@ jQuery(document).ready( function($) {
       }else{
         controller.closest('.parent').find('.essay_options .remove_essay').last().addClass('hidden');
       }
+
+      controller.closest('.parent').find('.link.second').html(controller.closest('.question.parent').find('.link.main').html());
+
     };
 
     if (command == 'new_path') {/*Append new path*/
@@ -240,28 +239,10 @@ jQuery(document).ready( function($) {
       elemId = $(data).find('.wp-editor-area').attr('id');
 
       tinymce.execCommand('mceAddEditor',false, elemId );
-      
+
       elem = $('tinymce_'+elemId+'_ifr').find('.wp-editor-area').contents().find('#tinymce');
 
-      tinymce.editors[elemId].onChange.add(function(ed, e) {
-          if (quizuObj.flags.autosave == "true") {
-            if (typeof mceEditorCounter !== "undefined") {
-              clearTimeout(mceEditorCounter);
-            }
-
-            mceEditorCounter = setTimeout(function(){
-                jQuery(e.target.iframeElement).contents().find('span[data-mce-style]').each(function(){
-                  jQuery(this).attr('style', jQuery(this).attr('data-mce-style'));
-                });
-                jQuery(e.target.targetElm).closest(".parent.result").find(".controller.update").click();
-            }, 500);
-          }
-        }
-      );
-
-      $('#quizu_questions').find('select.link').each(function(){
-        $(this).append('<option data-linkpath="'+path+'" data-linkid="'+$(data).find('input.id').val()+'" data-result="true" value="'+$(data).find('input.id').val()+'" data-id="'+option+'">' + 'Res: ' + $(data).find('.title.result').val() + '</option>');
-      });
+      $('#quizu_questions').find('select.link').append('<option data-linkpath="'+path+'" data-linkid="'+$(data).find('input.id').val()+'" data-result="true" value="'+$(data).find('input.id').val()+'" data-id="'+option+'">' + 'Res: ' + $(data).find('.title.result').val() + '</option>');
 
       resultHighestSelects();
 
@@ -286,6 +267,19 @@ jQuery(document).ready( function($) {
       selectBoxes.each(function(){
         $(this).find('option[data-linkid="'+toRemoveQ+'"]').remove();
       });
+    };
+
+    if (command == 'delete_essay') {
+      contPar = controller.closest('.question.parent');
+      controller.closest('.essay').remove();
+
+      if (contPar.find('.essay_answer').length == 1) {
+        contPar.find('.remove_essay').addClass('hidden');
+      };
+
+      if (quizuObj.flags.autosave == 'true') {
+        contPar.find('.controller.update').click();
+      };
     };
 
     if (command == 'delete_path') {
@@ -316,41 +310,23 @@ jQuery(document).ready( function($) {
         if (command == 'update_path' && $(this).attr('data-linkpath') == path && $(this).val() != '' ) {
           /*Update select option list*/
           pathTit = $(this).html();
-          $(this).html(title.substring(0, 2) + title.slice(-1) + pathTit.substring(pathTit.indexOf(':')));
+          $(this).text(title.substring(0, 2) + title.slice(-1) + pathTit.substring(pathTit.indexOf(':')));
         };
 
         if (command == 'update_question' && $(this).val() != '' && $(this).attr('data-linkid') == quparent) {
           /*Update select option list*/
           optionTit = $(this).html();
-          $(this).html(optionTit.substring(0, optionTit.indexOf(':')+1) + ' ' + title);
+          $(this).text(optionTit.substring(0, optionTit.indexOf(':')+1) + ' ' + title);
         };
 
-        if (command == 'update_result') {
-          $('#quizu_questions').find('select.link option').each(function(){/*Update select boxes*/
-            if ($(this).attr('data-linkid') == quparent && $(this).val() != '' ) {
-              $(this).html('Res: ' + title);
-            };
-          });
+        if (command == 'update_result' && $(this).val() != '' && $(this).attr('data-linkid') == quparent) {
+          $(this).text('Res: ' + title);
         };
       }); 
     };
   }
 
-  var quizuControllerProcessingComplete = function(){
-
-    if (command == 'delete_essay') {
-      contPar = controller.closest('.question.parent');
-      controller.closest('.essay').remove();
-
-      if (contPar.find('.essay_answer').length == 1) {
-        contPar.find('.remove_essay').addClass('hidden');
-      };
-
-      if (quizuObj.flags.autosave == 'true') {
-        contPar.find('.controller.update').click();
-      };
-
-    };
+  var controllerProcessingComplete = function(){
 
     if (command == 'update_question') {
       if (essayFlag == true) {
@@ -369,7 +345,7 @@ jQuery(document).ready( function($) {
     };
   }
 
-  var quizuControllerProcessing = function(control){/*This function handles all SAVE and DELETE operations*/
+  var controllerProcessing = function(control){/*This function handles all SAVE and DELETE operations*/
     
     if (control.type == 'click') {
       controller = $(this);
@@ -382,7 +358,6 @@ jQuery(document).ready( function($) {
     if (command == 'update_question' || command == 'update_result') {
       if (scoreMin > scoreMax) {
         command = 'abort';
-        // alert(quizuObj.minimal);
       }else{
         $('.result.parent').each(function(key, value){
 
@@ -403,7 +378,7 @@ jQuery(document).ready( function($) {
 
       switch(command) {
           case 'new_path':
-              nonSaveElem = 'li.path';
+              nonSaveElem = 'div.path';
               break;
           case 'new_question':
               nonSaveElem = 'li.question';
@@ -412,7 +387,7 @@ jQuery(document).ready( function($) {
               nonSaveElem = 'li.option';
               break;
           case 'new_result':
-              nonSaveElem = 'li.result';
+              nonSaveElem = 'div.result';
               break;  
           case 'new_essay':
               nonSaveElem = '.essay_answer';
@@ -422,6 +397,7 @@ jQuery(document).ready( function($) {
       }
 
       nonSaveItemCount = controller.closest('.parent').find(nonSaveElem).length;
+
     }else{
       nonSaveItemCount = null;
     };
@@ -436,12 +412,9 @@ jQuery(document).ready( function($) {
       || command == 'delete_essay'
     ) {
       data = '';
-      quizuControllerProcessingSuccess(data);
-      quizuControllerProcessingComplete();
+      controllerProcessingSuccess(data);
+      controllerProcessingComplete();
     }else{
-
-      console.log(quparent);
-      console.log(option);
 
       $.ajax({/*Perform ajax requests*/
 
@@ -476,21 +449,16 @@ jQuery(document).ready( function($) {
           disableControllers();
         },
         success: function(data){
-          quizuControllerProcessingSuccess(data);
+          controllerProcessingSuccess(data);
         },
         complete: function(xhr, textStatus){
           enableControllers();
-          quizuControllerProcessingComplete();
+          controllerProcessingComplete();
         }
       });
     }
 
   }
-
-  $('#quizu_questions').on('click','.controller:not(.flag)', function(event){
-    event.preventDefault();
-    quizuControllerProcessing($(this));
-  });
 
   // WP-ADMIN SORT QUESTIONS------------------------------------------------------------------------------------------------------------------
   
@@ -539,7 +507,7 @@ jQuery(document).ready( function($) {
             controllerB = controllerA.closest('.parent').find('.controller.update_path');
             controllerA.closest('.parent').find('.color_picker').attr('value', ui.color);
 
-            quizuControllerProcessing(controllerB);
+            controllerProcessing(controllerB);
           }, 1000);
         };
 
@@ -567,7 +535,7 @@ jQuery(document).ready( function($) {
     imgIdInput = container.find( '.image_id' );
     imgUrlInput = container.find( '.image_url' );
 
-    if ( frame ) {
+    if (typeof frame !== 'undefined') {
       frame.open();
       return;
     }
@@ -598,7 +566,7 @@ jQuery(document).ready( function($) {
       getVariables(controller, attachment);
 
       if (quizuObj.flags.autosave == 'true') {
-        $.ajax({/*Update order*/
+        $.ajax({
           url:   ajaxurl,
           data: formData,
           type: 'POST',
@@ -663,13 +631,14 @@ jQuery(document).ready( function($) {
        quizu_nonce = ui.item.attr('data-sort');/*Get nonce*/
        command = 'sort_questions';
 
+       path = ui.item.closest('.parent.path').attr('data-path');
        new_order = {};
 
        ui.item.closest('.path.parent').find('.parent.question').each(function(){/*Make an object containing all IDs in new order*/
          new_order[$(this).attr('data-question')] = '';
        });
 
-       toSend = {action : 'quizu_admin_ajax', _ajax_nonce : quizu_nonce, quizu_id : quizuId, command : command, new_order : new_order};
+       toSend = {action : 'quizu_admin_ajax', _ajax_nonce : quizu_nonce, quizu_id : quizuId, command : command, path : path, new_order : new_order};
 
        // if (connected == true) {/*Check if sorting in self list, or sorting to other list*/
        //   connectedToSend = {/*Define ajax variables*/
@@ -686,7 +655,7 @@ jQuery(document).ready( function($) {
        //   toSend['new_path'] = new_path;
        // };
 
-       ui.item.attr('data-path', new_path);/*Update new path on item*/
+       // ui.item.attr('data-path', new_path);/*Update new path on item*/
 
        if (quizuObj.flags.autosave == 'true') {
           $.ajax({/*Update order*/
@@ -712,16 +681,21 @@ jQuery(document).ready( function($) {
 
   makesort();
 
+  $('#quizu_questions').on('click','.controller:not(.flag)', function(event){
+    event.preventDefault();
+    controllerProcessing($(this));
+  });
+
   if (quizuObj.flags.autosave == "true") {
     // WP-ADMIN SELECT OPTION LINK UPDATES------------------------------------------------------------------------------------------------------------------
 
-    $('#quizu_questions').on('click','.controller.flag', function(){
-      quizuControllerProcessing($(this));
+    $('#quizu_questions').on('click','.controller.flag', function(event){
+      controllerProcessing($(this));
     });
 
-    $('#quizu_questions').on('change keydown', 'input.title, .essay input, input.score, input.range, .wp-editor-area', function(e){
+    $('#quizu_questions').on('change keydown', '.title, .essay input, input.score, input.range, .wp-editor-area', function(e){
 
-      if (e.keyCode == 13 || e.type == 'change') {
+      if ((e.keyCode == 13 && !$(this).hasClass('title')) || e.type == 'change') {
         if (e.keyCode == 13){
           event.preventDefault();
         }
@@ -781,13 +755,23 @@ jQuery(document).ready( function($) {
     });
 
   }else{
-    $('#quizu_questions').on('click','.controller.flag', function(){
+    $('#quizu_questions').on('click','.controller.flag', function(event){
       if ($(this).attr('data-command') == 'update_question') {
-        if ($(this).is(':checked') == true) {
-          $(this).closest('.parent').addClass('essay_type');
-        }else{
-          $(this).closest('.parent').removeClass('essay_type');
-        }
+        if ($(this).hasClass('essay_question_flag')) {
+          if ($(this).is(':checked') == true) {
+            $(this).closest('.parent').addClass('essay_type');
+          }else{
+            $(this).closest('.parent').removeClass('essay_type');
+          }
+        };
+
+        if ($(this).hasClass('multiple_choice_flag')) {
+          if ($(this).is(':checked') == true) {
+            $(this).closest('.parent').addClass('multiple_choice');
+          }else{
+            $(this).closest('.parent').removeClass('multiple_choice');
+          }
+        };
       };
     });
   }
@@ -828,14 +812,15 @@ jQuery(document).ready( function($) {
     }
 
     if (quizuObj.flags.autosave == 'true') {
-      quizuControllerProcessing($(this));
+      controllerProcessing($(this));
     };
   });
 
   // COLLAPSING
 
-  $('#quizu_questions').on('click', '.collapse', function(){
-    $(this).closest('.parent').find('ul.container').toggleClass('collapsed');
+  $('#quizu_questions').on('click', '.collapse, li.collapsed .title, div.collapsed .title', function(event){
+    $(this).closest('.parent').toggleClass('collapsed');
+    $(this).closest('.parent').find('.title').removeAttr('style').scrollTop(0);
   });
 
   // OPTION / RESULT IMAGE UPLOAD / DELETE

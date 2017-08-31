@@ -1,10 +1,10 @@
 === QuizU Branched ===
 
 **Contributors:** jbent124
-**Tags:** quiz, survey, branched, chained, path
+**Tags:** quiz, questionaire, poll, branched, chained,
 **Requires at least:** 3.3
 **Tested up to:** 4.8.1
-**Stable tag:** 1.1.0
+**Stable tag:** 1.0
 
 A multi-purpose and flexible quizzes / questionaires / polls plugin with integrated "Branched" or "Chained" logic.
 
@@ -92,7 +92,7 @@ Experience your quiz the way your users would; before publishing it. If autosave
 
 After installing, QuizU will add a new menu in your WP admin sidebar. QuizU’s menu contains a link to a list with all your quizzes, a direct link for creating new quizzes, and a link to QuizU’s settings page.
 
-Shortcodes are displayed in the quiz list page. In the quiz edit / creation page you can determine whether to display the current quiz for all users, or only for logged in users; as well as the criteria used to display results.
+Shortcodes are displayed in the quiz list page. In the quiz edit / creation page you can determine whether to display the current quiz for all users, or only for logged in users; as well as the criteria used to calculate results.
 
 Once you have created your quiz you can go to the edit screen of the post or page where you want it displayed and select it, or you can paste its shortcode into the post’s content.
 
@@ -156,12 +156,21 @@ Please use the forum.
 
 * First stable version
 
+= 1.1.0 =
+
+* Important bugs fixed. User experience and admin design improved.
+
 
 == Upgrade Notice ==
 
 = 1.0 =
 
 * This is the first stable version
+
+= 1.1.0 =
+
+* Important bugs corrected. Upgrade your plugin version to avoid conflicts/loss of data. Admin Panel's speed and styles have also improved.
+
 
 == Translations ==
 
